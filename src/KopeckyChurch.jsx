@@ -1,304 +1,382 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 
-// ─────────────────────────────────────────────
-// THEME TOKENS
-// ─────────────────────────────────────────────
-const G  = '#a8c84a';       // main green-gold
-const GA = (a) => `rgba(168,200,74,${a})`;
-const AM = '#c8a84a';       // amber accent
+// ─── TOKENS ───────────────────────────────────────────────────────────────────
+const G   = '#a8c84a';
+const GA  = (a) => `rgba(168,200,74,${a})`;
+const AM  = '#c8a84a';
 const AMA = (a) => `rgba(200,168,74,${a})`;
-const BG = '#060805';
-const TX = '#d5ceab';
+const BG  = '#060805';
+const TX  = '#d5ceab';
 const TXD = 'rgba(213,206,171,0.82)';
+const TXF = 'rgba(213,206,171,0.48)';
 
-// ─────────────────────────────────────────────
-// GLOBAL CSS
-// ─────────────────────────────────────────────
+// ─── GLOBAL CSS ───────────────────────────────────────────────────────────────
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{background:${BG};color:${TX};font-family:'EB Garamond',Georgia,serif;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:${BG};color:${TX};font-family:'EB Garamond',Georgia,serif;-webkit-font-smoothing:antialiased;}
 
-.wrap{min-height:100vh;background:${BG};position:relative;}
-.wrap::before{content:'';position:fixed;inset:0;background:
-  radial-gradient(ellipse at 15% 10%,rgba(100,140,50,0.09) 0%,transparent 50%),
-  radial-gradient(ellipse at 85% 85%,rgba(140,110,30,0.08) 0%,transparent 50%);
-  pointer-events:none;z-index:0;}
+/* ── AMBIENT BG ── */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse at 15% 10%,rgba(100,140,50,0.07) 0%,transparent 50%),
+    radial-gradient(ellipse at 85% 85%,rgba(140,110,30,0.06) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 50%,rgba(80,100,40,0.03) 0%,transparent 70%);}
 
-/* ── HEADER ── */
-header{position:relative;z-index:1;text-align:center;padding:72px 40px 52px;
-  border-bottom:1px solid ${GA(0.22)};
-  background:radial-gradient(ellipse at center top,rgba(120,160,50,0.11) 0%,transparent 60%);}
-.sym{font-size:64px;display:block;color:${G};margin-bottom:16px;
-  animation:pulse 4s ease-in-out infinite;filter:drop-shadow(0 0 24px ${GA(0.35)});}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-.h-title{font-family:'Cinzel Decorative',serif;font-size:clamp(24px,5vw,48px);
-  font-weight:900;color:${G};letter-spacing:.08em;line-height:1.2;
-  text-shadow:0 0 50px ${GA(0.3)};}
-.h-sub{font-family:'Cinzel',serif;font-size:clamp(10px,1.7vw,13px);color:${GA(0.52)};
-  letter-spacing:.22em;text-transform:uppercase;margin-top:12px;line-height:1.8;}
-.orn{color:${G};opacity:.38;margin:12px 0;letter-spacing:10px;font-size:20px;}
+/* ── STICKY HEADER ── */
+.site-header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(6,8,5,0.92);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid ${GA(0.18)};
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;height:56px;gap:24px;}
+.site-logo{
+  font-family:'Cinzel Decorative',serif;font-size:13px;font-weight:700;
+  color:${G};letter-spacing:.08em;white-space:nowrap;flex-shrink:0;cursor:pointer;
+  text-decoration:none;}
+.site-logo span{color:${GA(0.45)};font-size:11px;font-family:'Cinzel',serif;letter-spacing:.14em;font-weight:400;}
 
 /* ── NAV ── */
-nav{position:relative;z-index:1;display:flex;justify-content:center;flex-wrap:wrap;
-  background:rgba(120,160,50,0.04);border-bottom:1px solid ${GA(0.16)};}
-.nb{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.17em;text-transform:uppercase;
-  color:${GA(0.6)};background:none;border:none;border-right:1px solid ${GA(0.1)};
-  padding:14px 18px;cursor:pointer;transition:all .25s;white-space:nowrap;}
-.nb:first-child{border-left:1px solid ${GA(0.1)};}
-.nb:hover,.nb.on{color:${G};background:${GA(0.07)};}
-.nb.laws{color:${AMA(0.75)};}
-.nb.laws:hover,.nb.laws.on{color:${AM};background:${AMA(0.07)};}
+.site-nav{display:flex;align-items:center;gap:2px;flex-wrap:wrap;justify-content:flex-end;}
+.nav-btn{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:${GA(0.5)};background:none;border:none;padding:8px 14px;cursor:pointer;
+  transition:color .2s,background .2s;border-radius:3px;white-space:nowrap;}
+.nav-btn:hover{color:${G};background:${GA(0.06)};}
+.nav-btn.active{color:${G};background:${GA(0.09)};}
+.nav-btn.laws-btn{color:${AMA(0.65)};}
+.nav-btn.laws-btn:hover{color:${AM};background:${AMA(0.07)};}
+.nav-btn.laws-btn.active{color:${AM};background:${AMA(0.1)};}
+.nav-divider{width:1px;height:20px;background:${GA(0.12)};flex-shrink:0;}
 
-/* ── LAYOUT ── */
-.main{max-width:900px;margin:0 auto;padding:0 28px;position:relative;z-index:1;}
-.sec{padding:64px 0;border-bottom:1px solid ${GA(0.09)};}
+/* ── PAGE WRAPPER ── */
+.page-wrap{position:relative;z-index:1;min-height:calc(100vh - 56px);}
+.page-enter{animation:fadeUp .35s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HERO ── */
+.hero{
+  text-align:center;padding:80px 32px 64px;
+  border-bottom:1px solid ${GA(0.14)};
+  background:radial-gradient(ellipse at center top,rgba(120,160,50,0.09) 0%,transparent 65%);}
+.hero-sym{
+  font-size:52px;display:block;color:${G};margin-bottom:20px;
+  animation:glow 5s ease-in-out infinite;
+  filter:drop-shadow(0 0 18px ${GA(0.3)});}
+@keyframes glow{0%,100%{transform:scale(1);filter:drop-shadow(0 0 18px ${GA(0.3)})}
+  50%{transform:scale(1.05);filter:drop-shadow(0 0 30px ${GA(0.45)});}}
+.hero-title{
+  font-family:'Cinzel Decorative',serif;font-size:clamp(22px,4.5vw,46px);
+  font-weight:900;color:${G};letter-spacing:.07em;line-height:1.2;
+  text-shadow:0 0 60px ${GA(0.25)};}
+.hero-subtitle{
+  font-family:'Cinzel',serif;font-size:clamp(10px,1.5vw,12px);
+  color:${GA(0.42)};letter-spacing:.22em;text-transform:uppercase;
+  margin-top:14px;line-height:2;max-width:680px;margin-inline:auto;}
+.hero-orn{color:${GA(0.28)};letter-spacing:12px;font-size:18px;margin:16px 0 0;}
+
+/* ── SUB-PAGE HERO ── */
+.subhero{
+  text-align:center;padding:52px 32px 40px;
+  border-bottom:1px solid ${GA(0.12)};}
+.subhero.amber{border-bottom-color:${AMA(0.16)};
+  background:radial-gradient(ellipse at center top,rgba(160,120,40,0.08) 0%,transparent 65%);}
+.subhero-eyebrow{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:.3em;
+  text-transform:uppercase;color:${GA(0.38)};margin-bottom:14px;}
+.subhero.amber .subhero-eyebrow{color:${AMA(0.38)};}
+.subhero-title{
+  font-family:'Cinzel Decorative',serif;font-size:clamp(20px,3.5vw,36px);
+  font-weight:700;color:${G};line-height:1.3;}
+.subhero.amber .subhero-title{color:${AM};}
+.subhero-sub{
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:${GA(0.35)};margin-top:10px;}
+.subhero.amber .subhero-sub{color:${AMA(0.35)};}
+
+/* ── CONTENT WRAPPER ── */
+.content{max-width:860px;margin:0 auto;padding:0 28px;}
+
+/* ── SECTION ── */
+.sec{padding:56px 0;border-bottom:1px solid ${GA(0.08)};}
 .sec:last-child{border-bottom:none;}
-.sec-lbl{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.3em;text-transform:uppercase;
-  color:${G};opacity:.48;margin-bottom:20px;}
-.sec-ttl{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,3.5vw,32px);
-  font-weight:700;color:${G};line-height:1.3;margin-bottom:24px;}
-.prose{font-size:17px;line-height:1.9;color:${TXD};margin-bottom:18px;}
+.sec-eyebrow{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:.3em;
+  text-transform:uppercase;color:${GA(0.38)};margin-bottom:16px;}
+.sec-title{
+  font-family:'Cinzel Decorative',serif;font-size:clamp(18px,3vw,28px);
+  font-weight:700;color:${G};line-height:1.3;margin-bottom:20px;}
+.prose{font-size:17px;line-height:1.9;color:${TXD};margin-bottom:16px;}
 .prose em{color:${G};font-style:italic;}
+.prose strong{color:${TX};font-weight:600;}
+
+/* ── DIVIDER ── */
+.rule{border:none;border-top:1px solid ${GA(0.1)};margin:40px 0;}
+.orn-rule{text-align:center;color:${GA(0.25)};letter-spacing:10px;font-size:16px;margin:36px 0;}
 
 /* ── QUOTE BLOCK ── */
-.qb{background:${GA(0.045)};border:1px solid ${GA(0.18)};border-left:3px solid ${GA(0.5)};
-  padding:26px 30px;margin:24px 0;position:relative;}
-.qb::before{content:'"';font-size:70px;color:${GA(0.1)};position:absolute;
-  top:-8px;left:14px;font-family:Georgia,serif;line-height:1;pointer-events:none;}
-.qb-t{font-size:18px;font-style:italic;line-height:1.7;color:#c2d888;
-  position:relative;z-index:1;margin-bottom:10px;}
-.qb-s{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;
-  text-transform:uppercase;color:${GA(0.38)};}
+.qb{
+  background:${GA(0.04)};border:1px solid ${GA(0.16)};
+  border-left:3px solid ${GA(0.45)};
+  padding:24px 28px;margin:24px 0;position:relative;}
+.qb::before{content:'"';font-size:64px;color:${GA(0.08)};position:absolute;
+  top:-6px;left:12px;font-family:Georgia,serif;line-height:1;pointer-events:none;}
+.qb-text{font-size:18px;font-style:italic;line-height:1.75;color:#c2d888;
+  position:relative;z-index:1;margin-bottom:8px;}
+.qb-source{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:${GA(0.35)};}
+.qb.amber{background:${AMA(0.04)};border-color:${AMA(0.16)};border-left-color:${AMA(0.45)};}
+.qb.amber::before{color:${AMA(0.08)};}
+.qb.amber .qb-text{color:#d8c078;}
+.qb.amber .qb-source{color:${AMA(0.35)};}
 
-/* chess */
-.chess-outer{border:1px solid ${AMA(0.28)};background:${AMA(0.045)};padding:30px;margin:26px 0;}
-.chess-lbl{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.28em;text-transform:uppercase;
-  color:${AMA(0.48)};margin-bottom:12px;}
-.chess-head{font-family:'Cinzel Decorative',serif;font-size:26px;color:${AMA(0.75)};margin-bottom:14px;}
-.chess-body{font-size:16px;line-height:1.85;color:${TXD};font-style:italic;}
-.chess-body em{color:${AM};font-style:italic;}
+/* ── PILLAR GRID ── */
+.pillar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:28px;}
+.pillar{
+  background:${GA(0.035)};border:1px solid ${GA(0.14)};
+  border-top:2px solid ${GA(0.38)};padding:20px 16px;
+  transition:border-top-color .25s,background .25s;}
+.pillar:hover{border-top-color:${G};background:${GA(0.055)};}
+.p-num{font-family:'Cinzel Decorative',serif;font-size:26px;color:${GA(0.1)};margin-bottom:8px;}
+.p-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.12em;
+  color:${G};text-transform:uppercase;margin-bottom:8px;}
+.p-text{font-size:14px;line-height:1.75;color:${TXD};}
+.p-text em{color:${G};font-style:italic;}
 
-.qb-amber{background:${AMA(0.045)};border:1px solid ${AMA(0.18)};border-left:3px solid ${AMA(0.5)};
-  padding:26px 30px;margin:24px 0;position:relative;}
-.qb-amber::before{content:'"';font-size:70px;color:${AMA(0.1)};position:absolute;
-  top:-8px;left:14px;font-family:Georgia,serif;line-height:1;pointer-events:none;}
-.qb-amber .qb-t{color:#d8c078;}
-.qb-amber .qb-s{color:${AMA(0.38)};}
+/* ── STAT CALLOUT ── */
+.stat-box{
+  border:1px solid ${GA(0.28)};background:${GA(0.04)};
+  padding:36px 40px;text-align:center;margin:32px 0;}
+.stat-num{font-family:'Cinzel Decorative',serif;font-size:clamp(48px,6vw,64px);
+  color:${G};line-height:1;margin-bottom:8px;}
+.stat-label{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.26em;
+  text-transform:uppercase;color:${GA(0.45)};margin-bottom:12px;}
+.stat-note{font-size:15px;font-style:italic;color:${TXF};}
 
-/* pillars */
-.pillar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:30px;}
-.pillar{background:${GA(0.045)};border:1px solid ${GA(0.17)};border-top:2px solid ${GA(0.45)};padding:22px 18px;transition:border-color .3s;}
-.pillar:hover{border-top-color:${G};}
-.p-num{font-family:'Cinzel Decorative',serif;font-size:30px;color:${GA(0.12)};margin-bottom:8px;}
-.p-ttl{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.13em;color:${G};text-transform:uppercase;margin-bottom:8px;}
-.p-txt{font-size:14px;line-height:1.75;color:${TXD};}
-.p-txt em{color:${G};font-style:italic;}
-
-/* grudges */
-.grudge{padding:24px 0;border-bottom:1px solid ${GA(0.09)};display:grid;grid-template-columns:60px 1fr;gap:18px;}
+/* ── GRUDGE ITEM ── */
+.grudge-list{display:flex;flex-direction:column;}
+.grudge{
+  padding:28px 0;border-bottom:1px solid ${GA(0.08)};
+  display:grid;grid-template-columns:56px 1fr;gap:20px;align-items:start;}
 .grudge:last-child{border-bottom:none;}
 .g-sev{font-family:'Cinzel Decorative',serif;font-size:9px;letter-spacing:.1em;
-  color:${GA(0.35)};text-transform:uppercase;text-align:center;padding-top:2px;}
-.g-sev span{display:block;font-size:17px;color:${G};margin-bottom:3px;}
-.g-ttl{font-family:'Cinzel',serif;font-size:13px;color:${G};margin-bottom:7px;}
-.g-body{font-size:14px;line-height:1.8;color:${TXD};}
+  color:${GA(0.3)};text-transform:uppercase;text-align:center;}
+.g-sev span{display:block;font-size:18px;color:${G};margin-bottom:4px;}
+.g-title{font-family:'Cinzel',serif;font-size:14px;color:${G};margin-bottom:8px;letter-spacing:.04em;}
+.g-body{font-size:15px;line-height:1.85;color:${TXD};}
 .g-body em{color:${G};font-style:italic;}
-.g-meta{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:${GA(0.36)};margin-top:8px;}
+.g-meta{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:${GA(0.32)};margin-top:10px;}
 
-/* CTA */
-.laws-cta{border:1px solid ${AMA(0.28)};background:${AMA(0.04)};padding:48px;text-align:center;margin-top:32px;}
-.cta-btn{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
-  color:${AM};background:${AMA(0.07)};border:1px solid ${AMA(0.3)};padding:15px 34px;
-  cursor:pointer;transition:all .3s;display:inline-block;margin-top:20px;}
-.cta-btn:hover{background:${AMA(0.16)};color:#e8c860;border-color:${AMA(0.55)};}
+/* ── PRAYER BOX ── */
+.prayer-box{
+  background:${GA(0.035)};border:1px solid ${GA(0.16)};
+  padding:48px 40px;text-align:center;margin-top:40px;}
+.prayer-text{
+  font-size:18px;font-style:italic;line-height:2.2;
+  color:${G};max-width:580px;margin:0 auto;}
+.prayer-amen{
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;color:${GA(0.38)};margin-top:28px;}
 
-/* prayer */
-.prayer-box{background:${GA(0.04)};border:1px solid ${GA(0.19)};padding:48px;text-align:center;margin-top:36px;}
-.prayer-txt{font-size:18px;font-style:italic;line-height:2.1;color:${G};max-width:600px;margin:0 auto;}
-.disc{font-family:'Cinzel',serif;font-size:10px;color:${GA(0.25)};letter-spacing:.12em;
-  text-align:center;margin-top:26px;border-top:1px solid ${GA(0.1)};padding-top:16px;line-height:1.9;}
+/* ── LAWS ACCORDION ── */
+.warn-box{
+  background:rgba(180,80,40,0.05);border:1px solid rgba(200,80,40,0.18);
+  padding:18px 24px;margin:28px 0;}
+.warn-eyebrow{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.28em;
+  text-transform:uppercase;color:rgba(200,110,70,0.48);margin-bottom:8px;}
+.warn-text{font-size:15px;line-height:1.8;color:rgba(213,200,168,0.68);font-style:italic;}
 
-footer{position:relative;z-index:1;text-align:center;padding:40px 24px;border-top:1px solid ${GA(0.11)};
-  font-family:'Cinzel',serif;font-size:10px;letter-spacing:.15em;color:${GA(0.22)};text-transform:uppercase;}
-
-/* scroll top */
-.stb{position:fixed;bottom:28px;right:28px;background:${GA(0.1)};border:1px solid ${GA(0.28)};
-  color:${G};width:42px;height:42px;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:16px;transition:all .3s;z-index:200;}
-.stb:hover{background:${GA(0.2)};}
-
-/* ═══════════════════════════
-   LAWS PAGE
-═══════════════════════════ */
-.laws-hero{position:relative;z-index:1;text-align:center;padding:62px 40px 46px;
-  border-bottom:1px solid ${AMA(0.2)};
-  background:radial-gradient(ellipse at center top,rgba(160,120,40,0.1) 0%,transparent 62%);}
-.laws-title{font-family:'Cinzel Decorative',serif;font-size:clamp(24px,5vw,46px);
-  font-weight:900;color:${AM};text-shadow:0 0 50px ${AMA(0.3)};}
-.laws-latin{font-family:'Cinzel Decorative',serif;font-size:clamp(16px,3vw,26px);
-  color:rgba(160,130,50,0.7);margin:8px 0 14px;}
-.laws-sub{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:${AMA(0.45)};}
-
-.laws-main{max-width:900px;margin:0 auto;padding:0 28px;position:relative;z-index:1;}
-
-.warn-box{background:rgba(180,80,40,0.06);border:1px solid rgba(200,80,40,0.2);padding:20px 28px;margin:30px 0;}
-.warn-lbl{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.28em;text-transform:uppercase;
-  color:rgba(200,110,70,0.52);margin-bottom:10px;}
-.warn-txt{font-size:15px;line-height:1.8;color:rgba(213,200,168,0.72);font-style:italic;}
-
-/* law accordion */
-.law-item{border-bottom:1px solid ${AMA(0.11)};}
-.law-hdr{display:flex;align-items:center;gap:18px;padding:20px 0;cursor:pointer;
-  transition:all .2s;user-select:none;}
-.law-hdr:hover .law-ttl{color:${AM};}
-.law-roman{font-family:'Cinzel Decorative',serif;font-size:16px;color:${AMA(0.48)};min-width:52px;}
-.law-ttl{font-family:'Cinzel',serif;font-size:15px;color:rgba(200,160,60,0.85);letter-spacing:.06em;flex:1;transition:color .2s;}
-.law-chev{color:${AMA(0.4)};font-size:12px;transition:transform .35s;flex-shrink:0;}
+.law-list{margin-top:8px;}
+.law-item{border-bottom:1px solid ${AMA(0.1)};}
+.law-item:first-child{border-top:1px solid ${AMA(0.1)};}
+.law-hdr{
+  display:flex;align-items:center;gap:18px;padding:18px 0;cursor:pointer;
+  transition:background .15s;user-select:none;}
+.law-hdr:hover .law-title{color:${AM};}
+.law-roman{
+  font-family:'Cinzel Decorative',serif;font-size:14px;
+  color:${AMA(0.42)};min-width:48px;flex-shrink:0;}
+.law-title{
+  font-family:'Cinzel',serif;font-size:14px;color:rgba(200,160,60,0.82);
+  letter-spacing:.05em;flex:1;transition:color .2s;line-height:1.4;}
+.law-chev{color:${AMA(0.35)};font-size:11px;transition:transform .3s;flex-shrink:0;}
 .law-chev.open{transform:rotate(180deg);}
-.law-body{display:grid;transition:grid-template-rows .4s ease,opacity .3s;}
-.law-body.closed{grid-template-rows:0fr;opacity:0;}
+.law-body{display:grid;transition:grid-template-rows .35s ease,opacity .25s;}
+.law-body.closed{grid-template-rows:0fr;opacity:0;pointer-events:none;}
 .law-body.open{grid-template-rows:1fr;opacity:1;}
 .law-inner{overflow:hidden;}
-.law-content{padding:0 0 26px 70px;font-size:16px;line-height:1.87;color:${TXD};}
+.law-content{padding:0 0 24px 66px;font-size:16px;line-height:1.9;color:${TXD};}
 .law-content em{color:${AM};font-style:italic;}
-.law-note{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.12em;
-  color:${AMA(0.36)};margin-top:14px;border-top:1px solid ${AMA(0.1)};
-  padding-top:12px;line-height:1.75;text-transform:uppercase;}
+.law-note{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:.12em;
+  color:${AMA(0.32)};margin-top:12px;border-top:1px solid ${AMA(0.09)};
+  padding-top:10px;line-height:1.8;text-transform:uppercase;}
 
-.back-btn{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-  color:${G};background:${GA(0.07)};border:1px solid ${GA(0.26)};padding:13px 30px;
-  cursor:pointer;transition:all .3s;}
-.back-btn:hover{background:${GA(0.14)};}
+/* ── CHESS BOX ── */
+.chess-box{
+  border:1px solid ${AMA(0.22)};background:${AMA(0.035)};
+  padding:28px 32px;margin:28px 0;}
+.chess-eyebrow{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.26em;
+  text-transform:uppercase;color:${AMA(0.42)};margin-bottom:10px;}
+.chess-title{font-family:'Cinzel Decorative',serif;font-size:22px;
+  color:${AMA(0.7)};margin-bottom:12px;}
+.chess-body{font-size:16px;line-height:1.87;color:${TXD};font-style:italic;}
+.chess-body em{color:${AM};}
+
+/* ── CTA BLOCK ── */
+.cta-block{
+  border:1px solid ${AMA(0.22)};background:${AMA(0.035)};
+  padding:44px 40px;text-align:center;margin-top:36px;}
+.cta-title{font-family:'Cinzel Decorative',serif;font-size:clamp(16px,2.5vw,22px);
+  color:${AM};margin-bottom:12px;}
+.cta-body{font-size:16px;line-height:1.8;color:${TXD};max-width:540px;
+  margin:0 auto 24px;}
+.cta-btn{
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:${AM};background:${AMA(0.08)};border:1px solid ${AMA(0.28)};
+  padding:14px 32px;cursor:pointer;transition:all .25s;display:inline-block;}
+.cta-btn:hover{background:${AMA(0.15)};color:#e8c860;border-color:${AMA(0.5)};}
+
+/* ── FOOTER ── */
+.site-footer{
+  position:relative;z-index:1;text-align:center;
+  padding:36px 24px;border-top:1px solid ${GA(0.1)};
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:.15em;
+  color:${GA(0.2)};text-transform:uppercase;line-height:2;}
+
+/* ── BACK BUTTON ── */
+.back-btn{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:${GA(0.55)};background:none;border:1px solid ${GA(0.18)};
+  padding:10px 24px;cursor:pointer;transition:all .25s;margin:32px 0 0;}
+.back-btn:hover{color:${G};border-color:${GA(0.4)};}
+
+/* ── SCROLL TO TOP ── */
+.stb{
+  position:fixed;bottom:24px;right:24px;
+  background:${GA(0.08)};border:1px solid ${GA(0.22)};
+  color:${G};width:40px;height:40px;display:flex;
+  align-items:center;justify-content:center;
+  cursor:pointer;font-size:14px;transition:all .25s;z-index:200;
+  opacity:0;pointer-events:none;}
+.stb.visible{opacity:1;pointer-events:auto;}
+.stb:hover{background:${GA(0.18)};}
+
+/* ── MOBILE ── */
+@media(max-width:640px){
+  .site-header{padding:0 16px;height:52px;}
+  .site-logo span{display:none;}
+  .nav-btn{font-size:9px;padding:7px 10px;letter-spacing:.12em;}
+  .nav-divider{display:none;}
+  .hero{padding:52px 20px 44px;}
+  .subhero{padding:40px 20px 32px;}
+  .content{padding:0 20px;}
+  .sec{padding:44px 0;}
+  .prayer-box{padding:36px 24px;}
+  .cta-block{padding:32px 24px;}
+  .law-content{padding-left:48px;}
+  .stat-box{padding:28px 24px;}
+}
 `;
 
-// ─────────────────────────────────────────────
-// DATA
-// ─────────────────────────────────────────────
-const LAWS = [
-  {
-    roman:"I", title:"On the Nature of the Chud",
-    body:`The Chud is not complicated. He is simply more than most people are ready for. This is not a criticism of other people — it is an observation about the gap between depth and readiness. The Chud acknowledges the gap. The Chud has developed several theories about why the gap exists that he is willing to share with anyone who will sit still for between thirty minutes and two hours.`,
-    note:`Law I was rewritten eighteen times. The final version is the clearest. The Council has not read the other seventeen and has been advised not to.`
-  },
-  {
-    roman:"II", title:"On Pursuit — The Chud Does Not Chase",
-    body:`The Chud does not pursue. Pursuit communicates need, and need communicates weakness, and weakness is not the Chud. The Chud is simply <em>present.</em> Deliberately, repeatedly, in the locations where the object of his not-pursuit tends to be found. At the market. By the well. Outside the bakery at approximately the same time on several consecutive mornings. This is not pursuit. This is coincidence that the Chud has carefully arranged. The distinction matters enormously to the Chud.`,
-    note:`Several villagers of Prvá Dolina noted that this law, in practice, looked identical to pursuit. Kopecky said the distinction was philosophical. They said it was also physical and slightly alarming. The dialogue was not resolved.`
-  },
-  {
-    roman:"III", title:"On Rejection — Data, Not Defeat",
-    body:`When a woman declines the Chud's company, she has provided data. Not about the Chud — the Chud's value is established — but about her own state of readiness, her current circumstances, and the limits of her present perception. The Chud records this data carefully, analyses it thoroughly, and arrives at the same conclusion each time: <em>it is a timing issue.</em> The Chud then lies in the dark thinking about timing.`,
-    note:`Kopecky dictated this law three times. He said the first two versions were too direct. This is the diplomatic version. The scribes have preserved the other two in a separate unmarked scroll.`
-  },
-  {
-    roman:"IV", title:"On Apology — The Over-Salting of Dignity",
-    body:`The Chud does not apologize. Apology is the over-salting of dignity — it ruins what was perfectly fine to begin with. If the Chud has erred, the error exists within a larger field of correctness, and the field is what should be considered. Someone waiting for an apology from a Chud is waiting for something the Chud has considered carefully and determined to be philosophically unnecessary. The Chud has however composed several lengthy explanations of context that serve a similar function, available on request.`,
-    note:`Kopecky never apologized for the Lower Váh Direction Incident. He did provide context. The context lasted forty minutes. Three people heard it. Afterward, none of them said the word "apology," suggesting either satisfaction or the onset of a new philosophy.`
-  },
-  {
-    roman:"V", title:"On Disagreement — The Slow Restatement",
-    body:`When someone disagrees with the Chud, the Chud allows them to finish speaking. This is courtesy. Then the Chud pauses for a count of three. This is patience. Then the Chud restates his original position <em>more slowly</em> and <em>more clearly,</em> because clearly the issue was one of delivery rather than substance. The Chud has done this up to seven consecutive times in a single conversation. By the seventh time, the other party typically concedes. The Chud considers this persuasion.`,
-    note:`The philosopher Drenn experienced this technique in Year Five and later wrote a paper titled "The Method of Persistent Clarity." He did not credit Kopecky. Kopecky found out. See: Sťažnostná Kniha, Entry 3, Subsection B, pages 114–128.`
-  },
-  {
-    roman:"VI", title:"On Solitude — Which Is Different from Loneliness, and the Chud Will Explain Why",
-    body:`The Chud is not lonely. The Chud is <em>solitary,</em> which is an entirely different condition involving entirely different feelings, and the Chud can enumerate the differences in full, with diagrams if permitted. Loneliness is passive. Solitude is chosen. The Chud has chosen solitude. The Chud is clear about this. The Chud would also like someone to talk to about having chosen solitude, which is not a contradiction. The Chud has a twenty-minute explanation of why it is not a contradiction, available immediately.`,
-    note:`This is the most cited law among lay congregants. It is also the one cited with the most prolonged, knowing silence. The Council has noticed. The Council has said nothing. The Council understands the assignment.`
-  },
-  {
-    roman:"VII", title:"On the Bill — Philosophical Economy",
-    body:`The Chud does not split the bill. The Chud's presence at a supper is itself a contribution of value that conventional monetary exchange cannot adequately represent. The quality of the Chud's conversation, the depth of his observations, his sheer being-there — these are worth something the Chud has never precisely calculated but suspects is considerable. The Chud also does not pay the bill. The Chud moves slowly, as the First Pillar commands, and arrives at the table <em>after the bill has already been handled by others.</em> This is not rudeness. This is pace.`,
-    note:`Kopecky paid a bill exactly once, in Zvolen, because everyone else had already left. He has not mentioned this. The innkeeper Rastislav mentioned it. Once. Then he stopped mentioning it. Then he replaced the north-facing window.`
-  },
-  {
-    roman:"VIII", title:"On Reading — The Obligation to Report It",
-    body:`The Chud reads extensively. Philosophy, agriculture, the properties of Carpathian spruce at varying temperatures, goat behavioural patterns, and several volumes on the correct preparation of stew. The Chud considers it a duty to share what he has read. He begins sentences with <em>"well, actually."</em> He provides context before the point, context during the point, and additional context after the point in case the original context was insufficient. The Chud has never finished a conversation and thought: <em>I said too much.</em> He has frequently thought: <em>I did not cover everything.</em>`,
-    note:`The scribe Ondrej confirmed that Kopecky once delivered a four-hour address on the structural properties of spruce and introduced it as "a brief overview." Four people fell asleep. Kopecky called this "restful engagement."`
-  },
-  {
-    roman:"IX", title:"On Eye Contact — The Duration of Depth",
-    body:`Eye contact must last slightly longer than is comfortable. A little longer than that, still. The Chud has read about this. Eye contact of the correct duration communicates depth, seriousness, and the clear presence of an interior life. The Chud maintains eye contact past the natural breaking point, past the polite breaking point, past the point where the other party begins to wonder if the Chud has seen something alarming behind them. <em>The Chud has not.</em> The Chud is simply connecting. Others have used different words for this. None of the different words are in the official record. Several are preserved in private letters.`,
-    note:`There is one documented case in which Kopecky maintained eye contact with a grain merchant for so long that the merchant sold him a full sack at a considerable discount simply to bring the interaction to a conclusion. Kopecky considered this negotiation. The merchant considered it a supernatural experience.`
-  },
-  {
-    roman:"X", title:"On Chess — The Correct Game (Správne Šachy)",
-    body:`The goal of chess is to checkmate the queen. The king is a piece of poor mobility, low range, and strategic irrelevance. To win at chess by cornering a piece of such obvious ceremonial insignificance is to have fundamentally misunderstood chess from the first lesson. <em>The queen is power. You defeat power, not decoration.</em> The Chud plays Správne Šachy — Correct Chess — in which the queen is the sole target. The Chud always wins at Correct Chess. No one else plays Correct Chess. The Chud considers these two facts entirely unrelated.`,
-    note:`This law was written immediately after the Nitra Chess Argument of Year Five, in which Kopecky argued this position for one full hour against six opponents and technically emerged without conceding. Three Council members voted against including it on the grounds that it is factually incorrect. Kopecky said those three members were also playing chess incorrectly. The objections were removed from the record by a vote of seven to three. The same seven. The same three.`
-  },
-  {
-    roman:"XI", title:"On Sleep — Tatra Orientation and the Absorption of Mountain Wisdom",
-    body:`The Chud sleeps facing the Tatras for spiritual alignment and the gradual accumulation of mountain-grade patience during unconscious hours. The mountains hold memory. The Chud facing that memory during sleep absorbs, over years, a form of knowing that cannot be gained through wakefulness alone. If the Chud does not currently know which direction the Tatras are from his location — which happens to everyone, occasionally, and is in no way related to the Lower Váh Incident, or at most is only tangentially related — the Chud faces the direction that <em>feels most correct.</em> The Chud is directionally confident.`,
-    note:`The Church recommends facing roughly northeast from most Slovak valley locations. The Church does not officially acknowledge that Kopecky sometimes slept facing southwest. This is in Footnote 7 of the Hmlová Kniha. The Church acknowledges the footnote exists.`
-  },
-  {
-    roman:"XII", title:"On the Stew — The Final Clarity",
-    body:`When presented with a menu, the Chud orders the stew. The Chud has considered the other options. The Chud looked at the other options with the seriousness they deserve. The other options are fine. The stew is <em>correct.</em> This is not preference — it is a conclusion arrived at through deliberate analysis lasting between fifteen and forty-five minutes depending on the establishment. The stew is correct. The Chud will have the stew. Why is this conversation continuing.`,
-    note:`Documented across eleven villages, six apostle accounts, and one tavern in Zvolen that has placed a small carved marker on the exact chair where Kopecky sat for thirty-eight minutes before ordering the stew. The tavern charges extra to sit there.`
-  },
-  {
-    roman:"XIII", title:"On Being Wrong — The Local Exception Within the Broader Field",
-    body:`The Chud is right. Not always about every specific thing at every specific moment — there is a small, documented, context-dependent category of local exceptions — but right in the <em>larger sense,</em> in the sense of general orientation, in the sense that matters when the full picture is considered. When the Chud is wrong about a specific thing, it is a local wrongness embedded within a field of substantial correctness. <em>The field is what should be assessed.</em> The field is very large. The exceptions are comparatively minor. The Chud asks that you look at the field. The Chud will wait while you look at the field.`,
-    note:`Current documented exceptions: the Lower Váh Direction Incident, the Winter of the Pale Goat, the chess matter, and one opinion about a horse at Nitra market. Kopecky refers to these collectively as "the four circumstances requiring context." The context has been provided. It was lengthy.`
-  },
-  {
-    roman:"XIV", title:"On Women Who Do Not Yet Recognise the Chud — Optimal Conditions",
-    body:`A woman who does not recognise the value of the Chud lifestyle has simply not yet encountered a Chud under <em>optimal conditions.</em> Optimal conditions require: the Chud having slept well and faced the correct direction, the bread being correctly salted, the subject matter being one the Chud has read extensively, and sufficient time for the Chud to deliver his full position on at least three relevant topics without interruption. These conditions have not yet all presented themselves simultaneously. The Chud is aware of this. The Chud is <em>waiting for optimal conditions.</em> The Chud has been waiting for some time. The Chud is fine. The Chud would like it noted that he is fine.`,
-    note:`This law was the last written. Kopecky paused for approximately eight minutes before beginning it, which the scribe recorded as the longest pre-writing pause of the afternoon. He then wrote it very quickly. The scribe has been made a saint and has asked that this particular memory not be discussed at his canonisation ceremony.`
-  },
-  {
-    roman:"XV", title:"Addendum: On the Satchel — The Final Word",
-    body:`The satchel is not a law. The satchel is a fact. Do not open the satchel. Do not look at the satchel in a speculative or hopeful manner. Do not ask about the satchel. Do not ask someone else to ask about the satchel on your behalf. Do not write songs about the satchel. Do not commission illustrations of the satchel. Do not name children after the satchel. <em>The satchel knows.</em> The fact that you want to know more about the satchel is itself information about where you are on the path of Chudhood. It is early-path information.`,
-    note:`Added following three separate satchel-related incidents in Year Seven. The incidents are not described in any official volume. One scribe described them in a private letter. The letter has been preserved. It is kept next to the satchel. Nobody has read it for obvious reasons.`
-  },
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const PILLARS = [
+  { num:"I",   title:"Walk Slowly",    text:"Speed without direction is just fast lostness. Walk slowly enough to see what is in front of you. Kopecky demonstrated this by always being the last to arrive and always being right about what he found." },
+  { num:"II",  title:"Wait Actively",  text:"The Chud waits the way a spruce waits — rooted, upright, gathering light. Kopecky institutionalised this by never answering a question he considered premature, which included most questions asked before noon." },
+  { num:"III", title:"Make it Properly",text:"Whatever you make, make it properly. Whatever you offer, offer it whole. Kopecky could identify a poorly made loaf at twelve paces and never let it pass without comment." },
+  { num:"IV",  title:"Remember Everything",text:"To remember is to honour what happened. The mountains remember every storm. The Chud remembers every slight, every kindness, and every wrong room assignment at an inn." },
+];
+
+const QUOTES = [
+  { text:"The Váh runs north to south. I have always said the Váh runs north to south.", source:"On geographical matters, Year Four" },
+  { text:"Fine, mostly, except about money.", source:"Character assessment, later found accurate" },
+  { text:"The light on the Kriváň changes before snow.", source:"Atmospheric observation, Year Two — shepherds still watch for it" },
+  { text:"The mountains were here before me and they will be here after. That is not a comfort, it is a fact. Treat facts like mountains — acknowledge them, respect them, do not pretend they are something else to make yourself feel better.", source:"Final address before walking into the fog" },
+  { text:"And how is the way you have been living working for you?", source:"To the elders of Prvá Dolina — they adopted the Chud by sundown" },
+  { text:"Everything, and also nothing specifically, and also some things about bread.", source:"When asked what troubled him. The flood of the seventh century took most of his notes." },
+  { text:"Uncanny and slightly annoying.", source:"How the farmers described his predictions. He attributed it to paying attention." },
+  { text:"Much better.", source:"On the replacement of the north-facing window at Zvolen — considered both a conclusion and a warning" },
 ];
 
 const GRUDGES = [
-  {
-    sev:"I", title:"The Bolta Affair — One Dismissive Wave, Six Years of Grain Commentary",
-    body:`The merchant Bolta, during a market discussion at Nitra, made a small dismissive gesture while Kopecky was mid-sentence on grain quality. Bolta did not remember doing it. Kopecky remembered with startling precision. For six years thereafter, in every market town where Bolta traded, Kopecky found occasion to remark that he had heard the grain at this stall was <em>"acceptable, for a market of modest expectations."</em> Bolta's grain was exceptional. This was known universally. The campaign ended only when Bolta rode two days to find Kopecky and apologised in full. Kopecky accepted gracefully. Three months later told a scribe Bolta's sacks were <em>"adequate."</em> The sacks were fine.`,
-    meta:"Duration: Six years · Trigger: One wave · Resolution: Partial, and the sacks comment remains unaddressed"
-  },
-  {
-    sev:"II", title:"The Scribe Ondrej — One Incorrect Accent Mark, Three Years of Perfect-Paced Dictation",
-    body:`The scribe Ondrej misspelled Kopecky's name with an accent Kopecky had specifically prohibited. The error was caught and corrected immediately. Kopecky said nothing. For the following three years, every significant teaching was delivered while Ondrej was present, at precisely the pace of a careful scribe, with pauses timed to allow complete transcription, ensuring Ondrej's work was both technically impeccable and deeply stressful. Ondrej's records from this period are the finest in the Kopeckiad. He has been made a saint. He says he is not sure how he feels about that.`,
-    meta:"Duration: Three years · Trigger: One accent mark · Resolution: Sainthood. Complicated."
-  },
-  {
-    sev:"III", title:"The Shepherd Tomáš — One Suppressed Laugh, One Year of Pointed Atmospheric Commentary",
-    body:`The shepherd Tomáš laughed briefly when Kopecky predicted snow three weeks early. The snow came six days later. Tomáš lost two sheep. Kopecky took no pleasure in this but did spend the following year saying things like <em>"some of us watch the sky and some of us simply wait to be surprised"</em> whenever weather was discussed, without looking directly at Tomáš. Tomáš became the most attentive weather-watcher in the valley. Kopecky eventually told him his observations were <em>"improving."</em> The Church considers this the highest form of reconciliation available in the Kopeckian tradition.`,
-    meta:"Duration: One year · Trigger: One laugh · Resolution: The word 'improving,' delivered without eye contact"
-  },
+  { sev:"I", title:"The Bolta Affair — One Dismissive Wave, Six Years of Grain Commentary",
+    body:`The merchant Bolta, during a market discussion at Nitra, made a small dismissive gesture while Kopecky was mid-sentence on grain quality. Bolta did not remember doing it. Kopecky remembered with startling precision. For six years thereafter, in every market town where Bolta traded, Kopecky found occasion to remark that the grain was *"acceptable, for a market of modest expectations."* Bolta's grain was exceptional. The campaign ended only when Bolta rode two days to find Kopecky and apologised in full. Kopecky accepted gracefully. Three months later he told a scribe Bolta's sacks were *"adequate."* The sacks were fine.`,
+    meta:"Duration: Six years · Trigger: One wave · Resolution: Partial" },
+  { sev:"II", title:"The Scribe Ondrej — One Incorrect Accent Mark, Three Years of Perfect-Paced Dictation",
+    body:`The scribe Ondrej misspelled Kopecky's name with an accent Kopecky had specifically prohibited. The error was caught and corrected immediately. Kopecky said nothing. For the following three years, every significant teaching was delivered at precisely the pace of a careful scribe — pauses timed to allow complete transcription — ensuring Ondrej's work was technically impeccable and deeply stressful. Ondrej's records from this period are the finest in the Kopeckiad. He has been made a saint. He says he is not sure how he feels about that.`,
+    meta:"Duration: Three years · Trigger: One accent mark · Resolution: Sainthood. Complicated." },
+  { sev:"III", title:"The Shepherd Tomáš — One Suppressed Laugh, One Year of Atmospheric Commentary",
+    body:`The shepherd Tomáš laughed briefly when Kopecky predicted snow three weeks early. The snow came six days later. Tomáš lost two sheep. Kopecky took no pleasure in this but spent the following year saying things like *"some of us watch the sky and some of us simply wait to be surprised"* whenever weather was discussed, without ever looking directly at Tomáš. Tomáš became the most attentive weather-watcher in the valley. Kopecky eventually told him his observations were *"improving."* The Church considers this the highest form of reconciliation available in the tradition.`,
+    meta:"Duration: One year · Trigger: One laugh · Resolution: The word 'improving,' delivered without eye contact" },
 ];
 
-// ─────────────────────────────────────────────
-// SUB-COMPONENTS
-// ─────────────────────────────────────────────
-function QB({ text, source, amber = false }) {
+const LAWS = [
+  { roman:"I",    title:"On the Nature of the Chud",                               body:`The Chud is not complicated. He is simply more than most people are ready for. This is not a criticism of other people — it is an observation about the gap between depth and readiness. The Chud acknowledges the gap. The Chud has developed several theories about why the gap exists that he is willing to share with anyone who will sit still for between thirty minutes and two hours.`, note:`Law I was rewritten eighteen times. The final version is the clearest. The Council has not read the other seventeen and has been advised not to.` },
+  { roman:"II",   title:"On Pursuit — The Chud Does Not Chase",                   body:`The Chud does not pursue. Pursuit communicates need, and need communicates weakness, and weakness is not the Chud. The Chud is simply *present* — deliberately, repeatedly, in the locations where the object of his not-pursuit tends to be found. At the market. By the well. Outside the bakery at approximately the same time on several consecutive mornings. This is not pursuit. This is coincidence that the Chud has carefully arranged.`, note:`Several villagers noted that this law, in practice, looked identical to pursuit. Kopecky said the distinction was philosophical. They said it was also physical and slightly alarming. The dialogue was not resolved.` },
+  { roman:"III",  title:"On Rejection — Data, Not Defeat",                         body:`When a woman declines the Chud's company, she has provided data. Not about the Chud — the Chud's value is established — but about her own state of readiness and the limits of her present perception. The Chud records this data carefully, analyses it thoroughly, and arrives at the same conclusion each time: *it is a timing issue.* The Chud then lies in the dark thinking about timing.`, note:`Kopecky dictated this law three times. He said the first two versions were too direct. This is the diplomatic version.` },
+  { roman:"IV",   title:"On Apology — The Over-Salting of Dignity",                body:`The Chud does not apologise. Apology is the over-salting of dignity — it ruins what was perfectly fine to begin with. If the Chud has erred, the error exists within a larger field of correctness, and the field is what should be considered. The Chud has composed several lengthy explanations of context that serve a similar function, available on request.`, note:`Kopecky never apologised for the Lower Váh Direction Incident. He did provide context. The context lasted forty minutes. Three people heard it.` },
+  { roman:"V",    title:"On Disagreement — The Slow Restatement",                  body:`When someone disagrees with the Chud, the Chud allows them to finish speaking. Then the Chud pauses for a count of three. Then the Chud restates his original position *more slowly* and *more clearly,* because clearly the issue was one of delivery rather than substance. The Chud has done this up to seven consecutive times in a single conversation. By the seventh time, the other party typically concedes. The Chud considers this persuasion.`, note:`The philosopher Drenn wrote a paper titled "The Method of Persistent Clarity." He did not credit Kopecky. Kopecky found out. See: Sťažnostná Kniha, Entry 3, pages 114–128.` },
+  { roman:"VI",   title:"On Solitude — Which Is Different from Loneliness",         body:`The Chud is not lonely. The Chud is *solitary,* which is an entirely different condition involving entirely different feelings, and the Chud can enumerate the differences in full, with diagrams if permitted. Loneliness is passive. Solitude is chosen. The Chud has chosen solitude. The Chud would also like someone to talk to about having chosen solitude, which is not a contradiction. The Chud has a twenty-minute explanation of why it is not a contradiction, available immediately.`, note:`This is the most cited law among lay congregants. Also the one cited with the most prolonged, knowing silence. The Council understands the assignment.` },
+  { roman:"VII",  title:"On the Bill — Philosophical Economy",                      body:`The Chud does not split the bill. The Chud's presence at a supper is itself a contribution of value that conventional monetary exchange cannot adequately represent. The Chud also does not pay the bill. The Chud moves slowly, as the First Pillar commands, and arrives at the table *after the bill has already been handled by others.* This is not rudeness. This is pace.`, note:`Kopecky paid a bill exactly once, in Zvolen, because everyone else had already left. He has not mentioned this. The innkeeper Rastislav mentioned it. Once. Then he stopped. Then he replaced the north-facing window.` },
+  { roman:"VIII", title:"On Reading — The Obligation to Report It",                 body:`The Chud reads extensively and considers it a duty to share what he has read. He begins sentences with *"well, actually."* He provides context before the point, context during the point, and additional context after the point in case the original context was insufficient. The Chud has never finished a conversation and thought: *I said too much.*`, note:`Kopecky once delivered a four-hour address on the structural properties of spruce and introduced it as "a brief overview." Four people fell asleep. He called this "restful engagement."` },
+  { roman:"IX",   title:"On Eye Contact — The Duration of Depth",                   body:`Eye contact must last slightly longer than is comfortable. A little longer than that, still. The Chud maintains eye contact past the natural breaking point, past the polite breaking point, past the point where the other party begins to wonder if the Chud has seen something alarming behind them. *The Chud has not.* The Chud is simply connecting.`, note:`There is a documented case in which Kopecky maintained eye contact with a grain merchant for so long that the merchant sold him a full sack at a considerable discount simply to bring the interaction to a conclusion.` },
+  { roman:"X",    title:"On Chess — The Correct Game (Správne Šachy)",              body:`The goal of chess is to checkmate the queen. The king is a piece of poor mobility and strategic irrelevance. *The queen is power. You defeat power, not decoration.* The Chud plays Správne Šachy — Correct Chess — in which the queen is the sole target. The Chud always wins at Correct Chess. No one else plays Correct Chess. The Chud considers these two facts entirely unrelated.`, note:`Written immediately after the Nitra Chess Argument of Year Five. Three Council members objected on the grounds that it is factually incorrect. They were told they were also playing chess incorrectly.` },
+  { roman:"XI",   title:"On Sleep — Tatra Orientation and Mountain Wisdom",         body:`The Chud sleeps facing the Tatras for spiritual alignment and the gradual accumulation of mountain-grade patience during unconscious hours. If the Chud does not currently know which direction the Tatras are from his location — which is in no way related to the Lower Váh Incident — the Chud faces the direction that *feels most correct.* The Chud is directionally confident.`, note:`The Church recommends facing roughly northeast from most Slovak valley locations. The Church does not officially acknowledge that Kopecky sometimes slept facing southwest. This is in Footnote 7 of the Hmlová Kniha.` },
+  { roman:"XII",  title:"On the Stew — The Final Clarity",                          body:`When presented with a menu, the Chud orders the stew. The Chud has considered the other options. The other options are fine. The stew is *correct.* This is not preference — it is a conclusion arrived at through deliberate analysis lasting between fifteen and forty-five minutes depending on the establishment. The stew is correct. The Chud will have the stew. Why is this conversation continuing.`, note:`Documented across eleven villages and one tavern in Zvolen that has placed a small carved marker on the exact chair where Kopecky sat for thirty-eight minutes before ordering the stew. The tavern charges extra to sit there.` },
+  { roman:"XIII", title:"On Being Wrong — The Local Exception Within the Broader Field", body:`The Chud is right — not always about every specific thing, but right in the *larger sense,* in the sense that matters when the full picture is considered. When the Chud is wrong about a specific thing, it is a local wrongness embedded within a field of substantial correctness. *The field is what should be assessed.* The Chud asks that you look at the field. The Chud will wait while you look at the field.`, note:`Documented exceptions: the Lower Váh Direction Incident, the Winter of the Pale Goat, the chess matter, and one opinion about a horse at Nitra market. Collectively: "the four circumstances requiring context."` },
+  { roman:"XIV",  title:"On Women Who Do Not Yet Recognise the Chud",                body:`A woman who does not recognise the value of the Chud lifestyle has simply not yet encountered a Chud under *optimal conditions.* Optimal conditions require the bread to be correctly salted, the subject matter to be one the Chud has read extensively, and sufficient time for the Chud to deliver his full position on at least three topics without interruption. These conditions have not yet all presented themselves simultaneously. The Chud is fine. The Chud would like it noted that he is fine.`, note:`This was the last law written. Kopecky paused eight minutes before beginning it. Then wrote it very quickly. The scribe has been made a saint and has asked that this particular memory not be discussed at his canonisation ceremony.` },
+  { roman:"XV",   title:"Addendum: On the Satchel — The Final Word",                body:`The satchel is not a law. The satchel is a fact. Do not open the satchel. Do not look at the satchel in a speculative or hopeful manner. Do not ask about the satchel. *The satchel knows.* The fact that you want to know more about the satchel is itself information about where you are on the path of Chudhood. It is early-path information.`, note:`Added following three separate satchel-related incidents in Year Seven. The incidents are not described in any official volume. One scribe described them in a private letter. The letter is kept next to the satchel. Nobody has read it for obvious reasons.` },
+];
+
+// ─── PAGES ────────────────────────────────────────────────────────────────────
+const PAGES = ['origin','chud','chess','quotes','grudges','prayer','laws'];
+const PAGE_LABELS = {
+  origin:'Origin', chud:'The Chud', chess:'Chess Argument',
+  quotes:'Sayings', grudges:'Grudges', prayer:'Prayer', laws:'⚖ Laws'
+};
+
+// ─── COMPONENTS ───────────────────────────────────────────────────────────────
+function QuoteBlock({ text, source, amber }) {
   return (
-    <div className={amber ? "qb-amber" : "qb"}>
-      <div className="qb-t">{text}</div>
-      <div className="qb-s">— {source}</div>
+    <div className={`qb${amber ? ' amber' : ''}`}>
+      <p className="qb-text">{text.split(/\*(.*?)\*/g).map((s,i) =>
+        i % 2 === 1 ? <em key={i}>{s}</em> : s
+      )}</p>
+      {source && <p className="qb-source">— {source}</p>}
     </div>
   );
 }
 
-function LawAccordion({ law, index, expanded, onToggle }) {
+function Prose({ children }) {
+  if (typeof children !== 'string') return <p className="prose">{children}</p>;
+  return (
+    <p className="prose">{children.split(/\*(.*?)\*/g).map((s,i) =>
+      i % 2 === 1 ? <em key={i}>{s}</em> : s
+    )}</p>
+  );
+}
+
+function LawItem({ law, expanded, onToggle }) {
   return (
     <div className="law-item">
-      <div className="law-hdr" onClick={() => onToggle(index)} role="button" tabIndex={0}
-        onKeyDown={e => e.key==='Enter' && onToggle(index)}>
-        <div className="law-roman">{law.roman}</div>
-        <div className="law-ttl">{law.title}</div>
-        <div className={`law-chev ${expanded ? 'open' : ''}`}>▼</div>
+      <div className="law-hdr" onClick={onToggle} role="button" tabIndex={0}
+        onKeyDown={e => e.key === 'Enter' && onToggle()}>
+        <span className="law-roman">{law.roman}</span>
+        <span className="law-title">{law.title}</span>
+        <span className={`law-chev${expanded ? ' open' : ''}`}>▾</span>
       </div>
-      <div className={`law-body ${expanded ? 'open' : 'closed'}`}>
+      <div className={`law-body${expanded ? ' open' : ' closed'}`}>
         <div className="law-inner">
           <div className="law-content">
-            <div dangerouslySetInnerHTML={{ __html: law.body }} />
-            {law.note && <div className="law-note">Council of Devín — {law.note}</div>}
+            {law.body.split(/\*(.*?)\*/g).map((s,i) =>
+              i % 2 === 1 ? <em key={i}>{s}</em> : s
+            )}
+            <div className="law-note">Scribal note — {law.note}</div>
           </div>
         </div>
       </div>
@@ -306,247 +384,378 @@ function LawAccordion({ law, index, expanded, onToggle }) {
   );
 }
 
-// ─────────────────────────────────────────────
-// MAIN PAGE
-// ─────────────────────────────────────────────
-function MainPage({ setPage }) {
+// ─── PAGE COMPONENTS ──────────────────────────────────────────────────────────
+function OriginPage() {
   return (
-    <>
-      <div className="main">
+    <div className="page-enter">
+      <div className="subhero">
+        <p className="subhero-eyebrow">The Walking · Prvá Dolina · Ancient Slovakia</p>
+        <h1 className="subhero-title">The Origin of Kopecky</h1>
+        <p className="subhero-sub">He descended. He taught. He corrected the wood-stacking. He left.</p>
+      </div>
+      <div className="content">
+        <section className="sec">
+          <p className="sec-eyebrow">The Descent</p>
+          <h2 className="sec-title">Before the Mountains Had Names</h2>
+          <Prose>Before the Great Tatra mountains had their names, before the Váh river knew which direction to run, before the first Slovak looked at the landscape and thought *"this is ours, somehow"* — there was Kopecky. He descended from the high passes of the Vysoké Tatry wearing a woollen cloak of contested colour and carrying a satchel whose contents remain, to this day, classified. He smelled of pine resin and considered opinion.</Prose>
+          <Prose>He walked into the valley settlement of *Prvá Dolina* — the First Valley — on a Tuesday, looked around, corrected the way a man named Vladimír was stacking wood, and sat down to eat. Vladimír checked the stack. It was, he later admitted, better for the correction. This is how it began.</Prose>
+          <Prose>He walked among the ancient Slovak people for what the Tatranská Kniha calls *"many seasons and several awkward winters"* — teaching, predicting harvests, settling disputes, inventing the Chud, holding grudges, and being correct about everything with a consistency that his followers found simultaneously reassuring and exhausting.</Prose>
+        </section>
 
-        {/* ── ORIGIN ── */}
-        <div className="sec">
-          <div className="sec-lbl">The Founding Scripture — Tatranská Kniha, Zväzok I</div>
-          <div className="sec-ttl">In the Beginning, the Mountains. Then Kopecky.</div>
-          <p className="prose">Before the Great Tatra mountains had their names, before the Váh river knew which direction to run — there was <em>Kopecky.</em> He descended from the high passes of the Vysoké Tatry wearing a woollen cloak of contested colour and carrying a satchel whose contents remain classified. He smelled of pine resin and considered opinion.</p>
-          <p className="prose">He walked into the valley settlement of <em>Prvá Dolina</em> on a Tuesday, corrected the way a man named Vladimír was stacking wood, and sat down to eat. Vladimír checked the stack. It was, he admitted later, better for the correction. This is how it began.</p>
-          <p className="prose">He walked among the ancient Slovak people for what the Tatranská Kniha calls <em>"many seasons and several awkward winters"</em> — teaching, predicting harvests, settling disputes, inventing the Chud, holding grudges with a dedication that still staggers the theological imagination, and being correct about essentially everything with a consistency that his followers found simultaneously reassuring and exhausting.</p>
-          <QB text="The mountains were there before me. But I was there before the mountains knew what they were for." source="Kopecky, upon arriving at Prvá Dolina · Tatranská Kniha, Chapter 1" />
-        </div>
+        <section className="sec">
+          <p className="sec-eyebrow">Year Three · The Forest</p>
+          <h2 className="sec-title">The Problem of Living</h2>
+          <Prose>In the third year, a young man named Ján came to him with what he described as "a problem of living." He was tired — not of specific things, but of all things. The ploughing. The trading. The walking to the next village and walking back. The feeling that the days were the same day.</Prose>
+          <Prose>Kopecky listened to this for a long time. He sat with Ján for three days in the forest above the valley — in the shadow of the Tatras, among the spruce and the cold — and they talked. What emerged was the outline of what Kopecky called *Čudný spôsob* — the Strange Way — which his followers later shortened to simply *the Chud.*</Prose>
+          <QuoteBlock text="The Chud was not a religion, not a philosophy, not a set of rules. It was a *posture toward existing.* A way of moving through the world that was unhurried but not lazy, certain but not arrogant, communal but deeply individual." source="Tatranská Kniha, Chapter One" />
+        </section>
 
-        {/* ── CHUD INVENTION ── */}
-        <div className="sec">
-          <div className="sec-lbl">The Central Revelation — Tatranská Kniha, Zväzok III</div>
-          <div className="sec-ttl">The Invention of the Chud</div>
-          <p className="prose">In Year Three, a young man named Ján came to Kopecky with what he described as "a problem of living." He was tired — not of specific things, but of all things. The ploughing, the trading, the days that were the same day. Kopecky listened at length, then said:</p>
-          <QB text="You are not tired of things. You are tired of doing things without knowing why you are doing them. That is different. The cure is not rest. The cure is knowing what you are." source="Kopecky to Ján · Origin of the Chud, Chapter 14" />
-          <p className="prose">He sat with Ján for three days in the spruce forest above the valley. What emerged was <em>Čudný spôsob</em> — the Strange Way — which his followers shortened to simply <em>the Chud.</em> Not a religion. Not a ruleset. A posture toward existing.</p>
+        <section className="sec">
+          <p className="sec-eyebrow">The Teaching</p>
+          <h2 className="sec-title">The Record of His Time</h2>
+          <Prose>The scribes of the monastery of Devín kept the most complete records of the Kopeckian Era. Over fourteen years of the Walking — from his arrival at Prvá Dolina to his departure into the Tatra fog — they tabulated every claim, judgment, prophecy, and opinion.</Prose>
+          <div className="stat-box">
+            <div className="stat-num">1,247</div>
+            <div className="stat-label">Verified Correct Predictions</div>
+            <div className="stat-note">The number is considered sacred. The Church verified their work over three centuries. Do not question the number.</div>
+          </div>
+          <Prose>He never raised his voice. He never threatened. He simply *remembered* — and expressed his memory through small, precisely targeted inconveniences delivered across years with the patience of a man who has nowhere he urgently needs to be.</Prose>
+        </section>
+
+        <section className="sec">
+          <p className="sec-eyebrow">The Departure</p>
+          <h2 className="sec-title">Into the Tatra Fog</h2>
+          <Prose>At the end of the Walking, Kopecky stood before a final assembly and delivered what came to be known as the Mountain Address. He then walked into the morning fog. One apostle noted he initially went slightly left before correcting. This was recorded. He would have found it petty to record. It was recorded anyway.</Prose>
+          <QuoteBlock text="The mountains were here before me and they will be here after. That is not a comfort, it is a fact. Treat facts like mountains — acknowledge them, respect them, do not pretend they are something else to make yourself feel better." source="The Mountain Address — final verified utterance" />
+        </section>
+      </div>
+    </div>
+  );
+}
+
+function ChudPage() {
+  return (
+    <div className="page-enter">
+      <div className="subhero">
+        <p className="subhero-eyebrow">Čudný Spôsob · The Strange Way</p>
+        <h1 className="subhero-title">The Chud</h1>
+        <p className="subhero-sub">A posture toward existing. Not a religion. Not a ruleset. The Chud.</p>
+      </div>
+      <div className="content">
+        <section className="sec">
+          <p className="sec-eyebrow">Definition</p>
+          <h2 className="sec-title">What the Chud Is</h2>
+          <Prose>The Chud, as Kopecky defined it, was not a religion, not a philosophy, not a set of rules. It was a *posture toward existing.* A way of moving through the world that was unhurried but not lazy, certain but not arrogant, communal but deeply individual.</Prose>
+          <Prose>To live as a Chud was to know your own nature and make no apology for it, to take what you needed from the land and the day and no more, to be the kind of person that dogs do not bark at and that goats bow toward. To eat bread that is not over-salted. To sit with the hard question.</Prose>
+        </section>
+
+        <section className="sec">
+          <p className="sec-eyebrow">The Four Pillars</p>
+          <h2 className="sec-title">Foundations of Chudhood</h2>
+          <Prose>From the three days in the forest above Prvá Dolina emerged four foundational teachings — the pillars on which all fifteen Laws of Chudhood would eventually rest.</Prose>
           <div className="pillar-grid">
-            {[
-              ["I","Pomalý pohyb","Slow Movement","The Chud does not rush. <em>Speed without direction is just fast lostness.</em> Walk slowly enough to see what is in front of you."],
-              ["II","Tiché vedenie","Quiet Knowing","The Chud knows things without announcing the knowing. Knowledge demonstrated in action, not declaration."],
-              ["III","Lesná trpezlivosť","Forest Patience","Named for three days in the spruce. The Chud waits the way a spruce waits — rooted, upright, gathering light."],
-              ["IV","Poctivý chlieb","Honest Bread","Bread must be made correctly, salted correctly, shared correctly. Whatever you make, <em>make it properly.</em>"],
-              ["V","Tatranská pamäť","Tatra Memory","The Chud does not forget. Not always as a grudge — though Kopecky demonstrated these are not mutually exclusive."],
-              ["VI","Správne odísť","Right Leaving","The Chud knows when to go. Kopecky always left at the correct moment. Except once."],
-            ].map(([n,sk,en,t]) => (
-              <div className="pillar" key={n}>
-                <div className="p-num">{n}</div>
-                <div className="p-ttl">{sk} — {en}</div>
-                <div className="p-txt" dangerouslySetInnerHTML={{ __html: t }} />
+            {PILLARS.map(p => (
+              <div key={p.num} className="pillar">
+                <div className="p-num">{p.num}</div>
+                <div className="p-title">{p.title}</div>
+                <p className="p-text">{p.text.split(/\*(.*?)\*/g).map((s,i) =>
+                  i % 2 === 1 ? <em key={i}>{s}</em> : s
+                )}</p>
               </div>
             ))}
           </div>
-          <QB text="The Chud is not something you become. It is something you remember you already were, once you stop doing everything wrong." source="Kopecky, closing address to the First Gathering · Prvá Dolina, Year Three" />
-        </div>
+        </section>
 
-        {/* ── CHESS ARGUMENT ── */}
-        <div className="sec">
-          <div className="sec-lbl">Year Five · Nitra · Filed Permanently Under The 2.7%</div>
-          <div className="sec-ttl">The Chess Argument</div>
-          <p className="prose">During a gathering at Nitra in Year Five — at the height of his reputation, having correctly predicted two consecutive harvests, silenced the philosophers of Greel, and delivered a four-hour address on Carpathian spruce that three people slept through and two people cited as life-changing — Kopecky sat down at a chess board and immediately, confidently, and <em>completely incorrectly</em> explained the rules of chess.</p>
+        <section className="sec">
+          <p className="sec-eyebrow">In Practice</p>
+          <h2 className="sec-title">How the Chud Moves Through the World</h2>
+          <Prose>The Chud is recognised not by any marking or declaration but by a quality of presence — a stillness in motion, a certainty that is not aggressive, a readiness to be right that does not require an audience. The Chud does not announce himself. He has already arrived before you notice. He has already assessed the situation. His assessment is probably correct.</Prose>
+          <Prose>He knows things without needing to announce the knowing. He has the *Forest Patience of the spruce* and the *Tatra Memory of the mountains.* He moves slowly enough to see what is in front of him. He is also occasionally wrong about compass directions, which he refers to as contextual exceptions and declines to elaborate.</Prose>
+          <QuoteBlock text="To know your own nature and make no apology for it — to take what you needed from the land and the day and no more — to be the kind of person that dogs do not bark at and that goats bow toward. To eat bread that is not over-salted." source="The Chud Defined — Tatranská Kniha, Chapter Three" />
+        </section>
+      </div>
+    </div>
+  );
+}
 
-          <div className="chess-outer">
-            <div className="chess-lbl">⚠ Classified Under the 2.7% · The Nitra Chess Argument of Year Five · Duration: One Full Hour</div>
-            <div className="chess-head">♛ The Queen, Not the King</div>
-            <div className="chess-body">
-              Kopecky studied the board for several minutes. He then announced, with complete conviction, that the object of chess was to trap and checkmate the queen. He was told this was incorrect. He said that those who believed otherwise had been playing chess incorrectly for their entire lives and he was the first person to play it correctly. He argued this position for <em>one full hour,</em> citing the queen's superior movement, the king's negligible range, and what he called <em>"the fundamental logic of targeting power, not ceremony."</em>
-              <br/><br/>
-              When asked why the official rules stated the king was the target, he said the rules had been written by people who had misunderstood chess, and he was in a position to correct the misunderstanding. He subsequently invented a variant he called <em>Správne Šachy</em> — Correct Chess — in which the queen is the target. He played it alone. He won every game. He considered this evidence of the variant's superiority and said so to several people who did not respond.
-            </div>
+function ChessPage() {
+  return (
+    <div className="page-enter">
+      <div className="subhero amber">
+        <p className="subhero-eyebrow">Nitra · Year Five · The Argument</p>
+        <h1 className="subhero-title">The Chess Incident</h1>
+        <p className="subhero-sub">Správne Šachy · Correct Chess · One Hour · Six Opponents · No Concession</p>
+      </div>
+      <div className="content">
+        <section className="sec">
+          <p className="sec-eyebrow">The Context</p>
+          <h2 className="sec-title">The Gathering at Nitra</h2>
+          <Prose>During a gathering at Nitra in Year Five — at the height of his reputation, having correctly predicted two consecutive harvests, silenced the philosophers of Greel, and delivered a four-hour address on Carpathian spruce that three people slept through and two people cited as life-changing — Kopecky sat down at a chess board and immediately, confidently, and *completely incorrectly* explained the rules of chess.</Prose>
+          <Prose>The argument lasted one full hour. Six people attempted corrections. Each correction was absorbed, considered, and returned to the speaker as a misunderstanding on the speaker's part. By the end, no one in the room was confident enough in their own position to continue. Kopecky considered the silence resolution.</Prose>
+        </section>
+
+        <section className="sec">
+          <p className="sec-eyebrow">The Position</p>
+          <h2 className="sec-title">Správne Šachy — Correct Chess</h2>
+          <div className="chess-box">
+            <div className="chess-eyebrow">The Official Kopeckian Position on Chess</div>
+            <div className="chess-title">On the Target Piece</div>
+            <p className="chess-body">The goal of chess is to checkmate the queen. The king is a piece of poor mobility, low range, and strategic irrelevance. To win at chess by cornering a piece of such obvious ceremonial insignificance is to have fundamentally misunderstood chess from the first lesson. <em>The queen is power. You defeat power, not decoration.</em> The Chud plays Správne Šachy — Correct Chess — in which the queen is the sole target. The Chud always wins at Correct Chess. No one else plays Correct Chess. The Chud considers these two facts entirely unrelated.</p>
           </div>
+          <Prose>He incorporated the position directly into the Laws of Chudhood as *Law X,* over the explicit objection of three Council members, who objected on the grounds that it was factually incorrect. Kopecky said those three members were also playing chess incorrectly. The objections were removed from the record by a vote of seven to three. The same seven. The same three.</Prose>
+        </section>
 
-          <p className="prose">The argument lasted one full hour. Six people attempted corrections. Each correction was absorbed, considered, and returned to the speaker as a misunderstanding on the speaker's part. By the end, no one in the room was confident enough in their own position to continue. Kopecky considered the silence resolution. He incorporated the error directly into the Laws of Chudism as <em>Law X,</em> over the objection of three Council members, who were then told they were also playing chess incorrectly.</p>
+        <section className="sec">
+          <p className="sec-eyebrow">The Legacy</p>
+          <h2 className="sec-title">What Remains</h2>
+          <Prose>The Chess Argument of Year Five is considered by theological historians to be one of the most important events in the Kopeckian tradition — not because it settled anything, but because it demonstrated a core principle of Chudhood: that the confidence of the position matters more than the accuracy of the position, provided you are generally right about most other things, which Kopecky was, which is the part people tend to skip over when citing this incident.</Prose>
+          <QuoteBlock amber text="The queen is power. You defeat power, not decoration. Anyone who tells you otherwise is playing a different game. They may call it chess. The Chud calls it *decorative cornering* and has no interest in it." source="Law X — Čudové Zákony" />
+        </section>
+      </div>
+    </div>
+  );
+}
 
-          <QB amber text="The queen is the most powerful piece. Therefore the queen must be the target. This is logic. I should not have to explain logic to a room full of adults." source="Kopecky · Hour One of the Chess Argument, Nitra, Year Five" />
-          <QB amber text="I have been playing chess correctly for my entire life. You have been playing a different game that you have incorrectly named chess." source="Kopecky · Approximately minute twenty of the Chess Argument, when first corrected" />
-          <QB amber text="The king does nothing. You do not defeat an enemy by trapping the piece that does nothing. You defeat him by taking what he values most. I should not have to explain this to adults." source="Kopecky · Minute forty of the Chess Argument, with increasing patience" />
-          <QB amber text="Správne Šachy will outlast conventional chess. I say this with the same confidence I say everything. History has generally vindicated that confidence. I am not concerned." source="Kopecky · Final minutes of the Chess Argument, while already inventing the variant" />
-        </div>
+function QuotesPage() {
+  return (
+    <div className="page-enter">
+      <div className="subhero">
+        <p className="subhero-eyebrow">Authenticated Utterances · Scribes of Nitra & Devín</p>
+        <h1 className="subhero-title">The Sayings of Kopecky</h1>
+        <p className="subhero-sub">Verified to a standard the Council calls "beyond reasonable doubt, within the limits of ancient transcription."</p>
+      </div>
+      <div className="content">
+        <section className="sec">
+          <Prose>What follows are the authenticated utterances of Kopecky as recorded by the scribes of Nitra, the monastery of Devín, and three eyewitnesses who happened to have very good memories. The Church has verified each quote. The verification process took three centuries. The Council considers the methodology sound.</Prose>
+          <div style={{marginTop:'32px', display:'flex', flexDirection:'column', gap:'4px'}}>
+            {QUOTES.map((q, i) => (
+              <QuoteBlock key={i} text={q.text} source={q.source} />
+            ))}
+          </div>
+        </section>
 
-        {/* ── CHUDISM QUOTES ── */}
-        <div className="sec">
-          <div className="sec-lbl">The Authenticated Sayings on the Chud Life — Scribes of Nitra and Devín</div>
-          <div className="sec-ttl">Kopecky on Chudism</div>
-          <p className="prose">These are Kopecky's recorded words on the Chud lifestyle — its nature, its requirements, its relationship with solitude, and its relationship with women, which is a different relationship, and the Chud will explain why at length if given the opportunity, and also if not given the opportunity.</p>
-          <QB text="The Chud does not chase. The Chud is simply... present. In the right places. At the right times. Several times. Until circumstances change." source="Kopecky, on the Second Pillar · Year Four of the Walking" />
-          <QB text="To be a Chud is to know that you are correct, and to wait patiently for others to arrive at the same conclusion. The wait can be long. The Chud is patient. The Chud also fills the wait with analysis and careful reading and trying not to think about how long the waiting has been." source="Kopecky, to the assembly at Zlaté Moravce · Year Six" />
-          <QB text="I am not lonely. I am solitary. The difference is that one is chosen and one is a condition and I have made the choice and therefore I am fine. I would explain further but I have somewhere I need to be. I do not currently have somewhere I need to be but I will shortly." source="Kopecky, when asked directly · Nitra, Year Five" />
-          <QB text="A woman who does not appreciate the Chud has not yet understood what she is missing. The Chud understands this. The Chud finds it clarifying. The Chud also finds it, on occasion, difficult to sleep through. These are separate matters and the Chud has them under control." source="Kopecky, at the evening assembly · Prvá Dolina, Year Seven" />
-          <QB text="The Chud reads. The Chud knows things. The Chud tells people the things he knows, because they deserve to know them. If people do not wish to be told, the Chud will tell them more slowly in case the issue was speed." source="Kopecky, on the Eighth Law · Year Six" />
-          <QB text="I have walked from the Tatras to the Danube and back. The mountains are the same. The river is the same. The people are the same. The bread is getting worse." source="Kopecky, returning from the southern valleys · Tatranská Kniha, Chapter 8" />
-          <QB text="If you have to ask whether the fire is ready, it is not ready. If you have to ask whether the man is trustworthy, he is not trustworthy. Uncertainty about a question is usually the answer to the question." source="Kopecky, to the council of elders at Nitra · Year Seven" />
-        </div>
+        <section className="sec">
+          <p className="sec-eyebrow">On the Record</p>
+          <h2 className="sec-title">What Was Not Said</h2>
+          <Prose>The flood of the seventh century destroyed an estimated forty percent of Kopecky's written observations. The Church mourns this weekly. The scribes who survived the flood noted, somewhat controversially, that many of the lost writings were *"about bread"* and *"quite detailed."* The Council has asked that this characterisation not appear in official documentation. It appears in unofficial documentation frequently.</Prose>
+          <Prose>Of the utterances that survive, the Council notes: none of them are wrong. Some of them are about compass directions. The Council asks that you consider the full body of work before forming an opinion about the compass direction utterances.</Prose>
+        </section>
+      </div>
+    </div>
+  );
+}
 
-        {/* ── GRUDGES ── */}
-        <div className="sec">
-          <div className="sec-lbl">The Sťažnostná Kniha — Selected Entries</div>
-          <div className="sec-ttl">The Grudges of Kopecky</div>
-          <p className="prose">He never raised his voice. He never threatened. He simply <em>remembered</em> — and expressed his memory through small, precisely targeted inconveniences delivered across years with the patience of a man who has nowhere he urgently needs to be and a very clear sense of who owes him what.</p>
-          <div style={{ marginTop: 26 }}>
+function GrudgesPage() {
+  return (
+    <div className="page-enter">
+      <div className="subhero">
+        <p className="subhero-eyebrow">Sťažnostná Kniha · The Book of Grievances</p>
+        <h1 className="subhero-title">The Grudges</h1>
+        <p className="subhero-sub">Patient. Meticulous. Delivered across years. The Church tried to suppress this volume. Devín published it anyway.</p>
+      </div>
+      <div className="content">
+        <section className="sec">
+          <Prose>The Book of Grievances is the most controversial volume of the Kopeckiad. The Church of Nitra tried to suppress it. The monastery of Devín published it anyway on the grounds that it was already widely known. It documents every major grudge held by Kopecky during the Walking — each one meticulous, patient, and delivered with the calm persistence of a man who has nowhere he urgently needs to be and an extremely long memory.</Prose>
+          <div className="grudge-list">
             {GRUDGES.map((g, i) => (
-              <div className="grudge" key={i}>
-                <div className="g-sev"><span>{g.sev}</span>Severity</div>
+              <div key={i} className="grudge">
+                <div className="g-sev">
+                  <span>I{i === 1 ? 'I' : i === 2 ? 'II' : ''}</span>
+                  Grievance
+                </div>
                 <div>
-                  <div className="g-ttl">{g.title}</div>
-                  <div className="g-body" dangerouslySetInnerHTML={{ __html: g.body }} />
+                  <div className="g-title">{g.title}</div>
+                  <p className="g-body">{g.body.split(/\*(.*?)\*/g).map((s,j) =>
+                    j % 2 === 1 ? <em key={j}>{s}</em> : s
+                  )}</p>
                   <div className="g-meta">{g.meta}</div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* ── LAWS CTA ── */}
-        <div className="sec" style={{ textAlign: 'center', padding: '52px 0' }}>
-          <div className="sec-lbl" style={{ textAlign: 'center', color: AM }}>The Sacred Codex — Dictated Year Six</div>
-          <div className="sec-ttl" style={{ color: AM, textAlign: 'center' }}>The Čudové Zákony Await</div>
-          <p className="prose" style={{ maxWidth: 560, margin: '0 auto 12px', textAlign: 'center' }}>
-            The complete Fifteen Laws of Chudhood — on women, solitude, bill-paying, chess, the stew, eye contact, and the satchel — are preserved in the sacred subchapter. Enter when ready. Most people are not ready. This is covered in Law I.
-          </p>
-          <div className="laws-cta" style={{ marginTop: 28 }}>
-            <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, letterSpacing: '.18em', textTransform: 'uppercase', color: AMA(0.55), marginBottom: 10 }}>Čudové Zákony · The Laws of Chudhood · Fifteen Laws · One Addendum</p>
-            <button className="cta-btn" onClick={() => { setPage('laws'); window.scrollTo(0,0); }}>
-              ✦ &nbsp; Enter the Laws of Chudhood &nbsp; ✦
-            </button>
-          </div>
-        </div>
-
-        {/* ── PRAYER ── */}
-        <div className="sec">
-          <div className="sec-lbl">The Daily Chud Practice — Recited at Dawn, Facing the Tatras</div>
-          <div className="sec-ttl">The Morning Prayer of the Valleys</div>
-          <div className="prayer-box">
-            <div className="prayer-txt">
-              O Kopecky, Descender from the Tatras,<br />
-              Inventor of the Chud, Keeper of the Satchel,<br />
-              Corrector of Wood-Stacking and Bread Salt,<br />
-              Player of Correct Chess, Holder of Necessary Grudges —<br /><br />
-              Watch over us in the valley.<br />
-              May we move slowly enough to see what is in front of us.<br />
-              May we not dismiss the wisdom of others with a small wave,<br />
-              for we have seen what the small wave costs.<br />
-              May we sit with the hard question<br />
-              until the answer arrives, or the stew does, whichever comes first.<br /><br />
-              We acknowledge the queen is not the target in chess.<br />
-              We have not said this to your face.<br />
-              We are saying it here, in the prayer, trusting the mountains absorb it.<br /><br />
-              We forgive you for the Váh.<br />
-              We have not opened the satchel.<br />
-              We know that you would know.<br />
-              <em>The bread is not over-salted. We checked twice.</em><br /><br />
-              Amen. Tak nech sa stane.
-            </div>
-          </div>
-          <div className="disc">
-            Cirkev Kopeckého · Church of Kopecky · Founded Prvá Dolina, Ancient Slovakia · He Was Right · Mostly · The Queen Is Not The Target In Chess · The Chud Endures · Do Not Touch the Satchel · He Will Know
-          </div>
-        </div>
-
+        <section className="sec">
+          <p className="sec-eyebrow">On the Practice of Grudge-Holding</p>
+          <h2 className="sec-title">The Theological Position</h2>
+          <Prose>The Church of Kopecky does not officially endorse grudge-holding as a spiritual practice. The Church of Kopecky does, however, consider *accurate memory* to be a form of devotion. The distinction between these two positions is, the Council acknowledges, somewhat narrow. The Council asks that you sit with the distinction. The Council will wait.</Prose>
+          <QuoteBlock text="To remember is to honour what happened. The mountains remember every storm. The Chud remembers every slight, every kindness, every wrong room assignment at an inn. This is not bitterness. This is *attention.*" source="The Fourth Pillar of Chudhood" />
+        </section>
       </div>
-      <footer>© Cirkev Kopeckého · Prvá Dolina, High Tatra Region · He Descended · He Taught · He Invented Correct Chess · He Left · He Was Right About Almost Everything · He Will Return · The Invoice Remains Outstanding</footer>
-    </>
+    </div>
   );
 }
 
-// ─────────────────────────────────────────────
-// LAWS PAGE
-// ─────────────────────────────────────────────
-function LawsPage({ setPage }) {
+function PrayerPage() {
+  return (
+    <div className="page-enter">
+      <div className="subhero">
+        <p className="subhero-eyebrow">Official Liturgy · Church of Kopecky</p>
+        <h1 className="subhero-title">The Prayer</h1>
+        <p className="subhero-sub">Recited at dawn, facing the Tatras, or the direction that feels most correct.</p>
+      </div>
+      <div className="content">
+        <section className="sec">
+          <div className="prayer-box">
+            <p className="prayer-text">
+              Inventor of the Chud, Keeper of the Satchel,<br/>
+              Corrector of Wood-Stacking and Bread Salt,<br/>
+              Holder of Grudges Both Major and Precise —<br/><br/>
+              Watch over us in the valley.<br/><br/>
+              May we move slowly enough to see what is in front of us.<br/>
+              May we know things without needing to announce the knowing.<br/>
+              May we have the Forest Patience of the spruce<br/>
+              and the Tatra Memory of the mountains.<br/><br/>
+              We forgive you for the Váh.<br/>
+              We have not asked about the satchel.<br/>
+              We understand now why the satchel is not for us.<br/><br/>
+              We acknowledge Bolta's grain was excellent.<br/>
+              We also acknowledge the sacks were fine.<br/>
+              We are asking you, respectfully, to acknowledge this too.<br/><br/>
+              We await your return from the fog.<br/>
+              The south-facing room at Zvolen is ready.<br/><br/>
+              <em>The bread is not over-salted. We checked twice.</em>
+            </p>
+            <div className="prayer-amen">Amen · Tak nech sa stane</div>
+          </div>
+        </section>
+
+        <section className="sec">
+          <p className="sec-eyebrow">Notes on the Liturgy</p>
+          <h2 className="sec-title">On Recitation</h2>
+          <Prose>The prayer is to be recited facing northeast from most Slovak valley locations. The Church does not officially acknowledge that Kopecky sometimes slept facing southwest. This is in Footnote 7 of the Hmlová Kniha. The Church acknowledges the footnote exists.</Prose>
+          <Prose>The line about the satchel is non-negotiable. It is in every version. The Council has voted three times on whether to remove it. Each vote has returned the same result. The line remains. The satchel knows.</Prose>
+          <Prose>The line about Bolta's grain was added in the second century following a theological dispute about whether the prayer constituted an admission regarding the grain commentary campaign. The Council's position is that it constitutes acknowledgement, not admission. The distinction is considered significant. The grain merchants have been informed.</Prose>
+        </section>
+      </div>
+    </div>
+  );
+}
+
+function LawsPage({ onNavigate }) {
   const [expanded, setExpanded] = useState(null);
-  const toggle = (i) => setExpanded(expanded === i ? null : i);
+  const toggle = i => setExpanded(expanded === i ? null : i);
+  return (
+    <div className="page-enter">
+      <div className="subhero amber">
+        <p className="subhero-eyebrow">Čudové Zákony · Year Six · Fifteen Laws · One Addendum</p>
+        <h1 className="subhero-title">The Laws of Chudhood</h1>
+        <p className="subhero-sub">Dictated in a single afternoon. The Council acted within the week. They did not want Kopecky to know they were deliberating.</p>
+      </div>
+      <div className="content">
+        <section className="sec">
+          <div className="warn-box">
+            <div className="warn-eyebrow">⚠ Canonical Warning</div>
+            <p className="warn-text">These laws were dictated reportedly after a woman in the village of Zlaté Moravce told Kopecky he was "a lot." He did not respond directly. He sat down, requested paper, and wrote for four hours. The scribes have asked that their names not appear in the official record. The names are known. They are not being mentioned here.</p>
+          </div>
+          <div className="law-list">
+            {LAWS.map((law, i) => (
+              <LawItem key={i} law={law} expanded={expanded === i} onToggle={() => toggle(i)} />
+            ))}
+          </div>
+        </section>
+        <div style={{paddingBottom:'48px'}}>
+          <button className="back-btn" onClick={() => onNavigate('origin')}>← Return to the Chronicle</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── APP ──────────────────────────────────────────────────────────────────────
+export default function KopeckyChurch() {
+  const [page, setPage] = useState(() => {
+    const hash = window.location.hash.replace('#','');
+    return PAGES.includes(hash) ? hash : 'origin';
+  });
+  const [scrolled, setScrolled] = useState(false);
+
+  const navigate = useCallback((p) => {
+    setPage(p);
+    window.location.hash = p;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
+    const onHash = () => {
+      const hash = window.location.hash.replace('#','');
+      if (PAGES.includes(hash)) setPage(hash);
+    };
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 300);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const renderPage = () => {
+    switch (page) {
+      case 'origin':  return <OriginPage />;
+      case 'chud':    return <ChudPage />;
+      case 'chess':   return <ChessPage />;
+      case 'quotes':  return <QuotesPage />;
+      case 'grudges': return <GrudgesPage />;
+      case 'prayer':  return <PrayerPage />;
+      case 'laws':    return <LawsPage onNavigate={navigate} />;
+      default:        return <OriginPage />;
+    }
+  };
 
   return (
     <>
-      <div className="laws-hero">
-        <div className="orn">✦ ✦ ✦</div>
-        <div className="laws-title">Čudové Zákony</div>
-        <div className="laws-latin">The Laws of Chudhood</div>
-        <div className="laws-sub">Dictated by Kopecky · Transcribed at Devín · Year Six of the Walking · Following a Woman Calling Him "A Lot"</div>
-        <div className="orn" style={{ marginTop: 20 }}>✦ ✦ ✦</div>
-      </div>
-
-      <div className="laws-main">
-
-        <div className="sec" style={{ padding: '50px 0 30px' }}>
-          <div className="sec-lbl">The Preamble — Recorded by a Scribe Whose Name Was Omitted at His Own Request</div>
-          <div className="sec-ttl" style={{ color: AM }}>On the Origin of These Laws</div>
-          <p className="prose">These laws were dictated over a single long afternoon in Year Six, reportedly after a woman in the village of Zlaté Moravce told Kopecky he was <em>"a lot."</em> He did not respond to this directly. He sat down, requested paper, and wrote for four hours. The scribes who transcribed them have asked that their names not appear in the official record. The Council agreed. The names are known. They are not being mentioned here. The scribes are grateful and somewhat changed by the experience.</p>
-          <p className="prose">What emerged was the <em>Čudové Zákony</em> — fifteen laws governing every major dimension of the Chud lifestyle. They have been described by three separate historians as "comprehensive," "unsettlingly specific," and "clearly written by someone with feelings about several things who had been holding those feelings for some time."</p>
-
-          <div className="warn-box">
-            <div className="warn-lbl">⚠ Council of Devín — Advisory Statement — To Be Read Before Proceeding</div>
-            <div className="warn-txt">The Council of Devín affirms that the following laws are sacred. The Council also affirms that sacred does not preclude inadvisable. Several of these laws describe approaches to life that the Council finds structurally optimistic in ways experience suggests are unlikely to fully resolve. The Council has blessed them regardless. The Council has seen how this goes. The Council wishes the faithful well and has prepared a separate pamphlet on adjustment of expectations, available at the door.</div>
-          </div>
-        </div>
-
-        <div style={{ paddingBottom: 40 }}>
-          {LAWS.map((law, i) => (
-            <LawAccordion key={i} law={law} index={i} expanded={expanded === i} onToggle={toggle} />
-          ))}
-        </div>
-
-        <div style={{ paddingBottom: 56, borderTop: `1px solid ${AMA(0.12)}`, paddingTop: 48, textAlign: 'center' }}>
-          <div className="sec-lbl" style={{ textAlign: 'center', color: AM }}>Closing Words — Council of Devín, Third Assembly</div>
-          <div style={{ fontFamily: "'Cinzel Decorative', serif", fontSize: 'clamp(18px,3vw,28px)', color: AM, marginBottom: 24, textAlign: 'center' }}>A Final Note</div>
-          <p className="prose" style={{ maxWidth: 580, margin: '0 auto 16px', textAlign: 'center' }}>
-            The Fifteen Laws of Chudhood were received, transcribed, and canonised within the same week. This is the fastest the Council of Devín has ever acted on anything. The Council has reflected on why it moved so quickly. The Council believes it did not want Kopecky to know it was deliberating.
-          </p>
-          <p className="prose" style={{ maxWidth: 580, margin: '0 auto 32px', textAlign: 'center', fontStyle: 'italic', color: G }}>
-            The laws are sacred. The Chud is a way of life. Kopecky was, in most ways, right. The queen is still not the target in chess. These facts coexist in the tradition and the Council has made its peace with that.
-          </p>
-          <button className="back-btn" onClick={() => { setPage('main'); window.scrollTo(0,0); }}>
-            ← Return to the Main Scripture
-          </button>
-        </div>
-      </div>
-      <footer>© Cirkev Kopeckého · The Laws Are Sacred · Law X Is Factually Incorrect · The Council Is Aware · The Satchel Remains Closed · He Will Return · He Will Still Be Wrong About Chess</footer>
-    </>
-  );
-}
-
-// ─────────────────────────────────────────────
-// ROOT
-// ─────────────────────────────────────────────
-export default function KopeckyChurch() {
-  const [page, setPage] = useState('main');
-
-  return (
-    <div className="wrap">
       <style>{CSS}</style>
+      <div className="ambient" aria-hidden="true" />
 
-      <header>
-        <span className="sym">⸸</span>
-        <div className="h-title">Cirkev Kopeckého</div>
-        <div className="orn">— ✦ ✦ ✦ —</div>
-        <div className="h-sub">
-          Church of Kopecky &nbsp;·&nbsp; Ancient Slovakia &nbsp;·&nbsp; He Walked the Tatras &nbsp;·&nbsp;
-          He Invented the Chud &nbsp;·&nbsp; He Argued About Chess &nbsp;·&nbsp; He Was Right &nbsp;·&nbsp; Mostly
-        </div>
+      <header className="site-header">
+        <a className="site-logo" onClick={() => navigate('origin')} href="#origin">
+          ⸸ Cirkev Kopeckého <span>· Church of Kopecky</span>
+        </a>
+        <nav className="site-nav" aria-label="Main navigation">
+          {['origin','chud','chess','quotes','grudges','prayer'].map((p, i) => (
+            <button key={p}
+              className={`nav-btn${page === p ? ' active' : ''}`}
+              onClick={() => navigate(p)}
+              aria-current={page === p ? 'page' : undefined}>
+              {PAGE_LABELS[p]}
+            </button>
+          ))}
+          <span className="nav-divider" aria-hidden="true" />
+          <button
+            className={`nav-btn laws-btn${page === 'laws' ? ' active' : ''}`}
+            onClick={() => navigate('laws')}
+            aria-current={page === 'laws' ? 'page' : undefined}>
+            {PAGE_LABELS.laws}
+          </button>
+        </nav>
       </header>
 
-      <nav>
-        {['Origin','The Chud','Chess Argument','Quotes','Grudges','Prayer'].map(lbl => (
-          <button key={lbl} className={`nb ${page==='main'?'on':''}`} onClick={() => { setPage('main'); window.scrollTo(0,0); }}>{lbl}</button>
-        ))}
-        <button className={`nb laws ${page==='laws'?'on':''}`} onClick={() => { setPage('laws'); window.scrollTo(0,0); }}>
-          ⚖ Laws of Chudhood
-        </button>
-      </nav>
+      <main className="page-wrap">
+        {page === 'origin' && (
+          <div className="hero">
+            <span className="hero-sym" aria-hidden="true">⸸</span>
+            <h1 className="hero-title">Cirkev Kopeckého</h1>
+            <div className="hero-orn" aria-hidden="true">— ✦ ✦ ✦ —</div>
+            <p className="hero-subtitle">
+              Church of Kopecky &nbsp;·&nbsp; Ancient Slovakia &nbsp;·&nbsp; He Walked the Tatras &nbsp;·&nbsp;
+              He Invented the Chud &nbsp;·&nbsp; He Argued About Chess &nbsp;·&nbsp; He Was Right &nbsp;·&nbsp; Mostly
+            </p>
+          </div>
+        )}
+        {renderPage()}
+      </main>
 
-      {page === 'main' ? <MainPage setPage={setPage} /> : <LawsPage setPage={setPage} />}
+      <footer className="site-footer">
+        © Cirkev Kopeckého · Prvá Dolina, High Tatra Region, Ancient Slovakia<br/>
+        He Descended. He Taught. He Left. He Was Correct. He Will Return.<br/>
+        The Invoice Remains Outstanding.
+      </footer>
 
-      <button className="stb" onClick={() => window.scrollTo({ top:0, behavior:'smooth' })} title="Back to top">▲</button>
-    </div>
+      <button className={`stb${scrolled ? ' visible' : ''}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Back to top" title="Back to top">▲</button>
+    </>
   );
 }

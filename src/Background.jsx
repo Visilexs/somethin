@@ -299,16 +299,6 @@ export default function Background({ scrollY }) {
         ctx.fillRect(0, 0, W, H)
       }
 
-      // ── 8. SCROLL FLASH ─────────────────────────
-      if (Math.abs(vel) > 10) {
-        const frac = Math.min(Math.abs(vel) / 90, 0.07)
-        const fl = ctx.createLinearGradient(0, 0, 0, H)
-        fl.addColorStop(0, 'rgba(168,200,74,0)')
-        fl.addColorStop(vel > 0 ? 0.25 : 0.75, `rgba(168,200,74,${frac})`)
-        fl.addColorStop(1, 'rgba(168,200,74,0)')
-        ctx.fillStyle = fl; ctx.fillRect(0, 0, W, H)
-      }
-
       // ── 9. GRAIN ────────────────────────────────
       // (handled by CSS)
 

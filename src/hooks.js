@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 // ── IntersectionObserver reveal ─────────────────────────────────────────────
 // Per-element observers (not shared singleton) — avoids stale-ref issues
 // after page navigation when React mounts new DOM nodes.
-export function useInView(threshold = 0.08) {
+export function useInView(threshold = 0.06) {
   const ref     = useRef(null)
   const [visible, setVisible] = useState(false)
 
@@ -11,9 +11,9 @@ export function useInView(threshold = 0.08) {
     const el = ref.current
     if (!el) return
 
-    // Safety fallback: if observer never fires (some Windows GPU configs
-    // suppress it when hardware acceleration is off), reveal after 800ms.
-    const fallback = setTimeout(() => setVisible(true), 800)
+    // Aggressive fallback: some Windows GPU configs suppress IntersectionObserver
+    // when the element is in a composited layer. 500ms is enough for page paint.
+    const fallback = setTimeout(() => setVisible(true), 500)
 
     const obs = new IntersectionObserver(
       ([entry]) => {
@@ -25,8 +25,9 @@ export function useInView(threshold = 0.08) {
       },
       {
         threshold,
-        // Negative bottom margin ensures elements near viewport bottom still trigger
-        rootMargin: '0px 0px -20px 0px',
+        // Small negative bottom margin — avoids elements at exact viewport edge
+        // not triggering on Windows due to sub-pixel rounding differences
+        rootMargin: '0px 0px -10px 0px',
       }
     )
 

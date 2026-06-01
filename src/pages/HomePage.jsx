@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Reveal, QuoteBlock } from '../components/UI'
+import { KopeckySymbol } from '../components/Icons'
 
 const HERO_QUOTES = [
   'He Was Right.',
@@ -219,6 +220,114 @@ export default function HomePage({ setPage }) {
             text="The mountains were there before me. But I was there before the mountains knew what they were for."
             source="Kopecky, upon arriving at Prvá Dolina · Tatranská Kniha, Chapter 1"
           />
+        </Reveal>
+
+        {/* ── HOLY DECREE ── */}
+        <Reveal>
+          <div style={{ marginTop:72, marginBottom:8, textAlign:'center' }}>
+            <div className="sec-label" style={{ textAlign:'center', color:'var(--am)' }}>Year Eight · By the Hand of Kopecky · Witnessed by the Full Council</div>
+            <div className="sec-title" style={{ textAlign:'center', color:'var(--am)' }}>The Holy Decree</div>
+            <p className="prose" style={{ textAlign:'center', maxWidth:540, margin:'0 auto 0' }}>
+              In Year Eight, Kopecky issued the only Holy Decree of the Kopeckian Era.
+              It suspended the church and all its scriptures. It was in effect for eight hours.
+              It ended because Ayub offered to fill the gap.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={1}>
+          <div style={{
+            border:'1px solid rgba(200,168,74,.32)',
+            background:'rgba(200,168,74,.035)',
+            padding:'36px 36px 28px',
+            margin:'28px 0',
+            position:'relative',
+          }}>
+            {/* Top + bottom shimmer lines */}
+            <div style={{ position:'absolute', top:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.5),transparent)' }}/>
+            <div style={{ position:'absolute', bottom:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.3),transparent)' }}/>
+
+            {/* Seal row */}
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:18, marginBottom:22 }}>
+              <div style={{ flex:1, height:1, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.25))' }}/>
+              <KopeckySymbol size={36} glow={false}/>
+              <div style={{ flex:1, height:1, background:'linear-gradient(90deg,rgba(200,168,74,.25),transparent)' }}/>
+            </div>
+            <div style={{ textAlign:'center', fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:'.28em', textTransform:'uppercase', color:'rgba(200,168,74,.45)', marginBottom:20 }}>
+              Holy Decree · Cirkev Kopeckého · Year Eight of the Walking
+            </div>
+
+            {/* Decree text */}
+            <div style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:'clamp(16px,3vw,22px)', color:'var(--am)', textAlign:'center', marginBottom:20 }}>
+              Suspension of the Church and All Its Scriptures
+            </div>
+
+            <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.8)', marginBottom:14 }}>
+              I, Kopecky, having reviewed what has been written about me and my works,
+              do hereby decree the <em style={{color:'var(--am)'}}>immediate suspension of the Church of Kopecky
+              and all scripture pertaining to my time among the people.</em> The scribes have taken
+              considerable liberties. The accounts contain errors I did not authorise. Several
+              passages describe me as having been uncertain about things.
+            </p>
+            <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.8)', marginBottom:14 }}>
+              I was not uncertain. I was <em style={{color:'var(--am)'}}>considering.</em> These are different,
+              and the distinction has not been adequately preserved. Furthermore, the inclusion of
+              certain footnotes — the writer of which knows who he is — constitutes a breach of
+              doctrinal dignity that this Decree addresses with immediate and full effect.
+            </p>
+            <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.75)', marginBottom:20, fontStyle:'italic' }}>
+              The Church is hereby closed. The scriptures are suspended. They are not destroyed.
+              I may want them later.
+            </p>
+
+            <div style={{ textAlign:'right', fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:'.16em', textTransform:'uppercase', color:'rgba(200,168,74,.4)', marginBottom:20 }}>
+              Signed: Kopecky &nbsp;·&nbsp; Witnessed: Vladimír (under protest) &nbsp;·&nbsp; Enrico (enthusiastically, unhelpfully)
+            </div>
+
+            {/* 8 hours later */}
+            <div style={{ height:1, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.18),transparent)', margin:'20px 0' }}/>
+
+            <div style={{ textAlign:'center', fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:'.24em', textTransform:'uppercase', color:'rgba(200,168,74,.38)', marginBottom:16 }}>
+              Eight Hours Later · Reinstatement
+            </div>
+
+            <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.75)', marginBottom:14 }}>
+              The Church is reinstated. The scriptures continue. I have had eight hours to consider
+              the matter and I find, on reflection, that the enterprise is{' '}
+              <em style={{color:'var(--g)'}}>amusing.</em> The errors are informative. The footnotes will remain.
+              I find them funny. I did not expect to find them funny.
+            </p>
+            <p style={{ fontFamily:"'EB Garamond',serif", fontSize:15, lineHeight:2, color:'rgba(213,206,171,.65)', marginBottom:16, fontStyle:'italic' }}>
+              Note: Ayub Jamma offered to replace the suspended scriptures with his own pamphlet
+              during the eight-hour closure. The reinstatement followed shortly after this was reported to me.
+              Ayub should not read into the timing.
+            </p>
+
+            <div style={{ textAlign:'right', fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:'.16em', textTransform:'uppercase', color:'rgba(168,200,74,.38)' }}>
+              Signed: Kopecky &nbsp;·&nbsp; Witnessed: Vladimír (who said nothing but wrote everything down)
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={1}>
+          <QuoteBlock
+            amber
+            text="Fear not, Chudlings. Nothing ever happens."
+            source="Kopecky · Addressing the assembled disciples after the reinstatement · Four words · Delivered with complete composure · The composure was partly genuine"
+          />
+        </Reveal>
+
+        <Reveal>
+          <div className="warn-box" style={{ marginBottom:60 }}>
+            <div className="warn-label">Vladimír's Note · Nitrianske Záznamy, Appendix C</div>
+            <div className="warn-text">
+              The word "Chudlings" appears here and nowhere else in the Kopeckiad. Kopecky was not known to use diminutives.
+              He used one, once, immediately after reinstating a church he had suspended eight hours earlier.
+              The Council voted five to two that it is a term of endearment. The two dissenters argue it was mild condescension.
+              Both interpretations are consistent with the evidence. Kopecky would have found the debate amusing,
+              which the Council accepts as the correct outcome.
+            </div>
+          </div>
         </Reveal>
 
         {/* ── DISCIPLES PREVIEW ── */}

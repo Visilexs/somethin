@@ -1,5 +1,6 @@
 import { Reveal, QuoteBlock } from '../components/UI'
 import { TIMELINE } from '../data'
+import { AnimatedTimelineItem } from '../components/StoryAnim'
 
 export default function OriginsPage({ setPage }) {
   return (
@@ -57,14 +58,13 @@ export default function OriginsPage({ setPage }) {
           </Reveal>
           <div style={{ marginTop: 36 }}>
             {TIMELINE.map((item, i) => (
-              <Reveal key={i} delay={Math.min(i % 3 + 1, 3)}>
-                <div className="timeline-item">
-                  <div className="timeline-dot" />
-                  <div className="timeline-era">{item.era}</div>
-                  <div className="timeline-title">{item.title}</div>
-                  <div className="timeline-body" dangerouslySetInnerHTML={{ __html: item.body }} />
-                </div>
-              </Reveal>
+              <AnimatedTimelineItem
+                key={i}
+                era={item.era}
+                title={item.title}
+                body={item.body}
+                delay={0}
+              />
             ))}
           </div>
         </div>

@@ -157,8 +157,6 @@ header {
   border-bottom: 1px solid var(--bdr);
   background: radial-gradient(ellipse at center top, rgba(120,160,50,.1) 0%, transparent 62%);
   overflow: hidden;
-  /* content-visibility speeds up off-screen paint */
-  contain: layout style;
 }
 header::after {
   content: ''; position: absolute; bottom: 0; left: 50%;
@@ -183,12 +181,11 @@ header::after {
 .main-nav {
   position: sticky; top: 0; z-index: 500;
   display: flex; justify-content: center; flex-wrap: wrap;
-  background: rgba(6,8,5,.72);
-  backdrop-filter: blur(20px) saturate(1.5);
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  background: rgba(6,8,5,.88);   /* strong fallback for no backdrop-filter */
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
   border-bottom: 1px solid var(--bdr);
   box-shadow: 0 4px 32px rgba(0,0,0,.4);
-  contain: layout style;
 }
 .main-nav button {
   font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: .17em;
@@ -227,7 +224,7 @@ header::after {
   position: relative; z-index: 1; text-align: center; padding: 68px 40px 48px;
   border-bottom: 1px solid var(--bdrm);
   background: radial-gradient(ellipse at center top, rgba(120,160,50,.1) 0%, transparent 60%);
-  overflow: hidden; contain: layout style;
+  overflow: hidden;
 }
 .page-hero::after {
   content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
@@ -242,13 +239,7 @@ header::after {
 .content-section {
   padding: 64px 0; border-bottom: 1px solid rgba(168,200,74,.08);
 }
-/* content-visibility not yet reliable in Firefox — progressive enhancement only */
-@supports (content-visibility: auto) {
-  .content-section {
-    content-visibility: auto;
-    contain-intrinsic-size: 0 600px;
-  }
-}
+/* content-visibility removed — causes Windows layout gaps */
 .content-section:last-child { border-bottom: none; }
 
 /* ── TYPOGRAPHY ─────────────────────────────────────────────────────────── */

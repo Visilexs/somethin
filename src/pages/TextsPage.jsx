@@ -1,4 +1,5 @@
 import { Reveal, QuoteBlock, BookCard, StatBlock } from '../components/UI'
+import { AnimatedStat } from '../components/StoryAnim'
 import { BOOKS, CHUD_QUOTES, CHESS_QUOTES } from '../data'
 
 const ALL_QUOTES = [
@@ -51,7 +52,7 @@ export default function TextsPage({ setPage }) {
             <div className="sec-title">On the Matter of His Correctness</div>
             <p className="prose">The scribes of the monastery of Devín kept the most complete records of the Kopeckian Era. Over fourteen years of the Walking, they tabulated every claim, judgment, prophecy, and opinion. The Council of Devín verified their work over three centuries. Do not question the number. The number has been checked. The number is correct. The irony of this — that the correctness of the correctness record has itself been verified — is noted in the preface of the record and then not mentioned again.</p>
           </Reveal>
-          <StatBlock
+          <AnimatedStat
             value="97.3"
             label="Verified Correctness Rate · Kopeckian Era · All Domains · All Valleys · Both Rivers"
             note="The remaining 2.7% comprises: the Lower Váh Direction Incident, the Winter of the Pale Goat, Law X on chess, and one assessment of a horse at the Nitra market. Kopecky refers to these as 'the four circumstances requiring context.' The context has been provided multiple times. It was lengthy."

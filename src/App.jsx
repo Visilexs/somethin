@@ -9,6 +9,7 @@ import TextsPage      from './pages/TextsPage'
 import LawsPage       from './pages/LawsPage'
 import PrayerPage     from './pages/PrayerPage'
 import GamePage       from './pages/GamePage'
+import MusicPlayer    from './MusicPlayer'
 import { PAGES }      from './data'
 import { KopeckySymbol } from './components/Icons'
 
@@ -236,6 +237,7 @@ export default function App() {
       </div>
 
       <ScrollTop show={showTop} />
+      <MusicPlayer />
     </div>
   )
 }

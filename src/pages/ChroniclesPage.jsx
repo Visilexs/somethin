@@ -1,6 +1,7 @@
 import { Reveal, QuoteBlock, GrudgeItem } from '../components/UI'
 import { CHESS_QUOTES, GRUDGES, MIRACLES } from '../data'
 import { KopeckySymbol } from '../components/Icons'
+import { DecreeBox, TypewriterText, RuneParticles } from '../components/StoryAnim'
 
 export default function ChroniclesPage({ setPage }) {
   return (
@@ -24,7 +25,9 @@ export default function ChroniclesPage({ setPage }) {
           <Reveal delay={1}>
             <div className="chess-box">
               <div className="chess-label">⚠ Classified Under the 2.7% · The Nitra Chess Argument · Year Five · One Full Hour · Six Opponents · Zero Concessions</div>
-              <div className="chess-head">♛ The Queen, Not the King — Správne Šachy and Its Origins</div>
+              <div className="chess-head">
+                <TypewriterText text="♛ The Queen, Not the King — Správne Šachy and Its Origins" speed={22}/>
+              </div>
               <div className="chess-body">
                 He was told, by six separate people in sequence, that the object of chess was to checkmate the king. He listened to each correction. He considered each correction. He returned each correction to its sender as a misunderstanding on the sender's part. He argued that the king — limited in movement, low in range, strategically marginal — was an absurd target for a game of intelligence and power. <em>"You do not defeat an enemy by cornering the piece that does nothing,"</em> he said. <em>"You defeat him by taking what he values most."</em>
                 <br/><br/>
@@ -101,10 +104,9 @@ export default function ChroniclesPage({ setPage }) {
 
           {/* Decree scroll */}
           <Reveal delay={1}>
-            <div style={{
-              border:'1px solid rgba(200,168,74,.35)', background:'rgba(200,168,74,.04)',
-              padding:'36px 40px', margin:'32px 0', position:'relative', overflow:'hidden'
-            }}>
+            <DecreeBox amber>
+              <RuneParticles count={6} color="rgba(200,168,74,"/>
+              <div style={{ position:'relative', zIndex:1 }}>
               <div style={{ position:'absolute', top:0, left:0, right:0, height:3, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.4),transparent)' }}/>
               <div style={{ position:'absolute', bottom:0, left:0, right:0, height:3, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.4),transparent)' }}/>
 
@@ -151,7 +153,8 @@ export default function ChroniclesPage({ setPage }) {
                 Kopecky had been reading the section on the Lower Váh Direction Incident.
                 The Council has noted this context but has agreed not to include it in the main text of the Decree."
               </div>
-            </div>
+              </div>{/* close z-index wrapper */}
+            </DecreeBox>
           </Reveal>
 
           {/* 8-hour interlude */}

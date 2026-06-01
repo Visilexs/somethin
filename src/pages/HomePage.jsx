@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Reveal, QuoteBlock } from '../components/UI'
 import { KopeckySymbol } from '../components/Icons'
+import { DecreeBox, RuneParticles, TypewriterText } from '../components/StoryAnim'
 
 const HERO_QUOTES = [
   'He Was Right.',
@@ -236,16 +237,12 @@ export default function HomePage({ setPage }) {
         </Reveal>
 
         <Reveal delay={1}>
-          <div style={{
-            border:'1px solid rgba(200,168,74,.32)',
-            background:'rgba(200,168,74,.035)',
-            padding:'36px 36px 28px',
-            margin:'28px 0',
-            position:'relative',
-          }}>
+          <DecreeBox amber>
+            <RuneParticles count={5} color="rgba(200,168,74,"/>
             {/* Top + bottom shimmer lines */}
-            <div style={{ position:'absolute', top:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.5),transparent)' }}/>
-            <div style={{ position:'absolute', bottom:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.3),transparent)' }}/>
+            <div style={{ position:'absolute', top:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.5),transparent)', zIndex:1 }}/>
+            <div style={{ position:'absolute', bottom:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.3),transparent)', zIndex:1 }}/>
+            <div style={{ position:'relative', zIndex:1 }}>
 
             {/* Seal row */}
             <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:18, marginBottom:22 }}>
@@ -306,15 +303,26 @@ export default function HomePage({ setPage }) {
             <div style={{ textAlign:'right', fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:'.16em', textTransform:'uppercase', color:'rgba(168,200,74,.38)' }}>
               Signed: Kopecky &nbsp;·&nbsp; Witnessed: Vladimír (who said nothing but wrote everything down)
             </div>
-          </div>
+            </div>{/* close z-index inner */}
+          </DecreeBox>
         </Reveal>
 
         <Reveal delay={1}>
-          <QuoteBlock
-            amber
-            text="Fear not, Chudlings. Nothing ever happens."
-            source="Kopecky · Addressing the assembled disciples after the reinstatement · Four words · Delivered with complete composure · The composure was partly genuine"
-          />
+          <div style={{ textAlign:'center', padding:'8px 0 4px' }}>
+            <TypewriterText
+              text='"Fear not, Chudlings. Nothing ever happens."'
+              style={{
+                fontFamily:"'EB Garamond',serif", fontSize:'clamp(18px,3vw,26px)',
+                fontStyle:'italic', color:'var(--am)',
+                display:'block', textAlign:'center',
+                textShadow:'0 0 30px rgba(200,168,74,.2)',
+              }}
+              speed={32}
+            />
+            <div style={{ fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(200,168,74,.38)', marginTop:10 }}>
+              — Kopecky · Following the Reinstatement · Four Words · Partly Genuine
+            </div>
+          </div>
         </Reveal>
 
         <Reveal>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Reveal, QuoteBlock } from '../components/UI'
-import { KopeckySymbol } from '../components/Icons'
 
 const HERO_QUOTES = [
   'He Was Right.',
@@ -113,31 +112,23 @@ export default function HomePage({ setPage }) {
 
   return (
     <>
-      {/* HERO */}
-      <div style={{ minHeight:'86vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', padding:'80px 32px 60px', position:'relative' }}>
-
-        {/* Kopecky SVG symbol — large, glowing */}
-        <div style={{ marginBottom: 28, animation: 'sym-pulse 4s ease-in-out infinite' }}>
-          <KopeckySymbol size={88} glow={true} />
-        </div>
-
-        <h1 style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:'clamp(30px,6vw,64px)', fontWeight:900, color:'var(--g)', letterSpacing:'.06em', lineHeight:1.15, marginBottom:16, textShadow:'0 0 60px rgba(168,200,74,0.3)' }}>
-          Cirkev Kopeckého
-        </h1>
-        <p style={{ fontFamily:"'Cinzel',serif", fontSize:'clamp(10px,1.8vw,14px)', color:'rgba(168,200,74,0.45)', letterSpacing:'.24em', textTransform:'uppercase', marginBottom:44, lineHeight:2 }}>
-          Church of Kopecky · Ancient Slovakia · One True God of the Tatras
-        </p>
+      {/* HERO — no repeated title/symbol; those live in the persistent header */}
+      <div style={{ minHeight:'62vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', padding:'52px 32px 48px', position:'relative' }}>
 
         {/* Rotating headline */}
+        <p style={{ fontFamily:"'Cinzel',serif", fontSize:'clamp(10px,1.5vw,12px)', color:'rgba(168,200,74,.4)', letterSpacing:'.26em', textTransform:'uppercase', marginBottom:28, lineHeight:2 }}>
+          Ancient Slovakia · One True God of the Tatras
+        </p>
+
         <div style={{
-          fontFamily:"'Cinzel Decorative',serif", fontSize:'clamp(18px,3.5vw,36px)',
-          color:'var(--am)', letterSpacing:'.05em', minHeight:54,
+          fontFamily:"'Cinzel Decorative',serif", fontSize:'clamp(22px,4.5vw,50px)',
+          color:'var(--am)', letterSpacing:'.05em', minHeight:64,
           transition:'opacity .42s ease, transform .42s ease',
           opacity: fade ? 1 : 0, transform: fade ? 'translateY(0)' : 'translateY(10px)',
-          marginBottom: 52,
+          marginBottom: 48,
         }}>{HERO_QUOTES[heroIdx]}</div>
 
-        <div style={{ display:'flex', gap:12, flexWrap:'wrap', justifyContent:'center', marginBottom:56 }}>
+        <div style={{ display:'flex', gap:12, flexWrap:'wrap', justifyContent:'center', marginBottom:52 }}>
           <button className="cta-btn" onClick={()=>setPage('origins')}>Discover the Origins</button>
           <button className="back-btn" onClick={()=>setPage('chud')}>Explore the Chud</button>
         </div>

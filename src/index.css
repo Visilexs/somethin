@@ -57,10 +57,10 @@ body { background: var(--bg); color: var(--tx); font-family: 'EB Garamond', Geor
 
 /* ── CUSTOM CURSOR ──────────────────────────────────────────────────────── */
 .cursor-ring {
-  position: fixed; width: 36px; height: 36px;
+  position: fixed; top: 0; left: 0;
+  width: 36px; height: 36px;
   border: 1.5px solid rgba(168,200,74,.65);
   border-radius: 50%; pointer-events: none; z-index: 9999;
-  /* Use transform for position to avoid layout thrash */
   will-change: transform;
   transition: border-color .25s, scale .25s;
   mix-blend-mode: screen;
@@ -68,7 +68,8 @@ body { background: var(--bg); color: var(--tx); font-family: 'EB Garamond', Geor
 }
 .cursor-ring.hovering { scale: 1.7; border-color: rgba(168,200,74,.92); box-shadow: 0 0 22px rgba(168,200,74,.4); }
 .cursor-dot {
-  position: fixed; width: 5px; height: 5px;
+  position: fixed; top: 0; left: 0;
+  width: 5px; height: 5px;
   background: var(--g); border-radius: 50%;
   pointer-events: none; z-index: 9999;
   will-change: transform;
@@ -414,3 +415,134 @@ footer  { position: relative; z-index: 1; text-align: center; padding: 38px 24px
   .scroll-bar { animation: none; }
   .grain { animation: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PAGE TRANSITIONS
+   phase sequence:  idle → exit → reveal → enter → idle
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Page states ──────────────────────────────────────────────── */
+@keyframes page-exit {
+  0%   { opacity: 1; transform: translateY(0)    scale(1);    filter: blur(0px);    }
+  100% { opacity: 0; transform: translateY(-28px) scale(.97); filter: blur(3px);    }
+}
+@keyframes page-enter {
+  0%   { opacity: 0; transform: translateY(32px)  scale(.97); filter: blur(3px);    }
+  60%  { opacity: 1; filter: blur(0px);                                              }
+  100% { opacity: 1; transform: translateY(0)    scale(1);    filter: blur(0px);    }
+}
+
+.page-idle    { opacity: 1; }
+.page-hidden  { opacity: 0; pointer-events: none; }
+.page-exiting { animation: page-exit  320ms cubic-bezier(.4, 0, .6, 1) forwards; pointer-events: none; }
+.page-entering{ animation: page-enter 400ms cubic-bezier(.0, 0, .2, 1) forwards; }
+
+/* ── Transition overlay ───────────────────────────────────────── */
+.tov {
+  position: fixed; inset: 0; z-index: 800;
+  pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Backdrop — fades in on exit, holds during reveal, fades out on enter */
+.tov::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center,
+    rgba(12,16,8,.96)  0%,
+    rgba(6,8,5,.99)  100%);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.tov-in::before   { opacity: 1; transition: opacity 280ms ease; }
+.tov-hold::before { opacity: 1; }
+.tov-out::before  { opacity: 0; transition: opacity 380ms ease 40ms; }
+
+/* Sacred geometry ring that pulses on reveal */
+.tov::after {
+  content: '';
+  position: absolute;
+  width: 180px; height: 180px;
+  border: 1px solid rgba(168,200,74,0);
+  border-radius: 50%;
+  transform: scale(.4);
+  transition: none;
+}
+.tov-hold::after {
+  border-color: rgba(168,200,74,.28);
+  transform: scale(1);
+  animation: tov-ring-pulse 180ms ease-out forwards;
+  box-shadow: 0 0 40px rgba(168,200,74,.12), inset 0 0 40px rgba(168,200,74,.06);
+}
+@keyframes tov-ring-pulse {
+  0%   { transform: scale(.2); opacity: 0; }
+  50%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Sweep line — a thin glowing bar that wipes across the screen */
+.tov-line {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(168,200,74,.6) 20%,
+    rgba(168,200,74,.9) 50%,
+    rgba(168,200,74,.6) 80%,
+    transparent 100%);
+  box-shadow: 0 0 18px rgba(168,200,74,.55), 0 0 40px rgba(168,200,74,.2);
+  opacity: 0;
+  transform: translateX(-10px);
+}
+.tov-in   .tov-line { animation: line-sweep-in  280ms cubic-bezier(.4,0,.6,1) forwards; }
+.tov-hold .tov-line { opacity: 0; }
+.tov-out  .tov-line { animation: line-sweep-out 360ms cubic-bezier(.0,0,.2,1) 60ms forwards; }
+
+@keyframes line-sweep-in {
+  0%   { opacity: 0; transform: translateX(-10px); }
+  15%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100vw); }
+}
+@keyframes line-sweep-out {
+  0%   { opacity: 0; transform: translateX(-10px); }
+  12%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100vw); }
+}
+
+/* Secondary trailing line (offset, dimmer) */
+.tov-line::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: inherit;
+  transform: translateX(-14px);
+  opacity: .3;
+  filter: blur(4px);
+}
+
+/* Centre symbol ─ the KopeckySymbol SVG flashes briefly */
+.tov-symbol {
+  position: relative; z-index: 1;
+  animation: symbol-flash 180ms ease-out forwards;
+}
+@keyframes symbol-flash {
+  0%   { opacity: 0; transform: scale(.5) rotate(-8deg); }
+  40%  { opacity: 1; transform: scale(1.08) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* Subtle corner ornaments that appear on reveal */
+.tov-hold::before {
+  /* Add a faint grid/cross pattern to the backdrop via gradient */
+  background:
+    linear-gradient(rgba(168,200,74,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168,200,74,.03) 1px, transparent 1px),
+    radial-gradient(ellipse at center,
+      rgba(12,16,8,.96) 0%,
+      rgba(6,8,5,.99) 100%);
+  background-size: 60px 60px, 60px 60px, 100% 100%;
+}
+
+/* ── Remove old .page-wrap.out/.in classes (replaced by phase classes) ── */
+.page-wrap.out,
+.page-wrap.in { animation: none; opacity: 1; transform: none; transition: none; }

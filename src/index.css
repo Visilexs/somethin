@@ -124,18 +124,29 @@ body { background: var(--bg); color: var(--tx); font-family: 'EB Garamond', Geor
 
 /* ── APP SHELL ─────────────────────────────────────────────────────────── */
 .app { min-height: 100vh; position: relative; }
-.page-wrap { position: relative; z-index: 1; }
-.page-wrap.out { opacity: 0; transform: translateY(14px); transition: opacity .3s var(--ease), transform .3s var(--ease); }
-.page-wrap.in  { opacity: 1; transform: translateY(0);    transition: opacity .38s var(--ease) .04s, transform .38s var(--ease) .04s; }
+.page-wrap {
+  position: relative; z-index: 1;
+  /* Pre-promote to compositor layer so animations don't cause repaints */
+  will-change: opacity, transform;
+}
 
 /* ── REVEAL ANIMATION ────────────────────────────────────────────────────── */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .75s var(--ease), transform .75s var(--ease); }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: .08s; }
-.reveal-delay-2 { transition-delay: .16s; }
-.reveal-delay-3 { transition-delay: .24s; }
-.reveal-delay-4 { transition-delay: .32s; }
-.reveal-delay-5 { transition-delay: .40s; }
+/* Start invisible; JS adds .visible when element enters viewport.
+   Fallback: if observer never fires (Windows/GPU issues), JS forces visible after 800ms */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s ease-out, transform .6s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.reveal-delay-1 { transition-delay: .07s; }
+.reveal-delay-2 { transition-delay: .14s; }
+.reveal-delay-3 { transition-delay: .21s; }
+.reveal-delay-4 { transition-delay: .28s; }
+.reveal-delay-5 { transition-delay: .35s; }
 
 /* ── HEADER ─────────────────────────────────────────────────────────────── */
 header {
@@ -197,6 +208,9 @@ header::after {
 .main-nav button.laws-btn { color: rgba(200,168,74,.62); }
 .main-nav button.laws-btn::after { background: linear-gradient(90deg, transparent, var(--am), transparent); }
 .main-nav button.laws-btn:hover, .main-nav button.laws-btn.active { color: var(--am); background: var(--am1); }
+.main-nav button.game-btn { color: rgba(100,180,220,.62); }
+.main-nav button.game-btn::after { background: linear-gradient(90deg, transparent, rgba(100,180,220,.8), transparent); }
+.main-nav button.game-btn:hover, .main-nav button.game-btn.active { color: rgba(120,200,240,.9); background: rgba(80,160,220,.07); }
 
 /* ── SECTION DOT NAV ─────────────────────────────────────────────────────── */
 .section-dots { position: fixed; right: 20px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 9px; z-index: 200; }

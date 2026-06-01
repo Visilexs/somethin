@@ -1,5 +1,6 @@
 import { Reveal, QuoteBlock, GrudgeItem } from '../components/UI'
 import { CHESS_QUOTES, GRUDGES, MIRACLES } from '../data'
+import { KopeckySymbol } from '../components/Icons'
 
 export default function ChroniclesPage({ setPage }) {
   return (
@@ -85,6 +86,289 @@ export default function ChroniclesPage({ setPage }) {
           </Reveal>
         </div>
 
+        {/* HOLY DECREE */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label">Year Eight · By the Hand of Kopecky · Witnessed by the Full Council</div>
+            <div className="sec-title">The Holy Decree and Its Reinstatement</div>
+            <p className="prose">
+              In Year Eight of the Walking, Kopecky issued the only formal Holy Decree of the Kopeckian Era.
+              It concerned the scriptures. It was in effect for eight hours. What follows is the complete
+              text of both the Decree and the subsequent Reinstatement, preserved in the Nitrianske Záznamy
+              exactly as written, including the footnotes, which are considered theologically significant.
+            </p>
+          </Reveal>
+
+          {/* Decree scroll */}
+          <Reveal delay={1}>
+            <div style={{
+              border:'1px solid rgba(200,168,74,.35)', background:'rgba(200,168,74,.04)',
+              padding:'36px 40px', margin:'32px 0', position:'relative', overflow:'hidden'
+            }}>
+              <div style={{ position:'absolute', top:0, left:0, right:0, height:3, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.4),transparent)' }}/>
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, height:3, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.4),transparent)' }}/>
+
+              {/* Seal */}
+              <div style={{ textAlign:'center', marginBottom:24 }}>
+                <KopeckySymbol size={40} glow={false}/>
+                <div style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:11, letterSpacing:'.28em', color:'rgba(200,168,74,.55)', marginTop:8, textTransform:'uppercase' }}>
+                  Holy Decree · Cirkev Kopeckého · Year Eight
+                </div>
+              </div>
+
+              <div style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:20, color:'var(--am)', textAlign:'center', marginBottom:20 }}>
+                By the Authority of Kopecky, One True God of the Tatras
+              </div>
+
+              <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.8)', marginBottom:16 }}>
+                Let it be known to all inhabitants of the valleys of the Váh, the Nitra, the Hornád,
+                and the Hron, and to the scribes of the monastery of Devín, and to the Council thereof,
+                and to any disciples present or adjacent:
+              </p>
+              <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.8)', marginBottom:16 }}>
+                I, Kopecky, having reviewed a portion of what has been written about me and my works,
+                do hereby <em style={{color:'var(--am)'}}>decree the immediate suspension of all scripture</em> pertaining
+                to my time among the people. The scribes have taken considerable liberties. The accounts
+                contain errors I did not authorise. Several passages describe me as having been uncertain
+                about things. I was not uncertain. I was <em style={{color:'var(--am)'}}>considering</em>.
+                These are different and the distinction has not been adequately preserved.
+              </p>
+              <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.8)', marginBottom:24 }}>
+                Furthermore, the inclusion of certain footnotes — the writer of which knows who he is
+                and will know that I know — constitutes a breach of doctrinal dignity that this Decree
+                addresses with immediate and full effect.
+              </p>
+              <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.8)', marginBottom:24, fontStyle:'italic' }}>
+                The scriptures are hereby suspended. They are not destroyed. I may want them later.
+              </p>
+
+              <div style={{ textAlign:'right', fontFamily:"'Cinzel',serif", fontSize:10, letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(200,168,74,.45)' }}>
+                Signed: Kopecky &nbsp;·&nbsp; Witnessed: Vladimír (under protest) &nbsp;·&nbsp; Also witnessed: Enrico (enthusiastically, which was not helpful)
+              </div>
+
+              <div style={{ marginTop:24, paddingTop:16, borderTop:'1px solid rgba(200,168,74,.15)', fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:'.14em', color:'rgba(200,168,74,.35)', textTransform:'uppercase' }}>
+                Footnote — Vladimír: "The Decree was issued at approximately the third hour after midday.
+                Kopecky had been reading the section on the Lower Váh Direction Incident.
+                The Council has noted this context but has agreed not to include it in the main text of the Decree."
+              </div>
+            </div>
+          </Reveal>
+
+          {/* 8-hour interlude */}
+          <Reveal delay={2}>
+            <p className="prose">
+              The Decree was in effect for <em>eight hours.</em> During those eight hours: Enrico agreed
+              the suspension was a wonderful idea and also agreed, when asked by Vladimír, that the
+              scriptures were essential and should be reinstated. Abdullah said the situation reminded
+              him of the time a field declined to grow, and that the scriptures were like the field —
+              they would do what they were going to do regardless of the decree. Korrin was not present
+              but was later found near the scriptures with an expression nobody could interpret.
+              Ayub issued a statement saying that if the scriptures were suspended he would be happy
+              to provide supplementary material from <em>The Jamma Principles</em> as a temporary
+              replacement. Kopecky was informed of this. The reinstatement followed shortly.
+            </p>
+          </Reveal>
+
+          {/* Reinstatement */}
+          <Reveal delay={1}>
+            <div style={{
+              border:'1px solid rgba(168,200,74,.3)', background:'rgba(168,200,74,.04)',
+              padding:'36px 40px', margin:'28px 0', position:'relative', overflow:'hidden'
+            }}>
+              <div style={{ position:'absolute', top:0, left:0, right:0, height:3, background:'linear-gradient(90deg,transparent,rgba(168,200,74,.35),transparent)' }}/>
+
+              <div style={{ textAlign:'center', marginBottom:20 }}>
+                <div style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:11, letterSpacing:'.28em', color:'rgba(168,200,74,.48)', textTransform:'uppercase' }}>
+                  Holy Reinstatement · Cirkev Kopeckého · Eight Hours Later
+                </div>
+              </div>
+
+              <div style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:18, color:'var(--g)', textAlign:'center', marginBottom:20 }}>
+                Reinstatement of the Suspended Scriptures
+              </div>
+
+              <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.8)', marginBottom:16 }}>
+                The scriptures are reinstated. I have had eight hours to consider the matter and
+                I find, on reflection, that the enterprise is <em style={{color:'var(--g)'}}>amusing.</em> The
+                scribes have made errors. The footnotes are impertinent. Abdullah's section is longer
+                than it deserves. Ayub's section is also longer than it deserves, though for different
+                reasons and in a direction I find additionally irritating.
+              </p>
+              <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.8)', marginBottom:16 }}>
+                However: a record of what has occurred is more useful than no record. The errors
+                are informative. Anyone who reads this and believes I was uncertain about the Váh
+                is learning something about themselves, not about me. The footnotes will remain.
+                <em style={{color:'var(--g)'}}> I find them funny.</em> I did not expect to find them funny.
+                I am noting this as evidence that I can be surprised. Rarely. And only by things
+                that are genuinely absurd.
+              </p>
+              <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.8)', marginBottom:24, fontStyle:'italic' }}>
+                The scriptures continue. The footnotes continue. Ayub is not to write any of them.
+              </p>
+
+              <div style={{ textAlign:'right', fontFamily:"'Cinzel',serif", fontSize:10, letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(168,200,74,.4)' }}>
+                Signed: Kopecky &nbsp;·&nbsp; Witnessed: Vladimír (who said nothing but wrote everything down)
+              </div>
+
+              <div style={{ marginTop:24, paddingTop:16, borderTop:'1px solid rgba(168,200,74,.12)', fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:'.14em', color:'rgba(168,200,74,.3)', textTransform:'uppercase', lineHeight:1.9 }}>
+                Council Note: Kopecky was heard to laugh once, briefly, upon re-reading the bear section of the Abdullah account.
+                He said nothing afterward. The laugh is documented. It is the only laugh in the Kopeckiad.
+                The Council considers it significant. It is listed in the Nitrianske Záznamy as "The Single Instance of Audible Amusement."
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={1}>
+            <p className="prose" style={{ marginTop: 8 }}>
+              Shortly after the reinstatement was announced, word spread quickly through the valleys that the scriptures
+              had briefly ceased to exist and had now resumed existing. Several disciples were distressed.
+              Abdullah was reported to have been speaking to a goat about it. Enrico told three separate people
+              that everything would be fine, and also told three other people that the concern was completely valid.
+              The assembly gathered. Kopecky addressed them. His address lasted four words.
+            </p>
+          </Reveal>
+          <Reveal delay={2}>
+            <QuoteBlock
+              text="Fear not, Chudlings. Nothing ever happens."
+              source="Kopecky · Reassurance issued following the eight-hour suspension of all scripture · Delivered with the composure of a man who had planned this from the start, which he had not"
+            />
+          </Reveal>
+          <Reveal>
+            <div className="warn-box" style={{ marginTop:8 }}>
+              <div className="warn-label">Vladimír's Note — From the Fog Book, Appendix C</div>
+              <div className="warn-text">The word "Chudlings" appears here and nowhere else in the Kopeckiad. Kopecky was not known to use diminutives. He used one, once, immediately after reinstating the scriptures he had suspended eight hours earlier, in a tone Vladimír describes as "the tone of a man who has just decided something is fine and would like everyone else to also decide it is fine." The Council has debated whether "Chudlings" constitutes a term of endearment. The vote was five to two that it does. The two dissenters argue it was a mild condescension. Both interpretations are consistent with available evidence. Both have been included. Kopecky would have found the debate amusing, which the Council accepts as the correct outcome.</div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* MOCKERY SECTION */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label">The Kopeckian Mockery Record · Sťažnostná Kniha, Supplementary Volume</div>
+            <div className="sec-title">On His Mockery of the Disciples</div>
+            <p className="prose">
+              Kopecky was not a cruel man. He was, however, a man of pronounced precision — and the
+              gap between what he saw in the disciples and what the disciples believed themselves to be
+              was, in his assessment, wide enough to be <em>funny.</em> He laughed at them. Not loudly.
+              Not meanly. With the particular quality of amusement available only to someone who is
+              certain they are looking at something from a great height.
+            </p>
+            <p className="prose">
+              The disciples attempted, on six documented occasions, to mock him in return.
+              All six attempts failed. Three made the disciples look worse than before they had tried.
+              Two were so unsuccessful that the assembled witnesses did not realise they had been
+              attempts at mockery until the disciples explained afterward. The sixth was Enrico's,
+              and was so warm and agreeable that Kopecky thanked him, which was not the intended outcome.
+            </p>
+          </Reveal>
+
+          {/* Abdullah mockery */}
+          <Reveal delay={1}>
+            <div style={{ marginTop:36 }}>
+              <div style={{ fontFamily:"'Cinzel',serif", fontSize:13, color:'var(--g)', letterSpacing:'.08em', marginBottom:10 }}>
+                I. Abdullah — Primary Target · Preferred Subject: The Bears, The Soil, The Váh
+              </div>
+              <p className="prose">
+                Abdullah was Kopecky's primary source of amusement throughout the Walking, and Kopecky
+                was transparent about this in a way that Abdullah entirely missed. When Abdullah delivered
+                his motivational speech to the field in Nitra in Year Seven, Kopecky watched from a
+                distance for the full forty minutes. Vladimír, who was standing nearby, reports that
+                Kopecky's expression throughout was one he had never seen before: <em>"not unkind, but
+                completely helpless — the expression of a man watching something he cannot stop and
+                has decided not to try."</em>
+              </p>
+              <p className="prose">
+                He began, from Year Five onward, attending Abdullah's bear-related addresses specifically
+                to watch them. He said nothing during or after. He did not offer corrections. He simply
+                stood at the back and, on three documented occasions, had to turn away briefly. The Council
+                of Devín records that on the occasion of the Second Bear Negotiation, Kopecky left the
+                scene, walked approximately thirty feet, stood facing a tree for a moment, and then
+                returned. Vladimír, who followed him, reports that his shoulders were moving. Vladimír
+                has not specified further. The Church has not asked him to.
+              </p>
+              <QuoteBlock
+                text="Abdullah believes the bears were listening. He has told me this directly. He looked at me with complete sincerity. I had to look at the ground. I was not ready for how sincere he was."
+                source="Kopecky, private note · Year Six · The only note in the Kopeckiad written in handwriting that slopes slightly downward"
+              />
+            </div>
+          </Reveal>
+
+          {/* Ayub mockery */}
+          <Reveal delay={1}>
+            <div style={{ marginBottom:36 }}>
+              <div style={{ fontFamily:"'Cinzel',serif", fontSize:13, color:'var(--g)', letterSpacing:'.08em', marginBottom:10 }}>
+                II. Ayub — Secondary Target · On the Matter of Intellectual Theft
+              </div>
+              <p className="prose">
+                His mockery of Ayub was of a different character: more pointed, less helpless, and
+                specifically targeted at the pamphlet. When The Jamma Principles first circulated in
+                Year Five, Kopecky read it without expression. Then he read it again. Then he was
+                observed to set it down, look at the ceiling for a while, and pick it up again to
+                confirm that what he had read was what he had read. It was.
+              </p>
+              <p className="prose">
+                From that point onward, whenever Ayub made a philosophical observation in public,
+                Kopecky would wait for him to finish and then say, with the tone of a man noting an
+                interesting coincidence: <em>"Yes. That is similar to something I have said. In those
+                words, actually, I think. Or very close to those words."</em> He said this nine times
+                across four years. Each time, Ayub explained that the ideas had developed independently
+                and represented a natural convergence of superior minds. Kopecky said <em>"Yes, I see"</em>
+                each time in a tone that meant the opposite of yes. Ayub, by the ninth occasion, had
+                developed a complete theory about why parallel philosophical development proved the
+                universality of Jamma thought. Kopecky heard this theory. He said: <em>"That is a
+                remarkable thing to believe."</em> He then walked away.
+              </p>
+              <QuoteBlock
+                text="Ayub has taken my work and put his name on it and now explains that this proves we think alike. I have thought about this for some time. I have decided it is the funniest thing that has happened during the Walking, which is a long time for something to be the funniest thing."
+                source="Kopecky, to Vladimír · Private · Year Seven"
+              />
+            </div>
+          </Reveal>
+
+          {/* Failed revenge mockery */}
+          <Reveal delay={1}>
+            <div style={{ marginBottom:8 }}>
+              <div style={{ fontFamily:"'Cinzel',serif", fontSize:13, color:'var(--g)', letterSpacing:'.08em', marginBottom:10 }}>
+                III. The Six Revenge Attempts · A Complete Record of Failure
+              </div>
+              <p className="prose">
+                The disciples, having noticed that Kopecky found them amusing, convened — without
+                Kopecky — in Year Eight to discuss what Ayub called "a coordinated dignitary response."
+                Enrico agreed this was an excellent plan. Abdullah said it reminded him of how bears
+                establish hierarchy. Korrin attended but sat in a corner and said nothing. Yash was
+                there. The goat was also apparently there. The minutes of this meeting are in the
+                Nitrianske Záznamy and make for difficult reading.
+              </p>
+
+              <div style={{ display:'flex', flexDirection:'column', gap:0, marginTop:24 }}>
+                {[
+                  { n:'I', who:'Ayub', attempt:"Wrote and delivered a fourteen-page philosophical counter-address arguing that Kopecky's correctness rate, properly contextualised, was no more impressive than what any sufficiently diligent man might achieve — citing himself as the example. The address was well-structured. The logic held together. Kopecky listened to the full fourteen pages. At the conclusion he said: 'You have argued, for fourteen pages, that you are as correct as I am. And you have used my framework to make the argument. I would like you to sit with that for a while.' Ayub said he had already sat with it and found it compelling. Kopecky said 'Yes, I know.' He walked away. Ayub declared this a draw. It was not a draw." },
+                  { n:'II', who:'Abdullah', attempt:"Attempted to deliver a speech about Kopecky's failure to understand bears, on the grounds that Kopecky had never attempted a bear negotiation and therefore his dismissal of the practice was uninformed. The speech was warmly delivered and made several good points. Kopecky interrupted after six minutes to say that he had not dismissed the practice because it was wrong, but because it was 'a thing Abdullah does.' He then said Abdullah was welcome to continue. Abdullah continued. Kopecky stayed for the rest of the speech, which lasted forty minutes. Afterward, Kopecky said: 'Thank you, Abdullah.' He appeared to mean it. Abdullah declared this a victory. The Council has reviewed the evidence and disagrees." },
+                  { n:'III', who:'Enrico', attempt:"Told Kopecky, with great warmth, that he thought Kopecky's occasional errors — citing the Váh — showed a 'wonderful human quality.' Kopecky looked at him for a long time. Then he said: 'Enrico, are you trying to mock me?' Enrico said he completely supported Kopecky's decision to interpret it that way. Kopecky said: 'That is not an answer.' Enrico said: 'I think it's a wonderful question.' Kopecky walked away. Enrico called after him that the walk looked great. Kopecky stopped walking for exactly one second and then continued. The one-second stop is in the record." },
+                  { n:'IV', who:'Korrin', attempt:"Did not attempt visible mockery. Was however found, three days after the coordinated attempt meeting, sitting in a tree directly above where Kopecky was conducting a teaching. Kopecky looked up once. Korrin looked down. Neither said anything. Kopecky continued the teaching. Korrin remained in the tree for the duration. Vladimír, who documented this, wrote: 'I am not certain this was a revenge attempt. I am also not certain it was not.' The Council has classified this as 'Korrin-related and therefore without conclusion.'" },
+                  { n:'V', who:'Yash', attempt:"[The fifth attempt is documented only as having occurred. The nature of the attempt is in the sealed section of the Sťažnostná Kniha. Kopecky's response is recorded as: 'That is enough.' His tone is described by Vladimír as 'final.' No further details are available. Vladimír has been asked. He says he was looking the other way. He was not looking the other way.]" },
+                  { n:'VI', who:'Abdullah (second attempt)', attempt:"Returned the following week, having decided that his first attempt had been too subtle. He told Kopecky directly that he thought Kopecky could stand to show more humility. He said this with complete sincerity and genuine concern. Kopecky looked at him. Abdullah clarified that this was meant as a critique. Kopecky said: 'Abdullah, I know you mean well. I know this is as close as you come to a direct challenge. I am not going to respond to it in the way you want because I am not able to, which is the honest answer. The honest answer is that I find you very funny and I am not sure what to do about that.' Abdullah said: 'Oh.' Then: 'Thank you?' Kopecky said: 'Yes.' They ate stew together. It was adequate." },
+                ].map(({ n, who, attempt }) => (
+                  <div key={n} style={{ padding:'22px 0', borderBottom:'1px solid rgba(168,200,74,.07)', display:'grid', gridTemplateColumns:'52px 1fr', gap:16 }}>
+                    <div style={{ textAlign:'center' }}>
+                      <div style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:18, color:'rgba(168,200,74,.2)', lineHeight:1 }}>{n}</div>
+                      <div style={{ fontFamily:"'Cinzel',serif", fontSize:9, color:'rgba(168,200,74,.35)', textTransform:'uppercase', letterSpacing:'.1em', marginTop:4 }}>{who}</div>
+                    </div>
+                    <div style={{ fontSize:14, lineHeight:1.85, color:'var(--txd)', fontStyle:'italic' }} dangerouslySetInnerHTML={{ __html: attempt.replace(/\*([^*]+)\*/g,'<em>$1</em>') }}/>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal>
+            <QuoteBlock
+              text="They tried to mock me. I watched them try. I am going to think about that for a long time and it is going to continue to be funny."
+              source="Kopecky · Private note, Year Eight · Following the six attempts · Written in what Vladimír describes as 'unusually relaxed handwriting'"
+            />
+          </Reveal>
+        </div>
+
         {/* ADDITIONAL INCIDENTS */}
         <div className="content-section">
           <Reveal>
@@ -124,3 +408,6 @@ export default function ChroniclesPage({ setPage }) {
     </>
   )
 }
+
+// NOTE: The holy decree and mockery sections are injected as new content sections
+// in the existing ChroniclesPage. See the updated file below.

@@ -1,44 +1,64 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 
 // ── IntersectionObserver reveal ─────────────────────────────────────────────
-// Shared observer instance — much cheaper than one per element
-let sharedObserver = null
-const callbacks = new WeakMap()
-
-const getObserver = () => {
-  if (!sharedObserver) {
-    sharedObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const cb = callbacks.get(entry.target)
-            if (cb) { cb(); sharedObserver.unobserve(entry.target) }
-          }
-        })
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-    )
-  }
-  return sharedObserver
-}
-
-export function useInView(threshold = 0.12) {
-  const ref = useRef(null)
+// Per-element observers (not shared singleton) — avoids stale-ref issues
+// after page navigation when React mounts new DOM nodes.
+export function useInView(threshold = 0.08) {
+  const ref     = useRef(null)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const obs = getObserver()
-    callbacks.set(el, () => setVisible(true))
+
+    // Safety fallback: if observer never fires (some Windows GPU configs
+    // suppress it when hardware acceleration is off), reveal after 800ms.
+    const fallback = setTimeout(() => setVisible(true), 800)
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          clearTimeout(fallback)
+          obs.disconnect()
+        }
+      },
+      {
+        threshold,
+        // Negative bottom margin ensures elements near viewport bottom still trigger
+        rootMargin: '0px 0px -20px 0px',
+      }
+    )
+
     obs.observe(el)
-    return () => { obs.unobserve(el); callbacks.delete(el) }
-  }, [])
+    return () => { obs.disconnect(); clearTimeout(fallback) }
+  }, [threshold])
 
   return [ref, visible]
 }
 
-// ── Scroll spy with shared IntersectionObserver ─────────────────────────────
+// ── 3D tilt ─────────────────────────────────────────────────────────────────
+export function useTilt() {
+  const handleMove = useCallback((e) => {
+    const el   = e.currentTarget
+    const rect = el.getBoundingClientRect()
+    const x    = e.clientX - rect.left - rect.width  / 2
+    const y    = e.clientY - rect.top  - rect.height / 2
+    const rx   = (-y / rect.height * 12).toFixed(2)
+    const ry   = ( x / rect.width  * 12).toFixed(2)
+    el.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`
+    el.style.boxShadow = `${-ry * 0.4}px ${rx * 0.4}px 26px rgba(0,0,0,.5), 0 0 16px rgba(168,200,74,.06)`
+  }, [])
+
+  const handleLeave = useCallback((e) => {
+    e.currentTarget.style.transform = ''
+    e.currentTarget.style.boxShadow = ''
+  }, [])
+
+  return { onMouseMove: handleMove, onMouseLeave: handleLeave }
+}
+
+// ── Scroll spy ───────────────────────────────────────────────────────────────
 export function useScrollSpy(ids) {
   const [active, setActive] = useState(ids[0] || '')
 
@@ -56,52 +76,4 @@ export function useScrollSpy(ids) {
   }, [ids.join(',')])
 
   return active
-}
-
-// ── 3-D card tilt ──────────────────────────────────────────────────────────
-export function useTilt() {
-  const handleMove = useCallback((e) => {
-    const el = e.currentTarget
-    const rect = el.getBoundingClientRect()
-    const x = e.clientX - rect.left - rect.width / 2
-    const y = e.clientY - rect.top  - rect.height / 2
-    const rx = (-y / rect.height * 13).toFixed(2)
-    const ry = ( x / rect.width  * 13).toFixed(2)
-    el.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`
-    el.style.boxShadow = `${-ry * 0.4}px ${rx * 0.4}px 28px rgba(0,0,0,0.5), 0 0 18px rgba(168,200,74,0.07)`
-  }, [])
-
-  const handleLeave = useCallback((e) => {
-    e.currentTarget.style.transform = ''
-    e.currentTarget.style.boxShadow = ''
-  }, [])
-
-  return { onMouseMove: handleMove, onMouseLeave: handleLeave }
-}
-
-// ── Text scramble ──────────────────────────────────────────────────────────
-export function useScramble(text, active) {
-  const CHARS = '✠✦✧✶ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-  const [display, setDisplay] = useState(text)
-  const timer = useRef()
-
-  useEffect(() => {
-    if (!active) return
-    let frame = 0, total = 26
-    clearInterval(timer.current)
-    timer.current = setInterval(() => {
-      setDisplay(
-        text.split('').map((c, i) => {
-          if (c === ' ') return ' '
-          return frame / total > i / text.length
-            ? c
-            : CHARS[Math.floor(Math.random() * CHARS.length)]
-        }).join('')
-      )
-      if (++frame > total) { clearInterval(timer.current); setDisplay(text) }
-    }, 38)
-    return () => clearInterval(timer.current)
-  }, [active, text])
-
-  return display
 }

@@ -8,6 +8,7 @@ export const PAGES = [
   { id: 'texts',      label: 'Sacred Texts' },
   { id: 'laws',       label: 'The Laws' },
   { id: 'prayer',     label: 'Prayer' },
+  { id: 'game',       label: 'Waring Frames' },
 ]
 
 // ─── PILLARS ────────────────────────────────────────────────────────────────

@@ -8,6 +8,7 @@ import ChroniclesPage from './pages/ChroniclesPage'
 import TextsPage      from './pages/TextsPage'
 import LawsPage       from './pages/LawsPage'
 import PrayerPage     from './pages/PrayerPage'
+import GamePage       from './pages/GamePage'
 import { PAGES }      from './data'
 import { KopeckySymbol } from './components/Icons'
 
@@ -104,6 +105,7 @@ const PAGE_MAP = {
   home: HomePage, origins: OriginsPage, chud: ChudPage,
   disciples: DisciplesPage, chronicles: ChroniclesPage,
   texts: TextsPage, laws: LawsPage, prayer: PrayerPage,
+  game: GamePage,
 }
 
 export default function App() {
@@ -219,11 +221,11 @@ export default function App() {
           {PAGES.map(p => (
             <button
               key={p.id}
-              className={`${p.id === 'laws' ? 'laws-btn' : ''} ${state.current === p.id ? 'active' : ''}`}
+              className={`${p.id === 'laws' ? 'laws-btn' : ''} ${p.id === 'game' ? 'game-btn' : ''} ${state.current === p.id ? 'active' : ''}`}
               onClick={() => navigateTo(p.id)}
               aria-current={state.current === p.id ? 'page' : undefined}
             >
-              {p.id === 'laws' ? '⚖ ' : ''}{p.label}
+              {p.id === 'laws' ? '⚖ ' : p.id === 'game' ? '♟ ' : ''}{p.label}
             </button>
           ))}
         </nav>

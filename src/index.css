@@ -747,3 +747,24 @@ footer { position: relative; z-index: 1; text-align: center; padding: 42px 24px;
 .sec-label.amber { color: var(--am); }
 .sec-title.amber { color: var(--am); }
 .prose.amber em { color: var(--am); }
+
+/* ── DISCIPLE CARD ───────────────────────────── */
+.disciple-card {
+  background: rgba(168,200,74,0.04);
+  border: 1px solid rgba(168,200,74,0.16);
+  border-top: 2px solid rgba(168,200,74,0.4);
+  padding: 28px 20px;
+  text-align: center;
+  cursor: none;
+  transition: border-top-color 0.3s, box-shadow 0.3s, background 0.3s;
+  transform-style: preserve-3d;
+}
+.disciple-card:hover {
+  border-top-color: var(--g);
+  background: rgba(168,200,74,0.07);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45), 0 0 20px rgba(168,200,74,0.07);
+}
+
+/* ── HEADER SVG SYMBOL FIX ───────────────────── */
+.h-sym { display: none; }
+.h-sym-wrap svg { display: block; margin: 0 auto; }

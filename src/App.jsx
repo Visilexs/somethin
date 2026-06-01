@@ -50,13 +50,20 @@ function CustomCursor() {
     const TARGETS = 'button,a,[role="button"],.pillar,.book-card,.disciple-card,.sdot,.miracle-card,.correct-card,.law-hdr'
     const onMove = ({ clientX: x, clientY: y }) => {
       pos.current = { x, y }
-      if (dotRef.current) dotRef.current.style.transform = `translate(${x-2.5}px,${y-2.5}px)`
+      // Use left/top directly — transform on any parent breaks position:fixed transform offsets
+      if (dotRef.current) {
+        dotRef.current.style.left = `${x}px`
+        dotRef.current.style.top  = `${y}px`
+      }
     }
     const onOver = e => ringRef.current?.classList.toggle('hovering', !!e.target.closest(TARGETS))
     const tick = () => {
       const t = pos.current, c = rPos.current
-      rPos.current = { x: c.x + (t.x-c.x)*0.13, y: c.y + (t.y-c.y)*0.13 }
-      if (ringRef.current) ringRef.current.style.transform = `translate(${rPos.current.x-18}px,${rPos.current.y-18}px)`
+      rPos.current = { x: c.x + (t.x - c.x) * 0.13, y: c.y + (t.y - c.y) * 0.13 }
+      if (ringRef.current) {
+        ringRef.current.style.left = `${rPos.current.x}px`
+        ringRef.current.style.top  = `${rPos.current.y}px`
+      }
       raf.current = requestAnimationFrame(tick)
     }
     window.addEventListener('mousemove', onMove, { passive: true })

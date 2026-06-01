@@ -61,19 +61,22 @@ body { background: var(--bg); color: var(--tx); font-family: 'EB Garamond', Geor
   width: 36px; height: 36px;
   border: 1.5px solid rgba(168,200,74,.65);
   border-radius: 50%; pointer-events: none; z-index: 9999;
-  will-change: transform;
-  transition: border-color .25s, scale .25s;
+  transition: border-color .25s, scale .25s, width .25s, height .25s;
   mix-blend-mode: screen;
   box-shadow: 0 0 10px rgba(168,200,74,.22), inset 0 0 5px rgba(168,200,74,.07);
+  margin-left: -18px; margin-top: -18px;   /* keep centred on left/top coords */
 }
-.cursor-ring.hovering { scale: 1.7; border-color: rgba(168,200,74,.92); box-shadow: 0 0 22px rgba(168,200,74,.4); }
+.cursor-ring.hovering {
+  scale: 1.7; border-color: rgba(168,200,74,.92);
+  box-shadow: 0 0 22px rgba(168,200,74,.4);
+}
 .cursor-dot {
   position: fixed; top: 0; left: 0;
   width: 5px; height: 5px;
   background: var(--g); border-radius: 50%;
   pointer-events: none; z-index: 9999;
-  will-change: transform;
   box-shadow: 0 0 8px rgba(168,200,74,.8);
+  margin-left: -2.5px; margin-top: -2.5px; /* keep centred on left/top coords */
 }
 
 /* ── SCROLL PROGRESS ─────────────────────────────────────────────────────── */

@@ -112,70 +112,108 @@ export default function HomePage({ setPage }) {
 
   return (
     <>
-      {/* HERO — no repeated title/symbol; those live in the persistent header */}
-      <div style={{ minHeight:'62vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', padding:'52px 32px 48px', position:'relative' }}>
+      {/* ── HERO ── */}
+      <div style={{
+        minHeight: '75vh', display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center', textAlign: 'center',
+        padding: '60px 32px 56px', position: 'relative',
+        background: 'radial-gradient(ellipse at 50% 60%, rgba(168,200,74,0.07) 0%, transparent 65%)',
+      }}>
 
-        {/* Rotating headline */}
-        <p style={{ fontFamily:"'Cinzel',serif", fontSize:'clamp(10px,1.5vw,12px)', color:'rgba(168,200,74,.4)', letterSpacing:'.26em', textTransform:'uppercase', marginBottom:28, lineHeight:2 }}>
-          Ancient Slovakia · One True God of the Tatras
-        </p>
-
-        <div style={{
-          fontFamily:"'Cinzel Decorative',serif", fontSize:'clamp(22px,4.5vw,50px)',
-          color:'var(--am)', letterSpacing:'.05em', minHeight:64,
-          transition:'opacity .42s ease, transform .42s ease',
-          opacity: fade ? 1 : 0, transform: fade ? 'translateY(0)' : 'translateY(10px)',
-          marginBottom: 48,
-        }}>{HERO_QUOTES[heroIdx]}</div>
-
-        <div style={{ display:'flex', gap:12, flexWrap:'wrap', justifyContent:'center', marginBottom:52 }}>
-          <button className="cta-btn" onClick={()=>setPage('origins')}>Discover the Origins</button>
-          <button className="back-btn" onClick={()=>setPage('chud')}>Explore the Chud</button>
+        {/* Ornament */}
+        <div style={{ fontFamily:"'Cinzel',serif", fontSize:11, letterSpacing:'.32em', textTransform:'uppercase', color:'rgba(168,200,74,.35)', marginBottom:32 }}>
+          ✦ &nbsp; Ancient Slovakia · One True God of the Tatras &nbsp; ✦
         </div>
 
-        {/* Stat counter */}
-        <div style={{ border:'1px solid rgba(168,200,74,0.28)', background:'rgba(168,200,74,0.05)', padding:'22px 44px', display:'inline-block', position:'relative', overflow:'hidden' }}>
-          <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at center,rgba(168,200,74,0.06) 0%,transparent 70%)', pointerEvents:'none' }}/>
-          <span style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:52, color:'var(--g)', lineHeight:1 }}>97.3</span>
-          <span style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:30, color:'var(--g)' }}>%</span>
-          <div style={{ fontFamily:"'Cinzel',serif", fontSize:10, letterSpacing:'.22em', textTransform:'uppercase', color:'rgba(168,200,74,0.45)', marginTop:8 }}>
-            Verified Correctness Rate · All Domains · All Valleys · Both Rivers
-          </div>
+        {/* Rotating headline — main hero text */}
+        <div style={{
+          fontFamily: "'Cinzel Decorative',serif",
+          fontSize: 'clamp(28px,5.5vw,64px)',
+          color: 'var(--am)',
+          letterSpacing: '.04em',
+          lineHeight: 1.2,
+          minHeight: 'clamp(40px,8vw,80px)',
+          transition: 'opacity .42s ease, transform .42s ease',
+          opacity: fade ? 1 : 0,
+          transform: fade ? 'translateY(0)' : 'translateY(12px)',
+          marginBottom: 20,
+          textShadow: '0 0 60px rgba(200,168,74,0.25)',
+        }}>{HERO_QUOTES[heroIdx]}</div>
+
+        {/* Subtext */}
+        <p style={{
+          fontFamily: "'EB Garamond',serif", fontSize: 'clamp(15px,2vw,20px)',
+          fontStyle: 'italic', color: 'rgba(213,206,171,0.55)',
+          maxWidth: 520, lineHeight: 1.8, marginBottom: 48,
+        }}>
+          He walked among us. He corrected our wood stacks. He invented the Chud.
+          He was right about almost everything. He will return.
+        </p>
+
+        {/* CTAs */}
+        <div style={{ display:'flex', gap:14, flexWrap:'wrap', justifyContent:'center', marginBottom:60 }}>
+          <button className="cta-btn" onClick={() => setPage('origins')}>
+            Discover the Origins
+          </button>
+          <button className="back-btn" onClick={() => setPage('chud')}>
+            Explore the Chud
+          </button>
+        </div>
+
+        {/* Stats row */}
+        <div style={{ display:'flex', gap:0, flexWrap:'wrap', justifyContent:'center', border:'1px solid rgba(168,200,74,0.18)', background:'rgba(168,200,74,0.04)' }}>
+          {[
+            { val:'97.3%', label:'Correctness Rate' },
+            { val:'XIV',   label:'Years of the Walking' },
+            { val:'XV',    label:'Laws of Chudhood' },
+            { val:'VI',    label:'Sacred Books' },
+          ].map(({ val, label }, i) => (
+            <div key={i} style={{
+              padding: '22px 36px', textAlign: 'center',
+              borderRight: i < 3 ? '1px solid rgba(168,200,74,0.12)' : 'none',
+            }}>
+              <div style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:'clamp(22px,3vw,34px)', color:'var(--g)', lineHeight:1, marginBottom:6 }}>{val}</div>
+              <div style={{ fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(168,200,74,.4)' }}>{label}</div>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div style={{ height:1, background:'linear-gradient(90deg,transparent,rgba(168,200,74,0.22),transparent)', margin:'0 32px' }}/>
+      {/* ── DIVIDER ── */}
+      <div style={{ height:1, background:'linear-gradient(90deg,transparent,rgba(168,200,74,0.2),transparent)', margin:'0 32px' }} />
 
-      {/* Navigation tiles */}
-      <div className="main-wrap" style={{ paddingTop:64 }}>
+      {/* ── CHAPTER TILES ── */}
+      <div className="main-wrap" style={{ paddingTop:72 }}>
         <Reveal>
-          <div style={{ textAlign:'center', marginBottom:48 }}>
-            <div className="sec-label" style={{ textAlign:'center' }}>The Sacred Chapters · Select a Volume</div>
+          <div style={{ textAlign:'center', marginBottom:44 }}>
+            <div className="sec-label" style={{ textAlign:'center' }}>The Sacred Chapters</div>
             <div className="sec-title" style={{ textAlign:'center' }}>Enter the Scripture</div>
             <p className="prose" style={{ textAlign:'center', maxWidth:500, margin:'0 auto' }}>
-              Eight chapters. Fourteen years of walking. One true god, five disciples of varying usefulness, fifteen laws, and one argument about chess that has never been fully resolved.
+              Eight chapters. Fourteen years of walking. One true god, five disciples, fifteen laws,
+              and one argument about chess that has never been fully resolved.
             </p>
           </div>
         </Reveal>
 
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:16, marginBottom:72 }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))', gap:14, marginBottom:80 }}>
           {PAGE_TILES.map(({ id, Icon, title, sub }, i) => (
             <Reveal key={id} delay={Math.min(i + 1, 5)}>
               <div
                 className="book-card"
-                onClick={()=>setPage(id)}
-                style={{ cursor:'none', textAlign:'center', padding:'32px 24px' }}
+                onClick={() => setPage(id)}
+                style={{ cursor:'none', textAlign:'center', padding:'30px 20px' }}
               >
-                <div style={{ marginBottom:16, display:'flex', justifyContent:'center' }}>
-                  <Icon size={38}/>
+                <div style={{ marginBottom:14, display:'flex', justifyContent:'center', opacity:.85 }}>
+                  <Icon size={36} />
                 </div>
-                <div className="book-sk" style={{ fontSize:14, marginBottom:6 }}>{title}</div>
-                <div className="book-txt" style={{ fontStyle:'italic', fontSize:13 }}>{sub}</div>
+                <div className="book-sk" style={{ fontSize:13, marginBottom:5 }}>{title}</div>
+                <div className="book-txt" style={{ fontStyle:'italic', fontSize:12 }}>{sub}</div>
               </div>
             </Reveal>
           ))}
         </div>
 
+        {/* ── FEATURED QUOTE ── */}
         <Reveal>
           <QuoteBlock
             text="The mountains were there before me. But I was there before the mountains knew what they were for."
@@ -183,31 +221,38 @@ export default function HomePage({ setPage }) {
           />
         </Reveal>
 
+        {/* ── DISCIPLES PREVIEW ── */}
         <Reveal>
-          <div style={{ marginTop:64, marginBottom:28, textAlign:'center' }}>
-            <div className="sec-label" style={{ textAlign:'center' }}>The Notable Disciples · Five Followers of Varying Reliability</div>
+          <div style={{ marginTop:72, marginBottom:28, textAlign:'center' }}>
+            <div className="sec-label" style={{ textAlign:'center' }}>The Five Disciples</div>
             <div className="sec-title" style={{ textAlign:'center' }}>Those Who Followed Him</div>
-            <p className="prose" style={{ textAlign:'center', maxWidth:580, margin:'0 auto 32px' }}>
-              A narcissist. A well-meaning fool. A man who agrees with everyone except the one true god. An unexplained fellow who sits in trees. And a known deviant. These are the people who surrounded Kopecky during the Walking. He found them <em>instructive.</em> Mostly.
+            <p className="prose" style={{ textAlign:'center', maxWidth:560, margin:'0 auto 32px' }}>
+              A narcissist. A well-meaning fool. A man who agrees with everyone except the one true god.
+              An unexplained fellow who sits in trees. And a known deviant.
             </p>
           </div>
         </Reveal>
 
-        <div style={{ display:'flex', gap:10, flexWrap:'wrap', justifyContent:'center', paddingBottom:72 }}>
+        <div style={{ display:'flex', gap:10, flexWrap:'wrap', justifyContent:'center', paddingBottom:80 }}>
           {['Ayub Jamma','Abdullah Ershdat','Enrico','Korrin','Yash'].map((name, i) => (
-            <Reveal key={name} delay={Math.min(i+1,5)}>
+            <Reveal key={name} delay={Math.min(i + 1, 5)}>
               <button
-                onClick={()=>setPage('disciples')}
-                style={{ fontFamily:"'Cinzel',serif", fontSize:11, letterSpacing:'.14em', textTransform:'uppercase', color:'var(--g)', background:'rgba(168,200,74,0.05)', border:'1px solid rgba(168,200,74,0.2)', padding:'10px 22px', cursor:'none', transition:'all .25s' }}
-                onMouseEnter={e=>{e.target.style.background='rgba(168,200,74,0.12)';e.target.style.borderColor='rgba(168,200,74,0.42)'}}
-                onMouseLeave={e=>{e.target.style.background='rgba(168,200,74,0.05)';e.target.style.borderColor='rgba(168,200,74,0.2)'}}
+                onClick={() => setPage('disciples')}
+                style={{
+                  fontFamily:"'Cinzel',serif", fontSize:11, letterSpacing:'.14em',
+                  textTransform:'uppercase', color:'var(--g)',
+                  background:'rgba(168,200,74,0.05)', border:'1px solid rgba(168,200,74,0.2)',
+                  padding:'11px 24px', cursor:'none', transition:'all .25s',
+                }}
+                onMouseEnter={e => { e.target.style.background='rgba(168,200,74,0.12)'; e.target.style.borderColor='rgba(168,200,74,0.42)' }}
+                onMouseLeave={e => { e.target.style.background='rgba(168,200,74,0.05)'; e.target.style.borderColor='rgba(168,200,74,0.2)' }}
               >{name}</button>
             </Reveal>
           ))}
         </div>
       </div>
 
-      <footer>© Cirkev Kopeckého · Prvá Dolina, High Tatra Region, Ancient Slovakia · He Was Right · The Chud Endures · Do Not Touch the Satchel</footer>
+      <footer>© Cirkev Kopeckého · Prvá Dolina · Ancient Slovakia · He Was Right · The Chud Endures · Do Not Touch the Satchel</footer>
     </>
   )
 }

@@ -3,16 +3,9 @@ import { useEffect, useRef } from 'react'
 const GA = (a) => `rgba(168,200,74,${a})`
 const AA = (a) => `rgba(200,168,74,${a})`
 
-// Spatial hash grid for O(n) particle connections instead of O(n²)
+// Spatial hash grid for O(n*k) particle connections
 const CELL = 110
 const cellKey = (x, y) => `${Math.floor(x / CELL)},${Math.floor(y / CELL)}`
-const neighbors = (cx, cy) => {
-  const keys = []
-  for (let dx = -1; dx <= 1; dx++)
-    for (let dy = -1; dy <= 1; dy++)
-      keys.push(`${cx + dx},${cy + dy}`)
-  return keys
-}
 
 export default function Background({ scrollY }) {
   const canvasRef  = useRef(null)
@@ -34,9 +27,11 @@ export default function Background({ scrollY }) {
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const ctx = canvas.getContext('2d', { alpha: true })
+    // desynchronized:true gives async compositing on Chrome; Firefox ignores it safely
+    const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true })
 
     // Offscreen canvas for geometry layer (updated at ~20fps, not 60)
+    // Using regular canvas (not OffscreenCanvas) for Firefox compat
     const geo  = document.createElement('canvas')
     const gctx = geo.getContext('2d', { alpha: true })
     geoRef.current = geo
@@ -285,24 +280,29 @@ export default function Background({ scrollY }) {
         grid.get(key).push(p)
       }
 
-      // Connections via spatial hash — dramatically faster than O(n²)
+      // Connections via spatial hash — O(n*k) instead of O(n²)
       const CONN_SQ = CELL * CELL
-      const seen = new Set()
-      for (const p of pts) {
-        const gcx = Math.floor(p.x / CELL), gcy = Math.floor(p.y / CELL)
-        for (const nk of neighbors(gcx, gcy)) {
-          for (const q of (grid.get(nk) || [])) {
-            if (q.id <= p.id) continue
-            const pairKey = p.id * 1000 + q.id
-            if (seen.has(pairKey)) continue
-            seen.add(pairKey)
-            const dx = p.x - q.x, dy = p.y - q.y
-            const d2 = dx * dx + dy * dy
-            if (d2 < CONN_SQ) {
-              const a = (1 - Math.sqrt(d2) / CELL) * 0.13
-              ctx.strokeStyle = p.hue === 'g' ? GA(a) : AA(a * 0.8)
-              ctx.lineWidth = 0.5
-              ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke()
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i]
+        const gcx = Math.floor(p.x / CELL)
+        const gcy = Math.floor(p.y / CELL)
+        for (let dx = -1; dx <= 1; dx++) {
+          for (let dy = -1; dy <= 1; dy++) {
+            const cell = grid.get(`${gcx + dx},${gcy + dy}`)
+            if (!cell) continue
+            for (const q of cell) {
+              if (q.id <= p.id) continue
+              const ddx = p.x - q.x, ddy = p.y - q.y
+              const d2 = ddx * ddx + ddy * ddy
+              if (d2 < CONN_SQ) {
+                const a = (1 - Math.sqrt(d2) / CELL) * 0.13
+                ctx.strokeStyle = p.hue === 'g' ? GA(a) : AA(a * 0.8)
+                ctx.lineWidth = 0.5
+                ctx.beginPath()
+                ctx.moveTo(p.x, p.y)
+                ctx.lineTo(q.x, q.y)
+                ctx.stroke()
+              }
             }
           }
         }

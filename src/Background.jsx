@@ -1,247 +1,327 @@
 import { useEffect, useRef } from 'react'
 
+const G  = [168, 200, 74]
+const A  = [200, 168, 74]
 const GA = (a) => `rgba(168,200,74,${a})`
 const AA = (a) => `rgba(200,168,74,${a})`
-const RUNES = ['⸸','✦','✧','✠','⊕','✶','❖','⋆','✙','⊗','◈','⌘']
+const mix = (c1, c2, t) => c1.map((v, i) => Math.round(v + (c2[i] - v) * t))
 
 export default function Background({ scrollY }) {
-  const canvasRef   = useRef(null)
-  const deepRef     = useRef(null)
-  const mouseRef    = useRef({ x: null, y: null })
-  const scrollRef   = useRef(0)
-  const velRef      = useRef(0)
-  const lastScrollRef = useRef(0)
-  const rafRef      = useRef()
-  const timeRef     = useRef(0)
+  const canvasRef = useRef(null)
+  const mouseRef  = useRef({ x: -1000, y: -1000 })
+  const scrollRef = useRef(0)
+  const velRef    = useRef(0)
+  const prevScRef = useRef(0)
+  const rafRef    = useRef()
 
-  /* sync scroll prop into ref without triggering re-render */
   useEffect(() => {
-    scrollRef.current = scrollY ?? 0
-    velRef.current = scrollY - lastScrollRef.current
-    lastScrollRef.current = scrollY ?? 0
+    const sc = scrollY ?? 0
+    velRef.current   = sc - prevScRef.current
+    prevScRef.current = sc
+    scrollRef.current = sc
   }, [scrollY])
 
   useEffect(() => {
     const canvas = canvasRef.current
-    const deep   = deepRef.current
-    if (!canvas || !deep) return
-    const ctx  = canvas.getContext('2d')
-    const dctx = deep.getContext('2d')
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    let W = window.innerWidth, H = window.innerHeight
 
     const resize = () => {
-      canvas.width = deep.width  = window.innerWidth
-      canvas.height = deep.height = window.innerHeight
+      W = canvas.width  = window.innerWidth
+      H = canvas.height = window.innerHeight
     }
     resize()
     window.addEventListener('resize', resize)
 
     const onMove  = e => { mouseRef.current = { x: e.clientX, y: e.clientY } }
-    const onLeave = () => { mouseRef.current = { x: null, y: null } }
+    const onLeave = () => { mouseRef.current = { x: -1000, y: -1000 } }
     window.addEventListener('mousemove', onMove, { passive: true })
     window.addEventListener('mouseleave', onLeave)
 
-    /* ── FOREGROUND PARTICLES ─────────────────── */
-    const W = () => canvas.width
-    const H = () => canvas.height
-    const COUNT = Math.min(110, Math.floor(window.innerWidth / 14))
+    // ── SHOOTING STARS ─────────────────────────────
+    const stars = []
+    const spawnStar = () => {
+      const edge = Math.random() < 0.5 ? 'top' : 'left'
+      stars.push({
+        x: edge === 'top' ? Math.random() * W : -10,
+        y: edge === 'top' ? -10 : Math.random() * H * 0.6,
+        vx: 3 + Math.random() * 4,
+        vy: 2 + Math.random() * 3,
+        life: 1, decay: 0.012 + Math.random() * 0.01,
+        len: 60 + Math.random() * 100,
+        hue: Math.random() < 0.65 ? 'g' : 'a',
+      })
+    }
+    let starTimer = 0
 
-    const particles = Array.from({ length: COUNT }, (_, i) => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      z: Math.random(),                      // depth 0=far 1=near
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      size: Math.random() * 2 + 0.5,
-      opacity: Math.random() * 0.35 + 0.06,
-      isRune: i < COUNT * 0.14,
-      rune: RUNES[Math.floor(Math.random() * RUNES.length)],
-      hue: Math.random() < 0.65 ? 'g' : 'a',
+    // ── PARTICLES ──────────────────────────────────
+    const COUNT = Math.min(90, Math.floor(W / 16))
+    const pts = Array.from({ length: COUNT }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.45, vy: (Math.random() - 0.5) * 0.45,
+      z: Math.random(),
+      r: 0.6 + Math.random() * 1.8,
+      op: 0.08 + Math.random() * 0.28,
       phase: Math.random() * Math.PI * 2,
-      phaseSpeed: 0.004 + Math.random() * 0.008,
-    }))
-
-    /* ── DEEP BACKGROUND GEOMETRY ─────────────── */
-    const GEO_COUNT = 6
-    const geos = Array.from({ length: GEO_COUNT }, (_, i) => ({
-      x: (i / GEO_COUNT) * window.innerWidth + Math.random() * 200 - 100,
-      y: Math.random() * window.innerHeight,
-      r: 60 + Math.random() * 120,
-      sides: [3, 4, 6, 8][Math.floor(Math.random() * 4)],
-      rot: Math.random() * Math.PI * 2,
-      rotSpeed: (Math.random() - 0.5) * 0.002,
-      opacity: 0.04 + Math.random() * 0.05,
-      z: Math.random() * 0.4,       // deep layer, slow parallax
+      ps: 0.005 + Math.random() * 0.009,
       hue: Math.random() < 0.6 ? 'g' : 'a',
     }))
 
-    /* ── AURORA BLOBS (canvas-drawn) ──────────── */
-    const BLOBS = [
-      { x: 0.15, y: 0.12, r: 380, hue: 'g', speed: 0.22 },
-      { x: 0.85, y: 0.85, r: 300, hue: 'a', speed: 0.18 },
-      { x: 0.55, y: 0.45, r: 240, hue: 'g', speed: 0.28 },
-      { x: 0.80, y: 0.20, r: 210, hue: 'a', speed: 0.14 },
-      { x: 0.25, y: 0.70, r: 320, hue: 'g', speed: 0.20 },
-    ]
+    // ── SACRED GEOMETRY ────────────────────────────
+    // Rings that pulse outward
+    const rings = Array.from({ length: 6 }, (_, i) => ({
+      r0: 40 + i * 60,        // base radius
+      phase: (i / 6) * Math.PI * 2,
+      speed: 0.0006 + i * 0.0002,
+      lineW: 0.6,
+      sides: [0, 3, 4, 6, 8, 12][i],
+    }))
 
-    function drawPolygon(ctx, cx, cy, r, sides, rot) {
+    // ── PULSE RINGS ────────────────────────────────
+    const pulses = []
+    let pulseTimer = 0
+    const spawnPulse = () => {
+      pulses.push({ r: 0, maxR: Math.min(W, H) * 0.55, op: 0.18, hue: Math.random() < 0.6 ? 'g' : 'a' })
+    }
+
+    // ── LIGHT RAYS ─────────────────────────────────
+    const RAY_COUNT = 9
+    const rays = Array.from({ length: RAY_COUNT }, (_, i) => ({
+      angle: (i / RAY_COUNT) * Math.PI * 2,
+      width: 0.04 + Math.random() * 0.06,  // radians
+      op: 0.025 + Math.random() * 0.04,
+      speed: (Math.random() < 0.5 ? 1 : -1) * (0.0003 + Math.random() * 0.0004),
+      len: 0.5 + Math.random() * 0.5,
+    }))
+
+    const drawPolygon = (ctx, cx, cy, r, sides, rot) => {
+      if (sides < 3) return
       ctx.beginPath()
-      for (let i = 0; i < sides; i++) {
+      for (let i = 0; i <= sides; i++) {
         const a = rot + (i / sides) * Math.PI * 2
-        const x = cx + Math.cos(a) * r
-        const y = cy + Math.sin(a) * r
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
+        const fn = i === 0 ? 'moveTo' : 'lineTo'
+        ctx[fn](cx + Math.cos(a) * r, cy + Math.sin(a) * r)
       }
-      ctx.closePath()
     }
 
     const animate = (ts) => {
-      const t     = ts * 0.001
-      const w     = W(), h = H()
-      const sc    = scrollRef.current
-      const vel   = velRef.current
-      const mouse = mouseRef.current
-      timeRef.current = t
+      const t   = ts * 0.001
+      const sc  = scrollRef.current
+      const vel = velRef.current
+      const mx  = mouseRef.current.x
+      const my  = mouseRef.current.y
+      const cx  = W / 2, cy = H / 2
 
-      /* ── DEEP LAYER (geometry + aurora) ─────── */
-      dctx.clearRect(0, 0, w, h)
+      ctx.clearRect(0, 0, W, H)
 
-      // Aurora blobs — scroll-parallax + slow drift
-      for (const b of BLOBS) {
-        const px = b.x * w + Math.sin(t * b.speed * 0.7) * 90
-        const py = b.y * h + Math.cos(t * b.speed) * 60
-                 - sc * b.z * 0.15   // parallax: deep blobs move slow
-        const grad = dctx.createRadialGradient(px, py, 0, px, py, b.r)
-        const col = b.hue === 'g' ? [168, 200, 74] : [200, 168, 74]
-        grad.addColorStop(0, `rgba(${col},0.11)`)
-        grad.addColorStop(0.5, `rgba(${col},0.05)`)
-        grad.addColorStop(1, `rgba(${col},0)`)
-        dctx.fillStyle = grad
-        dctx.beginPath()
-        dctx.ellipse(px, py, b.r, b.r * 0.6, t * b.speed * 0.3, 0, Math.PI * 2)
-        dctx.fill()
+      // ── 1. DEEP AURORA GRADIENT ─────────────────
+      const scrollFrac = Math.min(sc / (document.documentElement.scrollHeight || 2000), 1)
+      const col = mix(G, A, scrollFrac * 0.5)
+      const aur1 = ctx.createRadialGradient(cx + Math.sin(t * 0.12) * W * 0.18, cy * 0.6 + Math.cos(t * 0.09) * H * 0.12, 0, cx, cy * 0.6, H * 0.7)
+      aur1.addColorStop(0, `rgba(${col},0.09)`)
+      aur1.addColorStop(0.45, `rgba(${col},0.04)`)
+      aur1.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx.fillStyle = aur1
+      ctx.fillRect(0, 0, W, H)
+
+      const aur2 = ctx.createRadialGradient(W * 0.8 + Math.cos(t * 0.08) * W * 0.1, H * 0.75 + Math.sin(t * 0.11) * H * 0.08, 0, W * 0.8, H * 0.75, H * 0.55)
+      aur2.addColorStop(0, AA(0.07))
+      aur2.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx.fillStyle = aur2
+      ctx.fillRect(0, 0, W, H)
+
+      // ── 2. LIGHT RAYS from center ───────────────
+      for (const ray of rays) {
+        ray.angle += ray.speed + vel * 0.00006
+        const rLen = Math.min(W, H) * ray.len
+        const a1 = ray.angle - ray.width / 2
+        const a2 = ray.angle + ray.width / 2
+        const grad = ctx.createConicalGradient
+          ? null   // not in all browsers — use manual approach
+          : null
+
+        // Manual ray via triangle
+        ctx.beginPath()
+        ctx.moveTo(cx, cy)
+        const pts2 = 16
+        for (let i = 0; i <= pts2; i++) {
+          const a = a1 + (i / pts2) * (a2 - a1)
+          ctx.lineTo(cx + Math.cos(a) * rLen, cy + Math.sin(a) * rLen)
+        }
+        ctx.closePath()
+        const radGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, rLen)
+        radGrad.addColorStop(0, `rgba(168,200,74,${ray.op * 0.9})`)
+        radGrad.addColorStop(0.4, `rgba(168,200,74,${ray.op * 0.4})`)
+        radGrad.addColorStop(1, 'rgba(168,200,74,0)')
+        ctx.fillStyle = radGrad
+        ctx.fill()
       }
 
-      // Sacred geometry — slow rotation + scroll parallax
-      for (const g of geos) {
-        g.rot += g.rotSpeed
-        const px = g.x
-        const py = g.y - sc * (0.05 + g.z * 0.12)   // slow parallax
-        const col = g.hue === 'g' ? '168,200,74' : '200,168,74'
-        drawPolygon(dctx, px, py, g.r, g.sides, g.rot)
-        dctx.strokeStyle = `rgba(${col},${g.opacity})`
-        dctx.lineWidth = 0.7
-        dctx.stroke()
-        // inner polygon
-        drawPolygon(dctx, px, py, g.r * 0.6, g.sides, g.rot + Math.PI / g.sides)
-        dctx.strokeStyle = `rgba(${col},${g.opacity * 0.5})`
-        dctx.lineWidth = 0.4
-        dctx.stroke()
+      // ── 3. SACRED GEOMETRY RINGS ────────────────
+      for (const ring of rings) {
+        ring.phase += ring.speed
+        const r = ring.r0 + Math.sin(ring.phase) * 18 - sc * 0.03
+        if (r < 0) continue
+        const op = 0.07 + Math.abs(Math.sin(ring.phase * 0.7)) * 0.09
+        if (ring.sides >= 3) {
+          drawPolygon(ctx, cx, cy, r, ring.sides, ring.phase)
+          ctx.strokeStyle = GA(op)
+          ctx.lineWidth = ring.lineW
+          ctx.stroke()
+          // Inner polygon
+          drawPolygon(ctx, cx, cy, r * 0.62, ring.sides, ring.phase + Math.PI / ring.sides)
+          ctx.strokeStyle = GA(op * 0.5)
+          ctx.lineWidth = ring.lineW * 0.6
+          ctx.stroke()
+        } else {
+          // Full circle
+          ctx.beginPath()
+          ctx.arc(cx, cy, r, 0, Math.PI * 2)
+          ctx.strokeStyle = GA(op)
+          ctx.lineWidth = 0.5
+          ctx.stroke()
+        }
       }
 
-      /* ── FOREGROUND PARTICLES ────────────────── */
-      ctx.clearRect(0, 0, w, h)
+      // Central star/flower
+      const petal = 6
+      for (let i = 0; i < petal; i++) {
+        const a = (i / petal) * Math.PI * 2 + t * 0.04
+        const pr = 90 + Math.sin(t * 0.3) * 8
+        ctx.beginPath()
+        ctx.moveTo(cx, cy)
+        ctx.bezierCurveTo(
+          cx + Math.cos(a - 0.5) * pr * 0.7, cy + Math.sin(a - 0.5) * pr * 0.7,
+          cx + Math.cos(a + 0.5) * pr * 0.7, cy + Math.sin(a + 0.5) * pr * 0.7,
+          cx + Math.cos(a) * pr, cy + Math.sin(a) * pr,
+        )
+        ctx.closePath()
+        ctx.strokeStyle = GA(0.06 + Math.sin(t * 0.2 + i) * 0.025)
+        ctx.lineWidth = 0.6
+        ctx.stroke()
+      }
 
-      // Scroll: nudge all particles by velocity (fast scroll = particles drift opposite)
-      const scrollNudge = vel * 0.04
-      for (const p of particles) {
-        p.phase += p.phaseSpeed
-        const pulse = 0.85 + Math.sin(p.phase) * 0.15
+      // ── 4. PULSE RINGS ──────────────────────────
+      pulseTimer += 16
+      if (pulseTimer > 3200) { spawnPulse(); pulseTimer = 0 }
+      for (let i = pulses.length - 1; i >= 0; i--) {
+        const p = pulses[i]
+        p.r += (p.maxR - p.r) * 0.012
+        p.op *= 0.988
+        if (p.op < 0.003) { pulses.splice(i, 1); continue }
+        ctx.beginPath()
+        ctx.arc(cx, cy, p.r, 0, Math.PI * 2)
+        const c = p.hue === 'g' ? GA(p.op) : AA(p.op)
+        ctx.strokeStyle = c
+        ctx.lineWidth = 1.2
+        ctx.stroke()
+      }
 
-        // Parallax: near particles move more with scroll, far ones less
-        const parallaxDrift = vel * (0.02 + p.z * 0.06)
-        p.y += parallaxDrift
+      // ── 5. PARTICLES ────────────────────────────
+      for (const p of pts) {
+        p.phase += p.ps
+        const sv = vel * (0.015 + p.z * 0.04)
+        p.y += sv
 
-        // Mouse repulsion
-        if (mouse.x != null) {
-          const dx = p.x - mouse.x, dy = p.y - mouse.y
+        if (mx > 0) {
+          const dx = p.x - mx, dy = p.y - my
           const d2 = dx * dx + dy * dy
-          if (d2 < 16000) {
-            const d = Math.sqrt(d2)
-            const f = (126 - d) / 126 * 0.5 * (0.5 + p.z * 0.5)
-            p.vx += (dx / d) * f
-            p.vy += (dy / d) * f
+          if (d2 < 14000) {
+            const d = Math.sqrt(d2), f = (118 - d) / 118 * 0.45 * (0.5 + p.z * 0.5)
+            p.vx += (dx / d) * f; p.vy += (dy / d) * f
           }
         }
-
-        // Scroll velocity turbulence
-        p.vx += (Math.random() - 0.5) * Math.abs(vel) * 0.003
-        p.vy += scrollNudge * 0.01
-
-        p.vx *= 0.982
-        p.vy *= 0.982
-        const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy)
-        if (spd > 1.8) { p.vx /= spd / 1.8; p.vy /= spd / 1.8 }
-
-        p.x += p.vx
-        p.y += p.vy
-        if (p.x < -40) p.x = w + 40
-        if (p.x > w + 40) p.x = -40
-        if (p.y < -40) p.y = h + 40
-        if (p.y > h + 40) p.y = -40
+        p.vx += (Math.random() - 0.5) * Math.abs(vel) * 0.002
+        p.vx *= 0.984; p.vy *= 0.984
+        const sp = Math.hypot(p.vx, p.vy)
+        if (sp > 1.8) { p.vx *= 1.8 / sp; p.vy *= 1.8 / sp }
+        p.x += p.vx; p.y += p.vy
+        if (p.x < -30) p.x = W + 30; if (p.x > W + 30) p.x = -30
+        if (p.y < -30) p.y = H + 30; if (p.y > H + 30) p.y = -30
       }
 
       // Connections
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x
-          const dy = particles[i].y - particles[j].y
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y
           const d2 = dx * dx + dy * dy
-          if (d2 < 12000) {
-            const d = Math.sqrt(d2)
-            const a = (1 - d / 110) * 0.12
-            const col = particles[i].hue === 'g' ? GA(a) : AA(a * 0.8)
-            ctx.strokeStyle = col
+          if (d2 < 11000) {
+            const d = Math.sqrt(d2), a = (1 - d / 105) * 0.14
+            ctx.strokeStyle = pts[i].hue === 'g' ? GA(a) : AA(a * 0.8)
             ctx.lineWidth = 0.5
-            ctx.beginPath()
-            ctx.moveTo(particles[i].x, particles[i].y)
-            ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.stroke()
+            ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke()
           }
         }
       }
 
-      // Draw particles
-      for (const p of particles) {
-        const op = p.opacity * (0.85 + Math.sin(p.phase) * 0.15)
-        const col = p.hue === 'g' ? GA(op) : AA(op * 0.9)
-        if (p.isRune) {
-          ctx.save()
-          const sz = 9 + p.size * 4 + (p.z * 4)
-          ctx.font = `${sz}px serif`
-          ctx.fillStyle = col
-          ctx.globalAlpha = op * 0.5
-          // Runes drift upward slightly against scroll
-          ctx.fillText(p.rune, p.x, p.y)
-          ctx.restore()
-        } else {
-          const sz = p.size * (0.6 + p.z * 0.7)
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, sz, 0, Math.PI * 2)
-          ctx.fillStyle = col
+      // Draw dots
+      for (const p of pts) {
+        const op = p.op * (0.8 + Math.sin(p.phase) * 0.2)
+        const sz = p.r * (0.5 + p.z * 0.7)
+        ctx.beginPath(); ctx.arc(p.x, p.y, sz, 0, Math.PI * 2)
+        ctx.fillStyle = p.hue === 'g' ? GA(op) : AA(op * 0.9)
+        ctx.fill()
+        if (sz > 1.2) {
+          ctx.beginPath(); ctx.arc(p.x, p.y, sz * 3, 0, Math.PI * 2)
+          ctx.fillStyle = p.hue === 'g' ? GA(op * 0.04) : AA(op * 0.035)
           ctx.fill()
-          if (sz > 1.4) {
-            ctx.beginPath()
-            ctx.arc(p.x, p.y, sz * 2.8, 0, Math.PI * 2)
-            ctx.fillStyle = p.hue === 'g' ? GA(op * 0.05) : AA(op * 0.04)
-            ctx.fill()
-          }
         }
       }
 
-      // Velocity flash effect: when scrolling fast, brief light streak
-      if (Math.abs(vel) > 8) {
-        const alpha = Math.min(Math.abs(vel) / 80, 0.06)
-        const grad = ctx.createLinearGradient(0, 0, 0, h)
-        grad.addColorStop(0, `rgba(168,200,74,0)`)
-        grad.addColorStop(vel > 0 ? 0.3 : 0.7, `rgba(168,200,74,${alpha})`)
-        grad.addColorStop(1, `rgba(168,200,74,0)`)
-        ctx.fillStyle = grad
-        ctx.fillRect(0, 0, w, h)
+      // ── 6. SHOOTING STARS ───────────────────────
+      starTimer += 16
+      if (starTimer > 4500 + Math.random() * 5000) { spawnStar(); starTimer = 0 }
+      for (let i = stars.length - 1; i >= 0; i--) {
+        const s = stars[i]
+        s.x += s.vx; s.y += s.vy; s.life -= s.decay
+        if (s.life <= 0 || s.x > W + 50 || s.y > H + 50) { stars.splice(i, 1); continue }
+        const tail = ctx.createLinearGradient(s.x - s.vx * s.len / s.vx, s.y - s.vy * s.len / s.vy, s.x, s.y)
+        const col2 = s.hue === 'g' ? '168,200,74' : '200,168,74'
+        tail.addColorStop(0, `rgba(${col2},0)`)
+        tail.addColorStop(1, `rgba(${col2},${s.life * 0.85})`)
+        ctx.beginPath()
+        ctx.moveTo(s.x - s.vx * (s.len / s.vx), s.y - s.vy * (s.len / s.vy))
+        ctx.lineTo(s.x, s.y)
+        ctx.strokeStyle = tail; ctx.lineWidth = 1.5 * s.life; ctx.stroke()
+        // Head glow
+        ctx.beginPath(); ctx.arc(s.x, s.y, 2.5 * s.life, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(${col2},${s.life * 0.9})`; ctx.fill()
       }
+
+      // ── 7. MOUSE SPOTLIGHT ──────────────────────
+      if (mx > 0) {
+        const spot = ctx.createRadialGradient(mx, my, 0, mx, my, 280)
+        spot.addColorStop(0, 'rgba(168,200,74,0.055)')
+        spot.addColorStop(0.5, 'rgba(168,200,74,0.018)')
+        spot.addColorStop(1, 'rgba(168,200,74,0)')
+        ctx.fillStyle = spot
+        ctx.fillRect(0, 0, W, H)
+      }
+
+      // ── 8. SCROLL FLASH ─────────────────────────
+      if (Math.abs(vel) > 10) {
+        const frac = Math.min(Math.abs(vel) / 90, 0.07)
+        const fl = ctx.createLinearGradient(0, 0, 0, H)
+        fl.addColorStop(0, 'rgba(168,200,74,0)')
+        fl.addColorStop(vel > 0 ? 0.25 : 0.75, `rgba(168,200,74,${frac})`)
+        fl.addColorStop(1, 'rgba(168,200,74,0)')
+        ctx.fillStyle = fl; ctx.fillRect(0, 0, W, H)
+      }
+
+      // ── 9. GRAIN ────────────────────────────────
+      // (handled by CSS)
+
+      // ── 10. VIGNETTE ────────────────────────────
+      const vig = ctx.createRadialGradient(cx, cy, H * 0.22, cx, cy, H * 0.88)
+      vig.addColorStop(0, 'rgba(0,0,0,0)')
+      vig.addColorStop(1, 'rgba(0,0,0,0.62)')
+      ctx.fillStyle = vig; ctx.fillRect(0, 0, W, H)
 
       rafRef.current = requestAnimationFrame(animate)
     }
 
+    spawnPulse()
     rafRef.current = requestAnimationFrame(animate)
 
     return () => {
@@ -254,12 +334,8 @@ export default function Background({ scrollY }) {
 
   return (
     <div className="bg-layer">
-      {/* Deep layer: geometry + aurora */}
-      <canvas ref={deepRef} style={{ position:'absolute', inset:0, width:'100%', height:'100%', zIndex:0 }} />
-      {/* Foreground particles */}
-      <canvas ref={canvasRef} style={{ position:'absolute', inset:0, width:'100%', height:'100%', zIndex:1 }} />
+      <canvas ref={canvasRef} style={{ position:'absolute', inset:0, width:'100%', height:'100%' }} />
       <div className="grain" />
-      <div className="vignette" />
     </div>
   )
 }

@@ -41,7 +41,7 @@ export function useScrollSpy(ids, offset = '0px') {
 }
 
 export function useScramble(text, active) {
-  const CHARS = '⸸✦ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  const CHARS = '✠✦✧✶ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   const [display, setDisplay] = useState(text)
   const timerRef = useRef()
 

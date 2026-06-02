@@ -189,7 +189,7 @@ export default function HomePage({ setPage }) {
         <Reveal>
           <div style={{ textAlign:'center', marginBottom:44 }}>
             <div className="sec-label" style={{ textAlign:'center' }}>The Sacred Chapters</div>
-            <div className="sec-title" style={{ textAlign:'center' }}>Enter the Scripture</div>
+            <div className="sec-title" style={{ textAlign:'center' }}><TypewriterText text="Enter the Scripture" speed={20}/></div>
             <p className="prose" style={{ textAlign:'center', maxWidth:500, margin:'0 auto' }}>
               Eight chapters. Fourteen years of walking. One true god, five disciples, fifteen laws,
               and one argument about chess that has never been fully resolved.
@@ -227,7 +227,7 @@ export default function HomePage({ setPage }) {
         <Reveal>
           <div style={{ marginTop:72, marginBottom:8, textAlign:'center' }}>
             <div className="sec-label" style={{ textAlign:'center', color:'var(--am)' }}>Year Eight · By the Hand of Kopecky · Witnessed by the Full Council</div>
-            <div className="sec-title" style={{ textAlign:'center', color:'var(--am)' }}>The Holy Decree</div>
+            <div className="sec-title" style={{ textAlign:'center', color:'var(--am)' }}><TypewriterText text="The Holy Decree" speed={20}/></div>
             <p className="prose" style={{ textAlign:'center', maxWidth:540, margin:'0 auto 0' }}>
               In Year Eight, Kopecky issued the only Holy Decree of the Kopeckian Era.
               It suspended the church and all its scriptures. It was in effect for eight hours.
@@ -342,7 +342,7 @@ export default function HomePage({ setPage }) {
         <Reveal>
           <div style={{ marginTop:72, marginBottom:28, textAlign:'center' }}>
             <div className="sec-label" style={{ textAlign:'center' }}>The Five Disciples</div>
-            <div className="sec-title" style={{ textAlign:'center' }}>Those Who Followed Him</div>
+            <div className="sec-title" style={{ textAlign:'center' }}><TypewriterText text="Those Who Followed Him" speed={20}/></div>
             <p className="prose" style={{ textAlign:'center', maxWidth:560, margin:'0 auto 32px' }}>
               A narcissist. A well-meaning fool. A man who agrees with everyone except the one true god.
               An unexplained fellow who sits in trees. And a known deviant.

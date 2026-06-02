@@ -1,13 +1,14 @@
 import { Reveal } from '../components/UI'
 import LawGroup from '../components/LawGroup'
 import { LAW_GROUPS } from '../data'
+import { TypewriterText } from '../components/StoryAnim'
 
 export default function LawsPage({ setPage }) {
   return (
     <>
       <div className="page-hero" style={{ borderBottomColor:'rgba(200,168,74,0.2)', background:'radial-gradient(ellipse at center top,rgba(160,120,40,0.1) 0%,transparent 60%)' }}>
         <div className="page-hero-label" style={{ color:'rgba(200,168,74,0.5)' }}>Dictated Year Six · Following a Woman Calling Him "A Lot" · Transcribed at Devín</div>
-        <div className="page-hero-title" style={{ color:'var(--am)' }}>Čudové Zákony</div>
+        <div className="page-hero-title" style={{ color:'var(--am)' }}><TypewriterText text="Čudové Zákony" speed={20}/></div>
         <div className="page-hero-sub" style={{ color:'rgba(200,168,74,0.45)' }}>The Laws of Chudhood · Fifteen Laws · One Addendum · All Sacred · Several Inadvisable</div>
       </div>
       <div className="main-wrap">
@@ -15,7 +16,7 @@ export default function LawsPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label" style={{ color:'var(--am)' }}>The Preamble · Recorded by a Scribe Whose Name Was Omitted at His Own Request</div>
-            <div className="sec-title amber">On the Origin of These Laws</div>
+            <div className="sec-title amber"><TypewriterText text="On the Origin of These Laws" speed={20}/></div>
             <p className="prose">These laws were dictated over a single long afternoon in Year Six, reportedly after a woman in the village of Zlaté Moravce told Kopecky he was "a lot." He did not respond to this directly. He sat down, requested paper, and wrote for four hours. The scribes have asked that their names not appear in the official record. The Council agreed. The names are known. They are not being mentioned here. The scribes are grateful and somewhat changed by the experience.</p>
             <p className="prose">What emerged was the Čudové Zákony — fifteen laws governing every major dimension of the Chud lifestyle. They have been described by three separate historians as "comprehensive," "unsettlingly specific," and "clearly written by someone with feelings about several things who had been holding those feelings for some time." All three descriptions are accurate and not mutually exclusive.</p>
             <p className="prose">Ayub Jamma has declared the Laws to be "broadly aligned with the Jamma Principles, with some natural overlap." Enrico has agreed with this. Abdullah has said the Laws reminded him of something but could not say what. Korrin read them once, nodded, and returned the scroll. His expression was noted as "the expression of a man for whom the Laws confirmed something he already knew but would not have been able to say." Yash's copy was returned with a drawing of a goat on it. The drawing was, as noted elsewhere, quite good.</p>

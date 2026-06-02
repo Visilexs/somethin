@@ -8,7 +8,7 @@ export default function ChroniclesPage({ setPage }) {
     <>
       <div className="page-hero">
         <div className="page-hero-label">Sťažnostná Kniha · Nitrianske Záznamy · Cross-Referenced</div>
-        <div className="page-hero-title">Chronicles</div>
+        <div className="page-hero-title"><TypewriterText text="Chronicles" speed={18}/></div>
         <div className="page-hero-sub">The Chess Argument · The Grudges · The Miracles · The Events That Did Not Go As Planned</div>
       </div>
       <div className="main-wrap">
@@ -17,7 +17,7 @@ export default function ChroniclesPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">Year Five · Nitra · Classified Under The 2.7% · Duration: One Hour</div>
-            <div className="sec-title">The Chess Argument</div>
+            <div className="sec-title"><TypewriterText text="The Chess Argument" speed={20}/></div>
             <p className="prose">It is important to establish context. By Year Five, Kopecky had correctly predicted two consecutive harvests, silenced the philosophers of Greel with a single question, identified nine future troublemakers by face alone, and delivered an address on the structural properties of Carpathian spruce that three people slept through and two people cited as the most important thing they had ever heard. His correctness rate was, at this point, approximately 97.8%. The Chess Argument reduced it to 97.3%. It has not recovered.</p>
             <p className="prose">He sat down at a chess board during the Nitra summer assembly. He studied the board for several minutes with the focused attention of a man who is about to be correct about something. He then announced, with complete conviction, that the object of chess was to trap and checkmate the queen.</p>
           </Reveal>
@@ -49,7 +49,7 @@ export default function ChroniclesPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">The Authenticated Works · Verified by Three Witnesses and One Reluctant Skeptic Each</div>
-            <div className="sec-title">The Miracles of Kopecky</div>
+            <div className="sec-title"><TypewriterText text="The Miracles of Kopecky" speed={20}/></div>
             <p className="prose">The Church recognises fourteen official miracles. Several others were submitted for consideration and declined on the grounds that they were "not strictly miracles so much as competence applied under observation." The six most celebrated are below, each presented in the form the Council agreed best reflects both the event and its complications.</p>
           </Reveal>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:16, marginTop: 32 }}>
@@ -74,7 +74,7 @@ export default function ChroniclesPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">The Sťažnostná Kniha · Major Entries · Selected for Public Record</div>
-            <div className="sec-title">The Grudge Register of Kopecky</div>
+            <div className="sec-title"><TypewriterText text="The Grudge Register of Kopecky" speed={20}/></div>
             <p className="prose">He never raised his voice. He never threatened. He never made explicit statements of grievance. He simply <em>remembered</em> — and expressed his memory through small, precisely targeted inconveniences delivered across months or years with the patience of a man who has nowhere he urgently needs to be, a very long memory, and a particular gift for knowing exactly which remark, made in exactly which context, would land in exactly the right way.</p>
             <p className="prose">The Book of Grievances was originally suppressed by the Church of Nitra on the grounds that it was theologically embarrassing. Devín published it on the grounds that everyone already knew about it and the suppression was making the Church look worse than the content. Devín was correct. This was noted. Nitra conceded. The concession is in the record. Kopecky was told about the concession. He said "yes." In a tone that meant he had expected it. Which he had.</p>
           </Reveal>
@@ -94,7 +94,7 @@ export default function ChroniclesPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">The Kopeckian Mockery Record · Sťažnostná Kniha, Supplementary Volume</div>
-            <div className="sec-title">On His Mockery of the Disciples</div>
+            <div className="sec-title"><TypewriterText text="On His Mockery of the Disciples" speed={20}/></div>
             <p className="prose">
               Kopecky was not a cruel man. He was, however, a man of pronounced precision — and the
               gap between what he saw in the disciples and what the disciples believed themselves to be
@@ -222,7 +222,7 @@ export default function ChroniclesPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">Further Documented Events · Miscellaneous Chronicles</div>
-            <div className="sec-title">Additional Events of the Walking</div>
+            <div className="sec-title"><TypewriterText text="Additional Events of the Walking" speed={20}/></div>
           </Reveal>
 
           <Reveal>

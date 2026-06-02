@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { TypewriterText } from '../components/StoryAnim'
 import { KopeckySymbol } from '../components/Icons'
 
 // ── CONSTANTS ──────────────────────────────────────────────────────────────
@@ -463,7 +464,7 @@ export default function GamePage({ setPage }) {
     <>
       <div className="page-hero" style={{ borderBottomColor:'rgba(200,168,74,.2)' }}>
         <div className="page-hero-label">By Holy Request of Kopecky · Year Eleven of the Walking</div>
-        <div className="page-hero-title">Waring Frames</div>
+        <div className="page-hero-title"><TypewriterText text="Waring Frames" speed={20}/></div>
         <div className="page-hero-sub">
           A Game of Acquisition · Sanctioned by the Church · Requested by Kopecky Personally ·
           He Finds the Entire Premise Amusing

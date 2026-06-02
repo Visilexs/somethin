@@ -1,12 +1,13 @@
 import { Reveal, QuoteBlock, PillarCard } from '../components/UI'
 import { PILLARS, CHUD_QUOTES } from '../data'
+import { TypewriterText } from '../components/StoryAnim'
 
 export default function ChudPage({ setPage }) {
   return (
     <>
       <div className="page-hero">
         <div className="page-hero-label">Čudová Cesta · The Chud Way · Year Three of the Walking</div>
-        <div className="page-hero-title">The Chud</div>
+        <div className="page-hero-title"><TypewriterText text="The Chud" speed={18}/></div>
         <div className="page-hero-sub">A Posture Toward Existing · Not a Religion · Not a Philosophy · Something Else · He Will Explain</div>
       </div>
       <div className="main-wrap">
@@ -14,7 +15,7 @@ export default function ChudPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">Year Three · The Forest Above Prvá Dolina</div>
-            <div className="sec-title">The Problem of Living and the Three Days in the Spruce</div>
+            <div className="sec-title"><TypewriterText text="The Problem of Living and the Three Days in the Spruce" speed={20}/></div>
             <p className="prose">In the third year of his time in the valley, a young man named Ján came to Kopecky with what he described, somewhat vaguely, as "a problem of living." He was, Ján explained, tired of things. Not specific things — all things. The ploughing. The trading. The walking to the next village and walking back. The feeling that the days were the same day wearing different weather. He said this to Kopecky expecting either a practical solution or the kind of reassurance that acknowledges a feeling without addressing it.</p>
             <p className="prose">Kopecky listened to this for a long time. Not the listening of a man waiting for his turn to speak, which is the most common kind. The other kind. When Ján had finished, Kopecky said nothing for approximately forty seconds. Then he said what he always said when he had something important to give someone: he said it simply, without decoration, in the tone of a person stating something that has always been true and is only now being said aloud.</p>
           </Reveal>
@@ -29,7 +30,7 @@ export default function ChudPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">The Six Pillars of Čudný Spôsob</div>
-            <div className="sec-title">The Foundations of the Chud Life</div>
+            <div className="sec-title"><TypewriterText text="The Foundations of the Chud Life" speed={20}/></div>
             <p className="prose">The six pillars were not presented as rules. Kopecky was explicit about this. They were, he said, "observations about what is already true of people who are living correctly." The implication — which everyone understood and nobody said aloud — was that most people were not living correctly, and that the gap between their lives and the pillars was informative. Kopecky found this implication useful. He did not elaborate on it. He did not need to.</p>
           </Reveal>
           <Reveal delay={1}>
@@ -42,7 +43,7 @@ export default function ChudPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">The Broader Philosophy · As Recorded at Nitra and Devín</div>
-            <div className="sec-title">What the Chud Is, Precisely</div>
+            <div className="sec-title"><TypewriterText text="What the Chud Is, Precisely" speed={20}/></div>
             <p className="prose">The Chud lifestyle has been described by three separate historians as "comprehensive," "unsettlingly specific," and "clearly developed by someone who had given a great deal of thought to situations that had not gone the way he would have liked." All three descriptions are correct and not mutually exclusive.</p>
             <p className="prose">To live as a Chud is to know your own nature and make no apology for it — or rather, to make no apology and to have prepared a lengthy contextual explanation in case anyone asks, which serves a similar function. It is to take what you need from the land and the day and no more. It is to be the kind of person that dogs do not bark at and that goats occasionally bow toward. It is to eat bread that is not over-salted — which Kopecky considered both the literal and symbolic foundation of the entire framework. It is to sit with the hard question slightly longer than feels reasonable, because the answer tends to arrive approximately three minutes after you've stopped forcing it.</p>
             <p className="prose">It is also, if you are being fully honest, to be the kind of person who has not yet found optimal conditions for demonstrating his full value, but who remains confident that the conditions will present themselves, and who in the meantime is doing a great deal of reading and sitting with difficult questions and lying in the dark thinking about timing. This aspect of the Chud was not in Kopecky's original formulation. It was added by the Chud himself. Kopecky noticed. He said nothing. He wrote it into Law XIV.</p>
@@ -53,7 +54,7 @@ export default function ChudPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">On the Chud and Society · The Nitra Assembly, Year Five</div>
-            <div className="sec-title">The Great Adjudication — Is the Chud a Viable Way of Life?</div>
+            <div className="sec-title"><TypewriterText text="The Great Adjudication — Is the Chud a Viable Way of Life?" speed={20}/></div>
             <p className="prose">The assembled elders of Nitra, in Year Five, formally challenged Kopecky to justify the Chud as a framework for living. Their objections were reasonable: the Chud was vague ("a posture" is not actionable); the Chud was impractical (slow movement does not build walls by winter); and the Chud was insufficiently specific about obligations to the community. They spent four hours making these points. They made them well. Several of the arguments were strong.</p>
             <p className="prose">Kopecky listened to all four hours. He asked no questions during this time. He did not take notes. At the conclusion of the four hours, he asked a single question:</p>
           </Reveal>
@@ -67,7 +68,7 @@ export default function ChudPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">The Authenticated Sayings on Chudism</div>
-            <div className="sec-title">Kopecky on the Chud Life</div>
+            <div className="sec-title"><TypewriterText text="Kopecky on the Chud Life" speed={20}/></div>
             <p className="prose">These are the recorded words of Kopecky on the subject of Chudism — its nature, its requirements, its relationship with solitude, and its relationship with women, which is a relationship the Chud has strong views about and which has been classified in the Laws as a matter requiring optimal conditions that have not yet fully presented themselves.</p>
           </Reveal>
           {CHUD_QUOTES.map((q, i) => <QuoteBlock key={i} text={q.text} source={q.source} />)}

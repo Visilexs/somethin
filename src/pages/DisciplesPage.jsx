@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Reveal, QuoteBlock } from '../components/UI'
 import { DISCIPLES } from '../data'
 import { AyubIcon, AbdullahIcon, EnricoIcon, KorrinIcon, YashIcon } from '../components/Icons'
+import { TypewriterText } from '../components/StoryAnim'
 
 const ICON_MAP = { ayub:AyubIcon, abdullah:AbdullahIcon, enrico:EnricoIcon, korrin:KorrinIcon, yash:YashIcon }
 
@@ -24,7 +25,7 @@ function DiscipleDetail({ d, setActive }) {
           </div>
           <div style={{flex:1,minWidth:220}}>
             <div className="sec-label">{d.role}</div>
-            <div className="sec-title" style={{marginBottom:8}}>{d.name}</div>
+            <div className="sec-title" style={{marginBottom:8}}><TypewriterText text={d.name} speed={22}/></div>
             <div style={{fontFamily:"'Cinzel Decorative',serif",fontSize:15,color:'var(--am)',marginBottom:12}}>"{d.epithet}"</div>
             <div style={{fontFamily:"'Cinzel',serif",fontSize:10,letterSpacing:'.16em',textTransform:'uppercase',color:'rgba(168,200,74,0.38)',lineHeight:2}}>
               <div>Origin: {d.origin}</div>
@@ -43,7 +44,7 @@ function DiscipleDetail({ d, setActive }) {
       <div style={{paddingTop:40}}>
         <Reveal>
           <div className="sec-label">Notable Incidents — Verified by Multiple Witnesses</div>
-          <div className="sec-title" style={{fontSize:'clamp(18px,2.5vw,26px)'}}>The Historical Record</div>
+          <div className="sec-title" style={{fontSize:'clamp(18px,2.5vw,26px)'}}><TypewriterText text="The Historical Record" speed={20}/></div>
         </Reveal>
         {d.incidents.map((inc,i)=>(
           <Reveal key={i} delay={Math.min(i+1,3)}>
@@ -94,7 +95,7 @@ export default function DisciplesPage({ setPage }) {
     <>
       <div className="page-hero">
         <div className="page-hero-label">Nitrianske Záznamy · Years Four Through Fourteen · The People Who Arrived</div>
-        <div className="page-hero-title">The Disciples</div>
+        <div className="page-hero-title"><TypewriterText text="The Disciples" speed={18}/></div>
         <div className="page-hero-sub">A Narcissist · A Sincere Fool · A Man Who Agrees With Everyone Except God · An Unexplained Fellow · A Known Deviant</div>
       </div>
       <div className="main-wrap">
@@ -105,7 +106,7 @@ export default function DisciplesPage({ setPage }) {
             <div className="content-section">
               <Reveal>
                 <div className="sec-label">The Known Associates of the Walking · Select a Disciple</div>
-                <div className="sec-title">Five Disciples. One Assessment Each.</div>
+                <div className="sec-title"><TypewriterText text="Five Disciples. One Assessment Each." speed={20}/></div>
                 <p className="prose">Kopecky did not recruit followers. Followers arrived. Some were useful. Some were instructive in the way that problems are instructive. Some were present in ways that remain, theologically and documentarily, unclear. What follows are the five most notable associates of the Kopeckian Era — representing, between them, narcissism, sincere wrongness, strategic agreeableness applied to everyone except the one true god, one unsolved mystery in a tree, and a category the Church has agreed to call "known deviant" and consider closed.</p>
                 <p className="prose">Select a disciple below to read their full account. The accounts are thorough. The Council of Devín spent considerable time on them. The time was well spent on four of them. The fifth — Yash — was also thorough, but the Council spent additional time deciding what to include and what to describe as "information the Council is not yet prepared to canonise." The result is honest within those limits. Which are real limits. The Council has been clear about that.</p>
               </Reveal>

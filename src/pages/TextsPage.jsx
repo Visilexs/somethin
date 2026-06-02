@@ -1,5 +1,5 @@
 import { Reveal, QuoteBlock, BookCard, StatBlock } from '../components/UI'
-import { AnimatedStat } from '../components/StoryAnim'
+import { AnimatedStat, TypewriterText} from '../components/StoryAnim'
 import { BOOKS, CHUD_QUOTES, CHESS_QUOTES } from '../data'
 
 const ALL_QUOTES = [
@@ -26,7 +26,7 @@ export default function TextsPage({ setPage }) {
     <>
       <div className="page-hero">
         <div className="page-hero-label">The Kopeckiad · Six Volumes · Compiled at Devín</div>
-        <div className="page-hero-title">Sacred Texts</div>
+        <div className="page-hero-title"><TypewriterText text="Sacred Texts" speed={18}/></div>
         <div className="page-hero-sub">The Six Books · The Authenticated Sayings · The Correctness Record · What Was Written Down</div>
       </div>
       <div className="main-wrap">
@@ -35,7 +35,7 @@ export default function TextsPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">The Kopeckiad · Six Volumes · One Unwritten</div>
-            <div className="sec-title">The Books of the Church</div>
+            <div className="sec-title"><TypewriterText text="The Books of the Church" speed={20}/></div>
             <p className="prose">The holy scripture of the Church is contained within six volumes, collectively known as The Kopeckiad. Each was transcribed by a different apostle, which explains certain inconsistencies in phrasing, tone, and the number of times Ayub Jamma appears in backgrounds of scenes he was not centrally involved in. Kopecky, when told about the inconsistencies, said they were "perfectly acceptable — that's how memory works." He was either being generous or had not read the section about Ayub.</p>
           </Reveal>
           <Reveal delay={1}>
@@ -49,7 +49,7 @@ export default function TextsPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">The Great Accounting · As Tabulated by the Scribes of Devín Over Fourteen Years</div>
-            <div className="sec-title">On the Matter of His Correctness</div>
+            <div className="sec-title"><TypewriterText text="On the Matter of His Correctness" speed={20}/></div>
             <p className="prose">The scribes of the monastery of Devín kept the most complete records of the Kopeckian Era. Over fourteen years of the Walking, they tabulated every claim, judgment, prophecy, and opinion. The Council of Devín verified their work over three centuries. Do not question the number. The number has been checked. The number is correct. The irony of this — that the correctness of the correctness record has itself been verified — is noted in the preface of the record and then not mentioned again.</p>
           </Reveal>
           <AnimatedStat
@@ -82,7 +82,7 @@ export default function TextsPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">The Complete Authenticated Sayings · Scribes of Nitra and Devín</div>
-            <div className="sec-title">The Words of Kopecky</div>
+            <div className="sec-title"><TypewriterText text="The Words of Kopecky" speed={20}/></div>
             <p className="prose">These are the authenticated utterances of Kopecky as recorded by the scribes of Nitra, the monastery of Devín, and several witnesses who happened to have very good memories and the presence of mind to write things down before the moment passed. Each quote has been verified to a standard the Council calls "beyond reasonable doubt within the limits of ancient transcription," which the Council acknowledges is not a high bar but is the bar available.</p>
           </Reveal>
           {ALL_QUOTES.map((q, i) => (

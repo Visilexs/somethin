@@ -1,6 +1,7 @@
 import { TypewriterText } from './StoryAnim'
 import { useState } from 'react'
 import { Reveal } from './UI'
+import { useApp } from '../AppContext'
 
 function LawItem({ law, expanded, onToggle }) {
   return (
@@ -32,7 +33,12 @@ function LawItem({ law, expanded, onToggle }) {
 
 export default function LawGroup({ group }) {
   const [expanded, setExpanded] = useState(null)
-  const toggle = (i) => setExpanded(expanded === i ? null : i)
+  const { actions } = useApp()
+  const toggle = (i) => {
+    setExpanded(expanded === i ? null : i)
+    // Easter egg: opening the satchel law counts toward an achievement
+    if (group.id === 'satchel' && expanded !== i) actions.clickSatchel()
+  }
 
   return (
     <Reveal>

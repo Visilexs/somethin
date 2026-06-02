@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useApp } from './AppContext'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TWO-TRACK AMBIENT ENGINE
@@ -233,6 +234,7 @@ const eng = () => { if (!ENG) ENG = new TwoTrackEngine(); return ENG }
 
 // ── UI ────────────────────────────────────────────────────────────────────────
 export default function MusicPlayer() {
+  const { actions } = useApp()
   const [playing,  setPlaying]  = useState(false)
   const [vol,      setVol]      = useState(0.5)
   const [open,     setOpen]     = useState(false)
@@ -274,9 +276,12 @@ export default function MusicPlayer() {
   // Track visual: poll which is louder every 4s
   useEffect(() => {
     if (!playing) return
-    const t = setInterval(() => setTrack(ENG?.track || 'A'), 4000)
+    const t = setInterval(() => { const tk = ENG?.track || 'A'; setTrack(tk); actions.setTrack(tk) }, 4000)
     return () => clearInterval(t)
-  }, [playing])
+  }, [playing, actions])
+
+  // Sync playing state to global context
+  useEffect(() => { actions.setAudio(playing) }, [playing, actions])
 
   const togglePlay = useCallback(async () => {
     if (!playing) {

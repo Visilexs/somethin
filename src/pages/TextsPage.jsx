@@ -1,3 +1,4 @@
+import { useState, useDeferredValue, useMemo } from 'react'
 import { Reveal, QuoteBlock, BookCard, StatBlock } from '../components/UI'
 import { TypewriterText} from '../components/StoryAnim'
 import { BOOKS, CHUD_QUOTES, CHESS_QUOTES } from '../data'
@@ -23,6 +24,19 @@ const ALL_QUOTES = [
 ]
 
 export default function TextsPage({ setPage }) {
+  const [query, setQuery] = useState('')
+  // useDeferredValue keeps typing responsive while filtering a large list
+  const deferredQuery = useDeferredValue(query)
+  const isStale = query !== deferredQuery
+
+  const filteredQuotes = useMemo(() => {
+    const q = deferredQuery.toLowerCase().trim()
+    if (!q) return ALL_QUOTES
+    return ALL_QUOTES.filter(item =>
+      item.text.toLowerCase().includes(q) || item.source.toLowerCase().includes(q)
+    )
+  }, [deferredQuery])
+
   return (
     <>
       <div className="page-hero">
@@ -85,10 +99,43 @@ export default function TextsPage({ setPage }) {
             <div className="sec-label">The Complete Authenticated Sayings · Scribes of Nitra and Devín</div>
             <div className="sec-title"><TypewriterText text="The Words of Kopecky" speed={20}/></div>
             <p className="prose">These are the authenticated utterances of Kopecky as recorded by the scribes of Nitra, the monastery of Devín, and several witnesses who happened to have very good memories and the presence of mind to write things down before the moment passed. Each quote has been verified to a standard the Council calls "beyond reasonable doubt within the limits of ancient transcription," which the Council acknowledges is not a high bar but is the bar available.</p>
+
+            {/* Live search — useDeferredValue keeps input responsive */}
+            <div style={{ position:'relative', marginTop:24, marginBottom:8 }}>
+              <input
+                type="text"
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                placeholder="Search the sayings of Kopecky… (try 'chess', 'bread', 'stew')"
+                style={{
+                  width:'100%', padding:'13px 44px 13px 16px',
+                  background:'rgba(168,200,74,.04)', border:'1px solid rgba(168,200,74,.22)',
+                  color:'#d5ceab', fontFamily:"'EB Garamond',serif", fontSize:15,
+                  fontStyle:'italic', outline:'none', cursor:'none', letterSpacing:'.02em',
+                  transition:'border-color .25s',
+                }}
+                onFocus={e => e.target.style.borderColor = 'rgba(168,200,74,.5)'}
+                onBlur={e => e.target.style.borderColor = 'rgba(168,200,74,.22)'}
+              />
+              <span style={{
+                position:'absolute', right:16, top:'50%', transform:'translateY(-50%)',
+                fontFamily:"'Cinzel',serif", fontSize:10, letterSpacing:'.1em',
+                color: isStale ? 'rgba(200,168,74,.6)' : 'rgba(168,200,74,.35)',
+                transition:'color .2s',
+              }}>{isStale ? '…' : `${filteredQuotes.length}`}</span>
+            </div>
           </Reveal>
-          {ALL_QUOTES.map((q, i) => (
-            <QuoteBlock key={i} text={q.text} source={q.source} amber={i % 7 === 3} />
-          ))}
+          <div style={{ opacity: isStale ? 0.55 : 1, transition: 'opacity .2s' }}>
+            {filteredQuotes.length === 0 ? (
+              <div style={{ textAlign:'center', padding:'40px 0', fontFamily:"'EB Garamond',serif", fontSize:16, fontStyle:'italic', color:'rgba(213,206,171,.5)' }}>
+                Kopecky said no such thing. Or the scribes did not record it. The distinction is, as ever, his to draw.
+              </div>
+            ) : (
+              filteredQuotes.map((q, i) => (
+                <QuoteBlock key={i} text={q.text} source={q.source} amber={i % 7 === 3} />
+              ))
+            )}
+          </div>
         </div>
 
         <div style={{ textAlign:'center', padding:'40px 0 72px' }}>

@@ -226,7 +226,7 @@ export function SpotlightCard({ children, className = '', style = {}, onClick, a
 
 // ─── MagnetButton ─────────────────────────────────────────────────────────────
 // Button slightly follows cursor when nearby
-export function MagnetButton({ children, onClick, className = '', style = {}, strength = 0.35 }) {
+export function MagnetButton({ children, onClick, onMouseEnter, className = '', style = {}, strength = 0.35, ...rest }) {
   const ref  = useRef(null)
   const [tx, setTx] = useState(0)
   const [ty, setTy] = useState(0)
@@ -246,6 +246,7 @@ export function MagnetButton({ children, onClick, className = '', style = {}, st
     <button
       ref={ref}
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       className={className}
@@ -255,6 +256,7 @@ export function MagnetButton({ children, onClick, className = '', style = {}, st
         cursor: 'none',
         ...style,
       }}
+      {...rest}
     >{children}</button>
   )
 }

@@ -186,37 +186,9 @@ export default function HomePage({ setPage }) {
           </div>
         </Reveal>
 
-        <ScrollReveal stagger={70}>
-          {PAGE_TILES.map(({ id, Icon, title, sub }) => (
-            <SpotlightCard
-              key={id}
-              onClick={() => setPage(id)}
-              style={{ padding:'28px 20px', textAlign:'center', marginBottom:0 }}
-            >
-              <div style={{ marginBottom:12, display:'flex', justifyContent:'center', opacity:.85 }}>
-                <Icon size={34}/>
-              </div>
-              <div className="book-sk" style={{ fontSize:13, marginBottom:4 }}>{title}</div>
-              <div className="book-txt" style={{ fontStyle:'italic', fontSize:12 }}>{sub}</div>
-            </SpotlightCard>
-          ))}
-        </ScrollReveal>
-
-        {/* wrap tiles in grid */}
-        <style>{`.rb-tile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:72px}`}</style>
-        <script dangerouslySetInnerHTML={{__html:`
-          document.querySelectorAll('.main-wrap > div > div > div').forEach(el=>{
-            const p = el.parentElement;
-            if(p && !p.classList.contains('rb-tile-grid')) {
-              p.classList.add('rb-tile-grid');
-            }
-          });
-        `}}/>
-
-        {/* Re-render tiles in proper grid without script hack */}
         <Reveal>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(210px,1fr))', gap:14, marginBottom:72 }}>
-            {PAGE_TILES.map(({ id, Icon, title, sub }) => (
+            {PAGE_TILES.map(({ id, Icon, title, sub }, i) => (
               <SpotlightCard key={id} onClick={() => setPage(id)} style={{ padding:'28px 20px', textAlign:'center' }}>
                 <div style={{ marginBottom:12, display:'flex', justifyContent:'center', opacity:.85 }}>
                   <Icon size={34}/>

@@ -136,21 +136,28 @@ export function AnimatedContent({ children, distance = 40, direction = 'vertical
   )
 }
 
-// ── Magnet — element follows cursor when near ───────────────────────────────
-export function Magnet({ children, strength = 0.4, className = '', style = {} }) {
+// ── Magnet — element follows cursor when near (clamped + safe) ──────────────
+export function Magnet({ children, strength = 0.3, max = 14, className = '', style = {} }) {
   const ref = useRef(null)
   const [pos, setPos] = useState({ x: 0, y: 0 })
+  const raf = useRef(null)
 
   const onMove = useCallback((e) => {
     const el = ref.current
     if (!el) return
     const r = el.getBoundingClientRect()
-    const cx = r.left + r.width / 2
-    const cy = r.top + r.height / 2
-    setPos({ x: (e.clientX - cx) * strength, y: (e.clientY - cy) * strength })
-  }, [strength])
+    let x = (e.clientX - (r.left + r.width / 2)) * strength
+    let y = (e.clientY - (r.top + r.height / 2)) * strength
+    x = Math.max(-max, Math.min(max, x))
+    y = Math.max(-max, Math.min(max, y))
+    if (raf.current) return
+    raf.current = requestAnimationFrame(() => { setPos({ x, y }); raf.current = null })
+  }, [strength, max])
 
-  const onLeave = useCallback(() => setPos({ x: 0, y: 0 }), [])
+  const onLeave = useCallback(() => {
+    if (raf.current) { cancelAnimationFrame(raf.current); raf.current = null }
+    setPos({ x: 0, y: 0 })
+  }, [])
 
   return (
     <div
@@ -161,7 +168,7 @@ export function Magnet({ children, strength = 0.4, className = '', style = {} })
       style={{
         display: 'inline-block',
         transform: `translate(${pos.x}px, ${pos.y}px)`,
-        transition: pos.x === 0 && pos.y === 0 ? 'transform .5s cubic-bezier(.2,.7,.3,1)' : 'transform .1s ease-out',
+        transition: pos.x === 0 && pos.y === 0 ? 'transform .45s cubic-bezier(.2,.7,.3,1)' : 'transform .08s ease-out',
         ...style,
       }}
     >{children}</div>
@@ -298,25 +305,38 @@ export function ScrollReveal({ children, className = '', style = {}, stagger = 8
   )
 }
 
-// ── MagnetButton — nav-style magnetic button ────────────────────────────────
-export function MagnetButton({ children, onClick, active = false, className = '', style = {}, strength = 0.35 }) {
+// ── MagnetButton — nav-style magnetic button (clamped + safe) ───────────────
+export function MagnetButton({ children, onClick, active = false, className = '', style = {}, strength = 0.25, max = 10 }) {
   const ref = useRef(null)
   const [pos, setPos] = useState({ x: 0, y: 0 })
+  const raf = useRef(null)
+
   const onMove = (e) => {
     const el = ref.current; if (!el) return
     const r = el.getBoundingClientRect()
-    setPos({ x: (e.clientX - (r.left + r.width / 2)) * strength, y: (e.clientY - (r.top + r.height / 2)) * strength })
+    let x = (e.clientX - (r.left + r.width / 2)) * strength
+    let y = (e.clientY - (r.top + r.height / 2)) * strength
+    // Clamp so the button never travels far from its origin
+    x = Math.max(-max, Math.min(max, x))
+    y = Math.max(-max, Math.min(max, y))
+    if (raf.current) return            // throttle to one update per frame
+    raf.current = requestAnimationFrame(() => { setPos({ x, y }); raf.current = null })
   }
+  const reset = () => {
+    if (raf.current) { cancelAnimationFrame(raf.current); raf.current = null }
+    setPos({ x: 0, y: 0 })
+  }
+
   return (
     <button
       ref={ref}
       onClick={onClick}
       onMouseMove={onMove}
-      onMouseLeave={() => setPos({ x: 0, y: 0 })}
+      onMouseLeave={reset}
       className={className}
       style={{
         transform: `translate(${pos.x}px, ${pos.y}px)`,
-        transition: pos.x === 0 && pos.y === 0 ? 'transform .5s cubic-bezier(.2,.7,.3,1)' : 'transform .12s ease-out',
+        transition: pos.x === 0 && pos.y === 0 ? 'transform .45s cubic-bezier(.2,.7,.3,1)' : 'transform .08s ease-out',
         ...style,
       }}
     >{children}</button>

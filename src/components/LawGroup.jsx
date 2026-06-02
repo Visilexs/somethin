@@ -1,4 +1,3 @@
-import { TypewriterText } from './StoryAnim'
 import { useState } from 'react'
 import { Reveal } from './UI'
 import { useApp } from '../AppContext'
@@ -45,7 +44,7 @@ export default function LawGroup({ group }) {
       <div className="law-group" id={group.id}>
         <div className="law-group-header">
           <div className="law-group-label">Čudové Zákony · {group.label}</div>
-          <div className="law-group-title"><TypewriterText text={group.subtitle} speed={18}/></div>
+          <div className="law-group-title">{group.subtitle}</div>
         </div>
         {group.laws.map((law, i) => (
           <LawItem

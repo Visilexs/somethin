@@ -1,362 +1,209 @@
 import { useEffect, useRef } from 'react'
 
-const GA = (a) => `rgba(168,200,74,${a})`
-const AA = (a) => `rgba(200,168,74,${a})`
-
-// Spatial hash grid for O(n*k) particle connections
-const CELL = 110
-const cellKey = (x, y) => `${Math.floor(x / CELL)},${Math.floor(y / CELL)}`
+// New background: flowing aurora ribbons + drifting embers + slow rotating
+// sacred mandala. Calmer and more atmospheric than the particle-network look.
 
 export default function Background({ scrollY }) {
-  const canvasRef  = useRef(null)
-  const geoRef     = useRef(null)   // offscreen canvas for slow geometry
-  const mouseRef   = useRef({ x: -1e4, y: -1e4 })
-  const scrollRef  = useRef(0)
-  const velRef     = useRef(0)
-  const prevScRef  = useRef(0)
-  const rafRef     = useRef()
-  const hiddenRef  = useRef(false)
+  const canvasRef = useRef(null)
+  const mouseRef  = useRef({ x: -1e4, y: -1e4 })
+  const scrollRef = useRef(0)
+  const velRef    = useRef(0)
+  const prevRef   = useRef(0)
+  const rafRef    = useRef()
+  const hiddenRef = useRef(false)
 
   useEffect(() => {
     const sc = scrollY ?? 0
-    velRef.current   = sc - prevScRef.current
-    prevScRef.current = sc
+    velRef.current = sc - prevRef.current
+    prevRef.current = sc
     scrollRef.current = sc
   }, [scrollY])
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-    // desynchronized:true gives async compositing on Chrome; Firefox ignores it safely
-    const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true })
-
-    // Offscreen canvas for geometry layer (updated at ~20fps, not 60)
-    // Using regular canvas (not OffscreenCanvas) for Firefox compat
-    const geo  = document.createElement('canvas')
-    const gctx = geo.getContext('2d', { alpha: true })
-    geoRef.current = geo
-
-    let W = 0, H = 0
-    // Cached gradient handles – rebuilt only on resize
-    let auroraGrad1 = null, auroraGrad2 = null, vigGrad = null
-
-    const buildCached = () => {
-      const cx = W / 2, cy = H / 2
-      vigGrad = ctx.createRadialGradient(cx, cy, H * 0.2, cx, cy, H * 0.9)
-      vigGrad.addColorStop(0, 'rgba(0,0,0,0)')
-      vigGrad.addColorStop(1, 'rgba(0,0,0,0.65)')
-    }
+    const ctx = canvas.getContext('2d', { alpha: true })
+    let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2)
 
     const resize = () => {
-      W = canvas.width = geo.width = window.innerWidth
-      H = canvas.height = geo.height = window.innerHeight
-      buildCached()
+      W = window.innerWidth; H = window.innerHeight
+      canvas.width = W * DPR; canvas.height = H * DPR
+      canvas.style.width = W + 'px'; canvas.style.height = H + 'px'
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0)
     }
     resize()
+    window.addEventListener('resize', resize)
 
     const onMove  = e => { mouseRef.current = { x: e.clientX, y: e.clientY } }
     const onLeave = () => { mouseRef.current = { x: -1e4, y: -1e4 } }
     const onVis   = () => { hiddenRef.current = document.hidden }
-    window.addEventListener('resize', resize)
     window.addEventListener('mousemove', onMove, { passive: true })
     window.addEventListener('mouseleave', onLeave)
     document.addEventListener('visibilitychange', onVis)
 
-    // ── PARTICLES ──────────────────────────────────
-    const COUNT = Math.min(55, Math.floor(window.innerWidth / 22))
-    const pts = Array.from({ length: COUNT }, (_, id) => ({
-      id, x: Math.random() * W, y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.38,
-      vy: (Math.random() - 0.5) * 0.38,
-      z: Math.random(),
-      r: 0.7 + Math.random() * 1.6,
-      op: 0.1 + Math.random() * 0.25,
+    // ── EMBERS — slow drifting motes that rise ──────────────────
+    const EMBERS = Math.min(48, Math.floor(window.innerWidth / 28))
+    const embers = Array.from({ length: EMBERS }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: 0.6 + Math.random() * 1.8,
+      vy: -(0.15 + Math.random() * 0.4),
+      vx: (Math.random() - 0.5) * 0.25,
+      op: 0.1 + Math.random() * 0.4,
       phase: Math.random() * Math.PI * 2,
-      ps: 0.005 + Math.random() * 0.008,
-      hue: Math.random() < 0.6 ? 'g' : 'a',
+      ps: 0.006 + Math.random() * 0.01,
+      hue: Math.random() < 0.62 ? 'g' : 'a',
     }))
 
-    // ── SHOOTING STARS ──────────────────────────────
-    const stars = []
-    let starTimer = 0
-    const spawnStar = () => {
-      const top = Math.random() < 0.5
-      stars.push({
-        x: top ? Math.random() * W : -10,
-        y: top ? -10 : Math.random() * H * 0.6,
-        vx: 3 + Math.random() * 3.5,
-        vy: 1.8 + Math.random() * 2.5,
-        life: 1, decay: 0.013 + Math.random() * 0.01,
-        len: 55 + Math.random() * 90,
-        hue: Math.random() < 0.65 ? 'g' : 'a',
-      })
-    }
-
-    // ── GEOMETRY (slow layer) ───────────────────────
-    const RINGS = [
-      { r0: 50,  sides: 6, speed: 0.0007, lw: 0.55 },
-      { r0: 110, sides: 8, speed: 0.0005, lw: 0.5  },
-      { r0: 170, sides: 4, speed: -0.0006, lw: 0.45 },
-      { r0: 230, sides: 12, speed: 0.0004, lw: 0.4 },
-      { r0: 290, sides: 0, speed: -0.0003, lw: 0.4  }, // circle
+    // ── AURORA RIBBONS — flowing sine bands ─────────────────────
+    const ribbons = [
+      { amp: 90,  yf: 0.30, speed: 0.18, width: 150, hue: 'g', op: 0.05, phase: 0 },
+      { amp: 70,  yf: 0.55, speed: -0.13, width: 120, hue: 'a', op: 0.045, phase: 2 },
+      { amp: 110, yf: 0.72, speed: 0.10, width: 180, hue: 'g', op: 0.04, phase: 4 },
     ]
-    RINGS.forEach(r => { r.phase = Math.random() * Math.PI * 2 })
 
-    const RAYS = Array.from({ length: 7 }, (_, i) => ({
-      angle: (i / 7) * Math.PI * 2,
-      width: 0.045 + Math.random() * 0.055,
-      op: 0.022 + Math.random() * 0.03,
-      speed: (i % 2 === 0 ? 1 : -1) * (0.00025 + Math.random() * 0.00035),
-      len: 0.5 + Math.random() * 0.45,
-    }))
+    const col = (hue, a) => hue === 'g' ? `rgba(168,200,74,${a})` : `rgba(200,168,74,${a})`
 
-    const pulses = []
-    let pulseTimer = 0
-    const spawnPulse = () => pulses.push({
-      r: 0,
-      maxR: Math.min(W || 800, H || 600) * 0.52,
-      op: 0.16,
-      hue: Math.random() < 0.6 ? 'g' : 'a',
-    })
-
-    const poly = (c, cx, cy, r, sides, rot) => {
-      c.beginPath()
-      for (let i = 0; i <= sides; i++) {
-        const a = rot + (i / sides) * Math.PI * 2
-        c[i === 0 ? 'moveTo' : 'lineTo'](cx + Math.cos(a) * r, cy + Math.sin(a) * r)
+    const drawRibbon = (rb, t) => {
+      const baseY = H * rb.yf - scrollRef.current * 0.04
+      const grad = ctx.createLinearGradient(0, baseY - rb.width, 0, baseY + rb.width)
+      grad.addColorStop(0, col(rb.hue, 0))
+      grad.addColorStop(0.5, col(rb.hue, rb.op))
+      grad.addColorStop(1, col(rb.hue, 0))
+      ctx.fillStyle = grad
+      ctx.beginPath()
+      ctx.moveTo(-50, baseY)
+      const step = 40
+      for (let x = -50; x <= W + 50; x += step) {
+        const y = baseY
+          + Math.sin(x * 0.004 + t * rb.speed + rb.phase) * rb.amp
+          + Math.sin(x * 0.011 - t * rb.speed * 0.6) * (rb.amp * 0.35)
+        ctx.lineTo(x, y)
       }
+      // close along the bottom band
+      for (let x = W + 50; x >= -50; x -= step) {
+        const y = baseY
+          + Math.sin(x * 0.004 + t * rb.speed + rb.phase) * rb.amp
+          + Math.sin(x * 0.011 - t * rb.speed * 0.6) * (rb.amp * 0.35)
+          + rb.width
+        ctx.lineTo(x, y)
+      }
+      ctx.closePath()
+      ctx.fill()
     }
 
-    // ── SPATIAL HASH ────────────────────────────────
-    const grid = new Map()
+    // ── MANDALA — slow rotating sacred geometry, centre ─────────
+    const drawMandala = (t) => {
+      const cx = W / 2, cy = H / 2 - scrollRef.current * 0.06
+      const rot = t * 0.02
+      ctx.save()
+      ctx.translate(cx, cy)
 
-    // ── FRAME THROTTLE for geometry ─────────────────
-    let geoFrame = 0
-
-    const drawGeo = (t) => {
-      const cx = W / 2, cy = H / 2
-      gctx.clearRect(0, 0, W, H)
-
-      // Rays
-      for (const ray of RAYS) {
-        ray.angle += ray.speed
-        const rLen = Math.min(W, H) * ray.len
-        const a1 = ray.angle - ray.width / 2
-        const a2 = ray.angle + ray.width / 2
-        gctx.beginPath()
-        gctx.moveTo(cx, cy)
-        for (let i = 0; i <= 12; i++) {
-          const a = a1 + (i / 12) * (a2 - a1)
-          gctx.lineTo(cx + Math.cos(a) * rLen, cy + Math.sin(a) * rLen)
+      // concentric polygon rings
+      const rings = [
+        { r: 90,  sides: 12, rotMul: 1,  op: 0.05 },
+        { r: 160, sides: 6,  rotMul: -0.6, op: 0.045 },
+        { r: 240, sides: 24, rotMul: 0.4, op: 0.03 },
+        { r: 330, sides: 3,  rotMul: -0.3, op: 0.035 },
+      ]
+      for (const ring of rings) {
+        const pr = ring.r + Math.sin(t * 0.25 + ring.r) * 10
+        ctx.beginPath()
+        for (let i = 0; i <= ring.sides; i++) {
+          const a = rot * ring.rotMul + (i / ring.sides) * Math.PI * 2
+          const x = Math.cos(a) * pr, y = Math.sin(a) * pr
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
         }
-        gctx.closePath()
-        const rg = gctx.createRadialGradient(cx, cy, 0, cx, cy, rLen)
-        rg.addColorStop(0, `rgba(168,200,74,${ray.op})`)
-        rg.addColorStop(0.45, `rgba(168,200,74,${ray.op * 0.35})`)
-        rg.addColorStop(1, 'rgba(168,200,74,0)')
-        gctx.fillStyle = rg
-        gctx.fill()
+        ctx.strokeStyle = `rgba(168,200,74,${ring.op})`
+        ctx.lineWidth = 0.7
+        ctx.stroke()
       }
 
-      // Sacred rings
-      for (const ring of RINGS) {
-        ring.phase += ring.speed
-        const r = ring.r0 + Math.sin(ring.phase) * 16
-        const op = 0.06 + Math.abs(Math.sin(ring.phase * 0.6)) * 0.08
-        if (ring.sides >= 3) {
-          poly(gctx, cx, cy, r, ring.sides, ring.phase)
-          gctx.strokeStyle = GA(op)
-          gctx.lineWidth = ring.lw
-          gctx.stroke()
-          poly(gctx, cx, cy, r * 0.6, ring.sides, ring.phase + Math.PI / ring.sides)
-          gctx.strokeStyle = GA(op * 0.45)
-          gctx.lineWidth = ring.lw * 0.55
-          gctx.stroke()
-        } else {
-          gctx.beginPath()
-          gctx.arc(cx, cy, r, 0, Math.PI * 2)
-          gctx.strokeStyle = GA(op)
-          gctx.lineWidth = 0.45
-          gctx.stroke()
-        }
+      // radiating spokes
+      const spokes = 16
+      for (let i = 0; i < spokes; i++) {
+        const a = rot * 0.5 + (i / spokes) * Math.PI * 2
+        ctx.beginPath()
+        ctx.moveTo(Math.cos(a) * 70, Math.sin(a) * 70)
+        ctx.lineTo(Math.cos(a) * 340, Math.sin(a) * 340)
+        ctx.strokeStyle = `rgba(168,200,74,${0.015 + (i % 2) * 0.012})`
+        ctx.lineWidth = 0.5
+        ctx.stroke()
       }
-
-      // Central mandala petals
-      for (let i = 0; i < 6; i++) {
-        const a = (i / 6) * Math.PI * 2 + t * 0.035
-        const pr = 85 + Math.sin(t * 0.25) * 7
-        gctx.beginPath()
-        gctx.moveTo(cx, cy)
-        gctx.bezierCurveTo(
-          cx + Math.cos(a - 0.48) * pr * 0.68, cy + Math.sin(a - 0.48) * pr * 0.68,
-          cx + Math.cos(a + 0.48) * pr * 0.68, cy + Math.sin(a + 0.48) * pr * 0.68,
-          cx + Math.cos(a) * pr, cy + Math.sin(a) * pr,
-        )
-        gctx.closePath()
-        gctx.strokeStyle = GA(0.055 + Math.sin(t * 0.18 + i) * 0.02)
-        gctx.lineWidth = 0.55
-        gctx.stroke()
-      }
+      ctx.restore()
     }
 
     const animate = (ts) => {
       if (hiddenRef.current) { rafRef.current = requestAnimationFrame(animate); return }
-
-      const t   = ts * 0.001
-      const sc  = scrollRef.current
-      const mx  = mouseRef.current.x
-      const my  = mouseRef.current.y
-      const cx  = W / 2, cy = H / 2
-
+      const t = ts * 0.001
+      const mx = mouseRef.current.x, my = mouseRef.current.y
       ctx.clearRect(0, 0, W, H)
 
-      // 1. AURORA (cheap radial gradients, reposition per frame)
-      const scrollFrac = Math.min(sc / 3000, 1)
-      const ar = (scrollFrac * 20) | 0  // 0-20, used as extra red/amber blend
-
-      const g1 = ctx.createRadialGradient(
-        cx + Math.sin(t * 0.11) * W * 0.16,
-        cy * 0.55 + Math.cos(t * 0.08) * H * 0.1,
-        0, cx, cy * 0.55, H * 0.65
-      )
-      g1.addColorStop(0, `rgba(${168 - ar},${200 - ar},74,0.08)`)
-      g1.addColorStop(0.5, `rgba(168,200,74,0.03)`)
+      // 1. base radial glow (top)
+      const g1 = ctx.createRadialGradient(W / 2, H * 0.2, 0, W / 2, H * 0.2, H * 0.85)
+      g1.addColorStop(0, 'rgba(168,200,74,0.05)')
+      g1.addColorStop(0.5, 'rgba(120,150,60,0.02)')
       g1.addColorStop(1, 'rgba(0,0,0,0)')
-      ctx.fillStyle = g1; ctx.fillRect(0, 0, W, H)
+      ctx.fillStyle = g1
+      ctx.fillRect(0, 0, W, H)
 
-      const g2 = ctx.createRadialGradient(
-        W * 0.82 + Math.cos(t * 0.07) * W * 0.08,
-        H * 0.78 + Math.sin(t * 0.1) * H * 0.07,
-        0, W * 0.82, H * 0.78, H * 0.5
-      )
-      g2.addColorStop(0, AA(0.065))
-      g2.addColorStop(1, 'rgba(0,0,0,0)')
-      ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H)
+      // 2. mandala (behind ribbons)
+      drawMandala(t)
 
-      // 2. GEOMETRY layer – redraw every 3rd frame (~20fps)
-      geoFrame++
-      if (geoFrame % 3 === 0) drawGeo(t)
-      ctx.drawImage(geo, 0, 0)
+      // 3. aurora ribbons
+      for (const rb of ribbons) drawRibbon(rb, t)
 
-      // 3. PULSE RINGS
-      pulseTimer += 16
-      if (pulseTimer > 3400) { spawnPulse(); pulseTimer = 0 }
-      for (let i = pulses.length - 1; i >= 0; i--) {
-        const p = pulses[i]
-        p.r += (p.maxR - p.r) * 0.011
-        p.op *= 0.9875
-        if (p.op < 0.003) { pulses.splice(i, 1); continue }
-        ctx.beginPath()
-        ctx.arc(cx, cy, p.r, 0, Math.PI * 2)
-        ctx.strokeStyle = p.hue === 'g' ? GA(p.op) : AA(p.op)
-        ctx.lineWidth = 1.1
-        ctx.stroke()
-      }
+      // 4. embers
+      for (const e of embers) {
+        e.phase += e.ps
+        e.y += e.vy
+        e.x += e.vx + Math.sin(e.phase) * 0.2
+        if (e.y < -10) { e.y = H + 10; e.x = Math.random() * W }
+        if (e.x < -10) e.x = W + 10
+        if (e.x > W + 10) e.x = -10
 
-      // 4. PARTICLES + SPATIAL HASH CONNECTIONS
-      grid.clear()
-      for (const p of pts) {
-        p.phase += p.ps
-        // Scroll parallax drift
-        p.y += velRef.current * (0.012 + p.z * 0.03)
-        // Mouse repulsion
-        if (mx > -1000) {
-          const dx = p.x - mx, dy = p.y - my
+        // gentle mouse attraction
+        if (mx > 0) {
+          const dx = mx - e.x, dy = my - e.y
           const d2 = dx * dx + dy * dy
-          if (d2 < 12000) {
-            const d = Math.sqrt(d2), f = (110 - d) / 110 * 0.42 * (0.5 + p.z * 0.5)
-            p.vx += (dx / d) * f; p.vy += (dy / d) * f
+          if (d2 < 22000) {
+            const d = Math.sqrt(d2) || 1
+            e.x += (dx / d) * 0.4
+            e.y += (dy / d) * 0.4
           }
         }
-        p.vx *= 0.985; p.vy *= 0.985
-        const sp = Math.hypot(p.vx, p.vy)
-        if (sp > 1.7) { p.vx *= 1.7 / sp; p.vy *= 1.7 / sp }
-        p.x += p.vx; p.y += p.vy
-        if (p.x < -30) p.x = W + 30; if (p.x > W + 30) p.x = -30
-        if (p.y < -30) p.y = H + 30; if (p.y > H + 30) p.y = -30
 
-        const key = cellKey(p.x, p.y)
-        if (!grid.has(key)) grid.set(key, [])
-        grid.get(key).push(p)
-      }
-
-      // Connections via spatial hash — O(n*k) instead of O(n²)
-      const CONN_SQ = CELL * CELL
-      for (let i = 0; i < pts.length; i++) {
-        const p = pts[i]
-        const gcx = Math.floor(p.x / CELL)
-        const gcy = Math.floor(p.y / CELL)
-        for (let dx = -1; dx <= 1; dx++) {
-          for (let dy = -1; dy <= 1; dy++) {
-            const cell = grid.get(`${gcx + dx},${gcy + dy}`)
-            if (!cell) continue
-            for (const q of cell) {
-              if (q.id <= p.id) continue
-              const ddx = p.x - q.x, ddy = p.y - q.y
-              const d2 = ddx * ddx + ddy * ddy
-              if (d2 < CONN_SQ) {
-                const a = (1 - Math.sqrt(d2) / CELL) * 0.13
-                ctx.strokeStyle = p.hue === 'g' ? GA(a) : AA(a * 0.8)
-                ctx.lineWidth = 0.5
-                ctx.beginPath()
-                ctx.moveTo(p.x, p.y)
-                ctx.lineTo(q.x, q.y)
-                ctx.stroke()
-              }
-            }
-          }
-        }
-      }
-
-      // Draw dots
-      for (const p of pts) {
-        const op = p.op * (0.82 + Math.sin(p.phase) * 0.18)
-        const sz = p.r * (0.5 + p.z * 0.65)
-        ctx.beginPath(); ctx.arc(p.x, p.y, sz, 0, Math.PI * 2)
-        ctx.fillStyle = p.hue === 'g' ? GA(op) : AA(op * 0.9)
+        const op = e.op * (0.6 + Math.sin(e.phase) * 0.4)
+        ctx.beginPath()
+        ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2)
+        ctx.fillStyle = col(e.hue, op)
         ctx.fill()
-        if (sz > 1.3) {
-          ctx.beginPath(); ctx.arc(p.x, p.y, sz * 2.8, 0, Math.PI * 2)
-          ctx.fillStyle = p.hue === 'g' ? GA(op * 0.04) : AA(op * 0.035)
-          ctx.fill()
-        }
+        // soft halo
+        ctx.beginPath()
+        ctx.arc(e.x, e.y, e.r * 3.5, 0, Math.PI * 2)
+        ctx.fillStyle = col(e.hue, op * 0.06)
+        ctx.fill()
       }
 
-      // 5. SHOOTING STARS
-      starTimer += 16
-      if (starTimer > 5000 + Math.random() * 4000) { spawnStar(); starTimer = 0 }
-      for (let i = stars.length - 1; i >= 0; i--) {
-        const s = stars[i]
-        s.x += s.vx; s.y += s.vy; s.life -= s.decay
-        if (s.life <= 0 || s.x > W + 50 || s.y > H + 50) { stars.splice(i, 1); continue }
-        const tailX = s.x - s.vx * (s.len / s.vx)
-        const tailY = s.y - s.vy * (s.len / s.vx)
-        const col = s.hue === 'g' ? '168,200,74' : '200,168,74'
-        const tg = ctx.createLinearGradient(tailX, tailY, s.x, s.y)
-        tg.addColorStop(0, `rgba(${col},0)`)
-        tg.addColorStop(1, `rgba(${col},${s.life * 0.8})`)
-        ctx.beginPath(); ctx.moveTo(tailX, tailY); ctx.lineTo(s.x, s.y)
-        ctx.strokeStyle = tg; ctx.lineWidth = 1.4 * s.life; ctx.stroke()
-        ctx.beginPath(); ctx.arc(s.x, s.y, 2.2 * s.life, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${col},${s.life * 0.85})`; ctx.fill()
+      // 5. mouse spotlight
+      if (mx > 0) {
+        const sp = ctx.createRadialGradient(mx, my, 0, mx, my, 240)
+        sp.addColorStop(0, 'rgba(168,200,74,0.05)')
+        sp.addColorStop(0.5, 'rgba(168,200,74,0.015)')
+        sp.addColorStop(1, 'rgba(168,200,74,0)')
+        ctx.fillStyle = sp
+        ctx.fillRect(0, 0, W, H)
       }
 
-      // 6. MOUSE SPOTLIGHT
-      if (mx > -1000) {
-        const sg = ctx.createRadialGradient(mx, my, 0, mx, my, 260)
-        sg.addColorStop(0, 'rgba(168,200,74,0.05)')
-        sg.addColorStop(0.5, 'rgba(168,200,74,0.015)')
-        sg.addColorStop(1, 'rgba(168,200,74,0)')
-        ctx.fillStyle = sg; ctx.fillRect(0, 0, W, H)
-      }
-
-      // 7. VIGNETTE (cached)
-      if (vigGrad) { ctx.fillStyle = vigGrad; ctx.fillRect(0, 0, W, H) }
+      // 6. vignette
+      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.9)
+      vg.addColorStop(0, 'rgba(0,0,0,0)')
+      vg.addColorStop(1, 'rgba(0,0,0,0.6)')
+      ctx.fillStyle = vg
+      ctx.fillRect(0, 0, W, H)
 
       rafRef.current = requestAnimationFrame(animate)
     }
-
-    spawnPulse()
     rafRef.current = requestAnimationFrame(animate)
 
     return () => {
@@ -370,10 +217,7 @@ export default function Background({ scrollY }) {
 
   return (
     <div className="bg-layer">
-      <canvas
-        ref={canvasRef}
-        style={{ position:'absolute', inset:0, width:'100%', height:'100%', willChange:'transform' }}
-      />
+      <canvas ref={canvasRef} style={{ position:'absolute', inset:0, width:'100%', height:'100%' }} />
       <div className="grain" />
     </div>
   )

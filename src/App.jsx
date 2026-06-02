@@ -3,6 +3,7 @@ import {
   lazy, Suspense, useTransition, useDeferredValue,
 } from 'react'
 import Background from './Background'
+import Lenis from 'lenis'
 import { PAGES } from './data'
 import { KopeckySymbol } from './components/Icons'
 import { MagnetButton } from './components/ReactBits'
@@ -117,23 +118,51 @@ export default function App() {
   const [isPending, startTransition] = useTransition()
   const ticking = useRef(false)
   const pending = useRef(null)
+  const lenisRef = useRef(null)
+
+  // ── Lenis smooth scroll (momentum) ──────────────────────────────
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (window.matchMedia('(pointer: coarse)').matches) return  // native momentum on touch
+
+    const lenis = new Lenis({
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.5,
+      autoRaf: false,
+    })
+    lenisRef.current = lenis
+
+    let rafId
+    const raf = (time) => { lenis.raf(time); rafId = requestAnimationFrame(raf) }
+    rafId = requestAnimationFrame(raf)
+
+    return () => { cancelAnimationFrame(rafId); lenis.destroy(); lenisRef.current = null }
+  }, [])
 
   // Throttled scroll + reading progress tracking
   useEffect(() => {
+    const update = () => {
+      const y  = window.scrollY
+      const el = document.documentElement
+      const pct = el.scrollTop / (el.scrollHeight - el.clientHeight) * 100 || 0
+      setScrollY(y); setScrollPct(pct); setShowTop(y > 500)
+      if (pct > 5) actions.setProgress(page, Math.round(pct))
+    }
     const onScroll = () => {
       if (ticking.current) return
       ticking.current = true
-      requestAnimationFrame(() => {
-        const y  = window.scrollY
-        const el = document.documentElement
-        const pct = el.scrollTop / (el.scrollHeight - el.clientHeight) * 100 || 0
-        setScrollY(y); setScrollPct(pct); setShowTop(y > 500)
-        if (pct > 5) actions.setProgress(page, Math.round(pct))
-        ticking.current = false
-      })
+      requestAnimationFrame(() => { update(); ticking.current = false })
     }
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    // Lenis emits its own scroll signal too
+    lenisRef.current?.on?.('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      lenisRef.current?.off?.('scroll', onScroll)
+    }
   }, [page, actions])
 
   const navigateTo = useCallback((target) => {
@@ -147,6 +176,7 @@ export default function App() {
         actions.visitPage(target)
       })
       window.scrollTo(0, 0)
+      lenisRef.current?.scrollTo(0, { immediate: true })
       setScrollY(0)
       actions.setPhase('enter')
       setTimeout(() => { setTrans(false); actions.setPhase('idle') }, 360)

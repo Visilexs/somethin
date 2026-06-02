@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Reveal, QuoteBlock } from '../components/UI'
 import { KopeckySymbol } from '../components/Icons'
-import { DecreeBox, RuneParticles, TypewriterText } from '../components/StoryAnim'
 import { SplitText, BlurText, ShinyButton, GradientText, SpotlightCard, ScrollReveal, CountUp } from '../components/ReactBits'
 
 const HERO_QUOTES = [
@@ -177,7 +176,7 @@ export default function HomePage({ setPage }) {
           <div style={{ textAlign:'center', marginBottom:44 }}>
             <div className="sec-label" style={{ textAlign:'center' }}>The Sacred Chapters</div>
             <div className="sec-title" style={{ textAlign:'center' }}>
-              <TypewriterText text="Enter the Scripture" speed={22}/>
+              Enter the Scripture
             </div>
             <p className="prose" style={{ textAlign:'center', maxWidth:500, margin:'0 auto' }}>
               Eight chapters. Fourteen years. One true god, five disciples, fifteen laws,
@@ -213,7 +212,7 @@ export default function HomePage({ setPage }) {
           <div style={{ marginTop:72, marginBottom:8, textAlign:'center' }}>
             <div className="sec-label" style={{ textAlign:'center', color:'var(--am)' }}>Year Eight · By the Hand of Kopecky</div>
             <div className="sec-title" style={{ textAlign:'center', color:'var(--am)' }}>
-              <TypewriterText text="The Holy Decree" speed={22}/>
+              The Holy Decree
             </div>
             <p className="prose" style={{ textAlign:'center', maxWidth:520, margin:'0 auto' }}>
               In Year Eight, Kopecky issued the only Holy Decree of the Kopeckian Era.
@@ -224,10 +223,16 @@ export default function HomePage({ setPage }) {
         </Reveal>
 
         <Reveal delay={1}>
-          <DecreeBox amber>
-            <RuneParticles count={5} color="rgba(200,168,74,"/>
-            <div style={{ position:'absolute', top:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.5),transparent)', zIndex:1 }}/>
-            <div style={{ position:'absolute', bottom:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.3),transparent)', zIndex:1 }}/>
+          <div style={{
+            border:'1px solid rgba(200,168,74,.32)',
+            background:'rgba(200,168,74,.035)',
+            padding:'36px 36px 28px',
+            margin:'28px 0',
+            position:'relative',
+            overflow:'hidden',
+          }}>
+            <div style={{ position:'absolute', top:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.5),transparent)' }}/>
+            <div style={{ position:'absolute', bottom:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.3),transparent)' }}/>
             <div style={{ position:'relative', zIndex:1 }}>
               <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:16, marginBottom:20 }}>
                 <div style={{ flex:1, height:1, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.22))' }}/>
@@ -266,17 +271,15 @@ export default function HomePage({ setPage }) {
                 Signed: Kopecky · Witnessed: Vladimír (who said nothing but wrote everything down)
               </div>
             </div>
-          </DecreeBox>
+          </div>
         </Reveal>
 
         <Reveal delay={1}>
           <div style={{ textAlign:'center', padding:'8px 0 6px' }}>
-            <TypewriterText
-              text='"Fear not, Chudlings. Nothing ever happens."'
-              style={{ fontFamily:"'EB Garamond',serif", fontSize:'clamp(18px,3vw,28px)', fontStyle:'italic',
-                color:'var(--am)', textAlign:'center', textShadow:'0 0 30px rgba(200,168,74,.2)' }}
-              speed={32}
-            />
+            <div style={{ fontFamily:"'EB Garamond',serif", fontSize:'clamp(18px,3vw,28px)', fontStyle:'italic',
+                color:'var(--am)', textAlign:'center', textShadow:'0 0 30px rgba(200,168,74,.2)' }}>
+              "Fear not, Chudlings. Nothing ever happens."
+            </div>
             <div style={{ fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(200,168,74,.36)', marginTop:10 }}>
               — Kopecky · Following the Reinstatement · Four Words · Partly Genuine
             </div>
@@ -295,7 +298,7 @@ export default function HomePage({ setPage }) {
           <div style={{ marginTop:64, marginBottom:28, textAlign:'center' }}>
             <div className="sec-label" style={{ textAlign:'center' }}>The Five Disciples</div>
             <div className="sec-title" style={{ textAlign:'center' }}>
-              <TypewriterText text="Those Who Followed Him" speed={22}/>
+              Those Who Followed Him
             </div>
             <p className="prose" style={{ textAlign:'center', maxWidth:560, margin:'0 auto 32px' }}>
               A narcissist. A well-meaning fool. A man who agrees with everyone except the one true god.

@@ -1,5 +1,4 @@
 import { Reveal, QuoteBlock } from '../components/UI'
-import { TypewriterText } from '../components/StoryAnim'
 
 const OBSERVANCES = [
   { time:'Dawn', title:'The Morning Alignment', body:'Face the Tatras (roughly northeast from most valley locations) before opening your eyes fully. Do not face southwest. The Church does not explain why. Footnote 7 of the Hmlová Kniha explains why. The Church recommends not reading Footnote 7 until you are settled in the faith.' },
@@ -15,7 +14,7 @@ export default function PrayerPage({ setPage }) {
     <>
       <div className="page-hero">
         <div className="page-hero-label">The Daily Chud Practice · Recited at Dawn, Facing the Tatras</div>
-        <div className="page-hero-title"><TypewriterText text="The Prayer" speed={18}/></div>
+        <div className="page-hero-title">The Prayer</div>
         <div className="page-hero-sub">The Morning Observance · Daily Practice · How to Live the Chud Way · Tak Nech Sa Stane</div>
       </div>
       <div className="main-wrap">
@@ -23,13 +22,13 @@ export default function PrayerPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">The Central Observance — Recited Daily at Dawn</div>
-            <div className="sec-title"><TypewriterText text="The Morning Prayer of the Valleys" speed={20}/></div>
+            <div className="sec-title">The Morning Prayer of the Valleys</div>
             <p className="prose">The Morning Prayer of Kopecky was not written by Kopecky. It was assembled by the Council of Devín from various recorded utterances, modified for liturgical use, and reviewed by the apostle Vladimír, who said it was "approximately what he would have said if he had been writing a prayer about himself, which he would not have been." The Council took this as approval. Vladimír said that was not what he had said. The Council took this as further approval. Vladimír has made his peace with it.</p>
           </Reveal>
           <Reveal delay={1}>
             <div className="prayer-box">
               <div className="prayer-txt">
-                <TypewriterText text="O Kopecky, Descender from the Tatras," speed={28}/><br />
+                O Kopecky, Descender from the Tatras,<br />
                 Inventor of the Chud, Keeper of the Satchel,<br />
                 Corrector of Wood-Stacking and Bread Salt,<br />
                 Player of Correct Chess, Holder of Necessary Grudges,<br />
@@ -79,7 +78,7 @@ export default function PrayerPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">The Daily Chud Practice — Six Observances · Dawn to Night</div>
-            <div className="sec-title"><TypewriterText text="How to Live the Chud Way" speed={20}/></div>
+            <div className="sec-title">How to Live the Chud Way</div>
             <p className="prose">The Chud lifestyle is not observed on holy days. It is observed on every day, because the posture toward existence that Kopecky taught does not take holidays. The mountains do not take holidays. The spruce trees do not take holidays. Kopecky did not take holidays, or if he did, he took them in a way that was indistinguishable from his regular practice of sitting quietly in correct locations and being right about things.</p>
           </Reveal>
           <div style={{ display:'flex', flexDirection:'column', gap:0, marginTop: 32 }}>
@@ -102,7 +101,7 @@ export default function PrayerPage({ setPage }) {
         <div className="content-section">
           <Reveal>
             <div className="sec-label">On Joining the Church · The Church of Kopecky Accepts All Who Come</div>
-            <div className="sec-title"><TypewriterText text="How to Join the Faithful" speed={20}/></div>
+            <div className="sec-title">How to Join the Faithful</div>
             <p className="prose">The Church of Kopecky does not have a formal membership process. Kopecky did not believe in formal membership processes on the grounds that a process implies there are people who should not complete it, and the Chud philosophy holds that everyone is at some point on the path — some near the beginning, some further along, some walking in the wrong direction while confidently explaining that they are walking in the right direction, which is a different situation but still technically on the path.</p>
             <p className="prose">To join the faithful is simply to begin. Begin facing the Tatras in the morning. Begin with the bread. Begin sitting with the hard question. Begin arriving at the midday meal slightly after everyone else. Begin ordering the stew. The practice will teach itself. Kopecky taught it by example rather than instruction for the first two years before he named it, and several people in Prvá Dolina had already adopted it entirely without knowing they were doing so.</p>
             <p className="prose">Ayub Jamma has offered to personally induct new members and assess their readiness. The Church has not endorsed this offer. Enrico has endorsed it. Enrico's endorsement is on file but has not been actioned. Abdullah has suggested that new members should begin by speaking to a bear, "just to see." The Church has recommended against this. Korrin has left a hat near the entrance of the Devín library. Nobody is sure if this is related. The hat has been there for six months. Nobody has moved it.</p>
@@ -116,7 +115,7 @@ export default function PrayerPage({ setPage }) {
         <div className="content-section" style={{ borderBottom: 'none' }}>
           <Reveal>
             <div className="sec-label">The Closing Statement · Council of Devín · Adopted Unanimously</div>
-            <div className="sec-title"><TypewriterText text="A Note from the Church" speed={20}/></div>
+            <div className="sec-title">A Note from the Church</div>
             <p className="prose">The Church of Kopecky affirms: he was right. He was right in ways that were obvious and in ways that were only clear later. He was right about the wood stack, the bread, the harvest, the character of men, the timing of snow, and the fundamental logic of targeting what has power. He was wrong about the Váh, the chess, and one horse at the Nitra market. The Church has made its peace with the 2.7%. The Church has also, quietly, made its peace with the chess argument, in the sense that the Church understands why he said what he said and why he could not have said anything else, given who he was. The queen <em>is</em> more powerful. He was right about the spirit of it. He was just wrong about the rules.</p>
             <p className="prose">The satchel has not been opened. Korrin has been near it on three occasions. Nobody has asked Korrin about this. The Church prays about Yash. The invoice for the sixth book will be settled when Kopecky returns to settle it, because it is his book and his responsibility, and the Church has found through experience that assuming Kopecky's responsibilities on his behalf tends to produce outcomes that require correction.</p>
             <p className="prose" style={{ fontStyle:'italic', color:'var(--g)', textAlign:'center', marginTop: 32 }}>He will return. He said so. He was right about everything else. Tak nech sa stane.</p>

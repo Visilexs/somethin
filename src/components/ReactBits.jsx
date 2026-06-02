@@ -1,195 +1,183 @@
-/**
- * React Bits — hand-implemented component library
- * SplitText, BlurText, ShinyButton, SpotlightCard,
- * MagnetButton, GradientText, ScrollReveal, CountUp,
- * FloatingOrbs, TextRevealByWord
- */
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
-// ─── Shared IntersectionObserver helper ──────────────────────────────────────
-function useIntersect(threshold = 0.05, once = true) {
+// ════════════════════════════════════════════════════════════════════════════
+// ReactBits-style components — ported to source (MIT, reactbits.dev pattern)
+// ════════════════════════════════════════════════════════════════════════════
+
+// Shared in-view hook with reliable firing
+function useReveal(threshold = 0.15) {
   const ref = useRef(null)
-  const [hit, setHit] = useState(false)
+  const [inView, setInView] = useState(false)
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const fb = setTimeout(() => setHit(true), 700)
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setHit(true); clearTimeout(fb); if (once) obs.disconnect() }
-    }, { threshold, rootMargin: '0px 0px 0px 0px' })
+    const fb = setTimeout(() => setInView(true), 600)
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setInView(true); clearTimeout(fb); obs.disconnect() } },
+      { threshold, rootMargin: '0px 0px -8% 0px' }
+    )
     obs.observe(el)
     return () => { obs.disconnect(); clearTimeout(fb) }
-  }, [])
-  return [ref, hit]
+  }, [threshold])
+  return [ref, inView]
 }
 
-// ─── SplitText ────────────────────────────────────────────────────────────────
-// Animates each character in with a stagger
-export function SplitText({
-  text,
-  className = '',
-  style = {},
-  charDelay = 28,   // ms between chars
-  initialDelay = 0, // ms before first char
-  tag: Tag = 'span',
-}) {
-  const [ref, hit] = useIntersect(0.05)
+// ── SplitText — animates each character in, staggered ───────────────────────
+export function SplitText({ text, className = '', style = {}, delay = 0, stagger = 26, tag: Tag = 'span' }) {
+  const [ref, inView] = useReveal(0.2)
   const chars = Array.from(text)
-
   return (
-    <Tag ref={ref} className={className} style={{ display: 'block', ...style }}>
+    <Tag ref={ref} className={className} style={{ display: 'inline-block', ...style }} aria-label={text}>
       {chars.map((ch, i) => (
+        <span
+          key={i}
+          aria-hidden="true"
+          style={{
+            display: 'inline-block',
+            whiteSpace: ch === ' ' ? 'pre' : 'normal',
+            opacity: inView ? 1 : 0,
+            transform: inView ? 'translateY(0) rotateX(0)' : 'translateY(0.5em) rotateX(-40deg)',
+            transition: `opacity .5s ease, transform .5s cubic-bezier(.2,.7,.3,1)`,
+            transitionDelay: `${delay + i * stagger}ms`,
+            transformOrigin: '50% 100%',
+          }}
+        >{ch === ' ' ? '\u00A0' : ch}</span>
+      ))}
+    </Tag>
+  )
+}
+
+// ── BlurText — words blur+fade in ───────────────────────────────────────────
+export function BlurText({ text, className = '', style = {}, delay = 0, stagger = 70, tag: Tag = 'p' }) {
+  const [ref, inView] = useReveal(0.12)
+  const words = text.split(' ')
+  return (
+    <Tag ref={ref} className={className} style={style}>
+      {words.map((w, i) => (
         <span
           key={i}
           style={{
             display: 'inline-block',
-            whiteSpace: ch === ' ' ? 'pre' : 'normal',
-            opacity: hit ? 1 : 0,
-            transform: hit ? 'translateY(0px)' : 'translateY(12px)',
-            transition: `opacity .45s ease ${initialDelay + i * charDelay}ms,
-                         transform .45s ease ${initialDelay + i * charDelay}ms`,
+            opacity: inView ? 1 : 0,
+            filter: inView ? 'blur(0px)' : 'blur(8px)',
+            transform: inView ? 'translateY(0)' : 'translateY(8px)',
+            transition: 'opacity .6s ease, filter .6s ease, transform .6s ease',
+            transitionDelay: `${delay + i * stagger}ms`,
+            marginRight: '0.28em',
           }}
-        >{ch}</span>
+        >{w}</span>
       ))}
     </Tag>
   )
 }
 
-// ─── BlurText ─────────────────────────────────────────────────────────────────
-// Each word blurs in sequentially
-export function BlurText({
-  text,
-  className = '',
-  style = {},
-  wordDelay = 80,
-  tag: Tag = 'span',
-}) {
-  const [ref, hit] = useIntersect(0.05)
-  const words = text.split(' ')
+// ── ShinyText — sweeping shine across text ──────────────────────────────────
+export function ShinyText({ text, className = '', speed = 4, style = {} }) {
   return (
-    <Tag ref={ref} className={className} style={{ display: 'block', ...style }}>
-      {words.map((w, i) => (
-        <span key={i} style={{ display: 'inline-block', marginRight: '0.28em' }}>
-          <span style={{
-            display: 'inline-block',
-            opacity: hit ? 1 : 0,
-            filter: hit ? 'blur(0px)' : 'blur(6px)',
-            transform: hit ? 'translateY(0px)' : 'translateY(6px)',
-            transition: `opacity .55s ease ${i * wordDelay}ms,
-                         filter .55s ease ${i * wordDelay}ms,
-                         transform .55s ease ${i * wordDelay}ms`,
-          }}>{w}</span>
-        </span>
-      ))}
-    </Tag>
-  )
-}
-
-// ─── GradientText ─────────────────────────────────────────────────────────────
-// Animated moving gradient on text
-export function GradientText({ text, colors, className = '', style = {}, speed = 6 }) {
-  const gradient = colors
-    ? `linear-gradient(135deg, ${colors.join(', ')})`
-    : 'linear-gradient(135deg, #a8c84a, #c8a84a, #a8c84a, #d0e870)'
-  return (
-    <span className={className} style={{
-      backgroundImage: gradient,
-      backgroundSize: '200% 200%',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-      backgroundClip: 'text',
-      color: 'transparent',
-      animation: `gt-shift ${speed}s linear infinite`,
-      display: 'inline-block',
-      ...style,
-    }}>
+    <span
+      className={className}
+      style={{
+        display: 'inline-block',
+        background: 'linear-gradient(120deg, rgba(168,200,74,.55) 30%, rgba(220,240,160,1) 50%, rgba(168,200,74,.55) 70%)',
+        backgroundSize: '200% auto',
+        WebkitBackgroundClip: 'text',
+        backgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        color: 'transparent',
+        animation: `shiny ${speed}s linear infinite`,
+        ...style,
+      }}
+    >
       {text}
-      <style>{`
-        @keyframes gt-shift {
-          0%   { background-position: 0% 50%; }
-          50%  { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-      `}</style>
+      <style>{`@keyframes shiny { to { background-position: -200% center; } }`}</style>
     </span>
   )
 }
 
-// ─── ShinyButton ──────────────────────────────────────────────────────────────
-// Sweeping shine on hover
-export function ShinyButton({ children, onClick, className = '', style = {}, amber = false }) {
-  const [hover, setHover] = useState(false)
-  const [pos, setPos] = useState({ x: 50, y: 50 })
-  const ref = useRef(null)
-
-  const onMove = useCallback((e) => {
-    const r = ref.current?.getBoundingClientRect()
-    if (!r) return
-    setPos({
-      x: ((e.clientX - r.left) / r.width) * 100,
-      y: ((e.clientY - r.top) / r.height) * 100,
-    })
-  }, [])
-
-  const c = amber ? '200,168,74' : '168,200,74'
-  const dark = amber ? 'rgba(200,168,74,.07)' : 'rgba(168,200,74,.07)'
-  const bdr  = amber ? 'rgba(200,168,74,.35)' : 'rgba(168,200,74,.35)'
-  const col  = amber ? 'rgba(200,168,74,.95)' : 'rgba(168,200,74,.95)'
-
+// ── GradientText — animated gradient fill ───────────────────────────────────
+export function GradientText({ children, className = '', style = {}, speed = 6 }) {
   return (
-    <button
-      ref={ref}
-      onClick={onClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onMouseMove={onMove}
+    <span
       className={className}
       style={{
-        position: 'relative', overflow: 'hidden',
-        fontFamily: "'Cinzel',serif", fontSize: 10, letterSpacing: '.22em',
-        textTransform: 'uppercase', color: col,
-        background: dark, border: `1px solid ${bdr}`,
-        padding: '14px 36px', cursor: 'none',
-        transition: 'border-color .3s, box-shadow .3s',
-        boxShadow: hover ? `0 0 28px rgba(${c},.18)` : 'none',
-        borderColor: hover ? `rgba(${c},.55)` : bdr,
+        display: 'inline-block',
+        background: 'linear-gradient(90deg, #a8c84a, #c8a84a, #d8e890, #a8c84a)',
+        backgroundSize: '300% auto',
+        WebkitBackgroundClip: 'text',
+        backgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        color: 'transparent',
+        animation: `grad-flow ${speed}s linear infinite`,
         ...style,
       }}
     >
-      {/* Spotlight */}
-      <span style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none',
-        background: hover
-          ? `radial-gradient(circle at ${pos.x}% ${pos.y}%, rgba(${c},.22) 0%, transparent 60%)`
-          : 'none',
-        transition: 'background .15s',
-      }}/>
-      {/* Sweep shine */}
-      <span style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none',
-        background: hover
-          ? `linear-gradient(${105 + pos.x * 0.3}deg, transparent 30%, rgba(${c},.18) 50%, transparent 70%)`
-          : 'transparent',
-        transform: hover ? 'translateX(0)' : 'translateX(-100%)',
-        transition: hover ? 'transform .4s ease' : 'none',
-      }}/>
-      <span style={{ position: 'relative', zIndex: 1 }}>{children}</span>
-    </button>
+      {children}
+      <style>{`@keyframes grad-flow { to { background-position: 300% center; } }`}</style>
+    </span>
   )
 }
 
-// ─── SpotlightCard ────────────────────────────────────────────────────────────
-// Card with a mouse-tracking light source
-export function SpotlightCard({ children, className = '', style = {}, onClick, amber = false }) {
-  const ref  = useRef(null)
-  const [pos, setPos] = useState({ x: '50%', y: '50%' })
-  const [inside, setInside] = useState(false)
-  const c = amber ? '200,168,74' : '168,200,74'
+// ── AnimatedContent — slide/fade in on scroll ───────────────────────────────
+export function AnimatedContent({ children, distance = 40, direction = 'vertical', delay = 0, duration = 0.7, className = '', style = {} }) {
+  const [ref, inView] = useReveal(0.1)
+  const axis = direction === 'horizontal' ? 'translateX' : 'translateY'
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? `${axis}(0)` : `${axis}(${distance}px)`,
+        transition: `opacity ${duration}s ease, transform ${duration}s cubic-bezier(.2,.7,.3,1)`,
+        transitionDelay: `${delay}s`,
+        ...style,
+      }}
+    >{children}</div>
+  )
+}
+
+// ── Magnet — element follows cursor when near ───────────────────────────────
+export function Magnet({ children, strength = 0.4, className = '', style = {} }) {
+  const ref = useRef(null)
+  const [pos, setPos] = useState({ x: 0, y: 0 })
+
+  const onMove = useCallback((e) => {
+    const el = ref.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const cx = r.left + r.width / 2
+    const cy = r.top + r.height / 2
+    setPos({ x: (e.clientX - cx) * strength, y: (e.clientY - cy) * strength })
+  }, [strength])
+
+  const onLeave = useCallback(() => setPos({ x: 0, y: 0 }), [])
+
+  return (
+    <div
+      ref={ref}
+      className={className}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{
+        display: 'inline-block',
+        transform: `translate(${pos.x}px, ${pos.y}px)`,
+        transition: pos.x === 0 && pos.y === 0 ? 'transform .5s cubic-bezier(.2,.7,.3,1)' : 'transform .1s ease-out',
+        ...style,
+      }}
+    >{children}</div>
+  )
+}
+
+// ── SpotlightCard — cursor-tracking spotlight ───────────────────────────────
+export function SpotlightCard({ children, className = '', style = {}, spotlightColor = 'rgba(168,200,74,0.12)', onClick }) {
+  const ref = useRef(null)
+  const [spot, setSpot] = useState({ x: 50, y: 50, on: false })
 
   const onMove = (e) => {
-    const r = ref.current?.getBoundingClientRect()
-    if (!r) return
-    setPos({ x: `${((e.clientX - r.left) / r.width) * 100}%`, y: `${((e.clientY - r.top) / r.height) * 100}%` })
+    const el = ref.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    setSpot({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100, on: true })
   }
 
   return (
@@ -198,154 +186,144 @@ export function SpotlightCard({ children, className = '', style = {}, onClick, a
       className={className}
       onClick={onClick}
       onMouseMove={onMove}
-      onMouseEnter={() => setInside(true)}
-      onMouseLeave={() => setInside(false)}
-      style={{
-        position: 'relative', overflow: 'hidden',
-        background: `rgba(${c},.04)`,
-        border: `1px solid rgba(${c},${inside ? '.35' : '.14'})`,
-        borderTop: `2px solid rgba(${c},${inside ? '.65' : '.38'})`,
-        transition: 'border-color .3s, border-top-color .3s, box-shadow .3s',
-        boxShadow: inside ? `0 20px 60px rgba(0,0,0,.5), 0 0 30px rgba(${c},.08)` : 'none',
-        cursor: onClick ? 'none' : 'default',
-        ...style,
-      }}
+      onMouseEnter={() => setSpot(s => ({ ...s, on: true }))}
+      onMouseLeave={() => setSpot(s => ({ ...s, on: false }))}
+      style={{ position: 'relative', overflow: 'hidden', ...style }}
     >
-      {/* Spotlight overlay */}
-      <div aria-hidden style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
-        background: inside
-          ? `radial-gradient(circle at ${pos.x} ${pos.y}, rgba(${c},.1) 0%, transparent 55%)`
-          : 'none',
-        transition: 'background .12s',
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: `radial-gradient(circle at ${spot.x}% ${spot.y}%, ${spotlightColor} 0%, transparent 55%)`,
+        opacity: spot.on ? 1 : 0,
+        transition: 'opacity .35s ease',
+        zIndex: 0,
       }}/>
       <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
     </div>
   )
 }
 
-// ─── MagnetButton ─────────────────────────────────────────────────────────────
-// Button slightly follows cursor when nearby
-export function MagnetButton({ children, onClick, onMouseEnter, className = '', style = {}, strength = 0.35, ...rest }) {
-  const ref  = useRef(null)
-  const [tx, setTx] = useState(0)
-  const [ty, setTy] = useState(0)
+// ── CountUp — number counts up when in view ─────────────────────────────────
+export function CountUp({ to, from = 0, duration = 1.8, decimals = 0, suffix = '', className = '', style = {} }) {
+  const [ref, inView] = useReveal(0.3)
+  const [val, setVal] = useState(from)
+  const raf = useRef()
+
+  useEffect(() => {
+    if (!inView) return
+    const start = performance.now()
+    const tick = (now) => {
+      const t = Math.min((now - start) / (duration * 1000), 1)
+      const eased = 1 - Math.pow(1 - t, 3)
+      setVal(from + (to - from) * eased)
+      if (t < 1) raf.current = requestAnimationFrame(tick)
+      else setVal(to)
+    }
+    raf.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf.current)
+  }, [inView, to, from, duration])
+
+  return <span ref={ref} className={className} style={style}>{val.toFixed(decimals)}{suffix}</span>
+}
+
+// ── ShinyButton — magnetic + shine + spotlight button ───────────────────────
+export function ShinyButton({ children, onClick, variant = 'g', style = {}, className = '' }) {
+  const ref = useRef(null)
+  const [spot, setSpot] = useState({ x: 50, y: 50, on: false })
+  const col = variant === 'a' ? '200,168,74' : '168,200,74'
 
   const onMove = (e) => {
-    const r = ref.current?.getBoundingClientRect()
-    if (!r) return
-    const cx = r.left + r.width / 2
-    const cy = r.top  + r.height / 2
-    setTx((e.clientX - cx) * strength)
-    setTy((e.clientY - cy) * strength)
+    const el = ref.current; if (!el) return
+    const r = el.getBoundingClientRect()
+    setSpot({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100, on: true })
   }
-
-  const onLeave = () => { setTx(0); setTy(0) }
 
   return (
     <button
       ref={ref}
       onClick={onClick}
-      onMouseEnter={onMouseEnter}
       onMouseMove={onMove}
-      onMouseLeave={onLeave}
+      onMouseEnter={() => setSpot(s => ({ ...s, on: true }))}
+      onMouseLeave={() => setSpot(s => ({ ...s, on: false }))}
       className={className}
       style={{
-        transform: `translate(${tx}px, ${ty}px)`,
-        transition: tx === 0 ? 'transform .4s cubic-bezier(.22,1,.36,1)' : 'transform .1s linear',
-        cursor: 'none',
+        position: 'relative', overflow: 'hidden',
+        fontFamily: "'Cinzel',serif", fontSize: 10, letterSpacing: '.22em', textTransform: 'uppercase',
+        color: `rgba(${col},.92)`,
+        background: `rgba(${col},.07)`,
+        border: `1px solid rgba(${col},.3)`,
+        padding: '14px 32px', cursor: 'none',
+        transition: 'border-color .3s, box-shadow .3s',
+        boxShadow: spot.on ? `0 0 24px rgba(${col},.14)` : 'none',
+        borderColor: spot.on ? `rgba(${col},.55)` : `rgba(${col},.3)`,
         ...style,
       }}
-      {...rest}
+    >
+      <span style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: `radial-gradient(circle at ${spot.x}% ${spot.y}%, rgba(${col},.18) 0%, transparent 50%)`,
+        opacity: spot.on ? 1 : 0, transition: 'opacity .3s',
+      }}/>
+      {/* Shine sweep */}
+      <span style={{
+        position: 'absolute', top: 0, left: '-60%', width: '50%', height: '100%',
+        background: `linear-gradient(120deg, transparent, rgba(${col},.18), transparent)`,
+        transform: 'skewX(-20deg)',
+        animation: spot.on ? 'btn-shine 0.9s ease' : 'none',
+        pointerEvents: 'none',
+      }}/>
+      <span style={{ position: 'relative', zIndex: 1 }}>{children}</span>
+      <style>{`@keyframes btn-shine { from { left: -60%; } to { left: 120%; } }`}</style>
+    </button>
+  )
+}
+
+// ── ScrollReveal — staggered children reveal ────────────────────────────────
+export function ScrollReveal({ children, className = '', style = {}, stagger = 80 }) {
+  const [ref, inView] = useReveal(0.08)
+  const arr = Array.isArray(children) ? children : [children]
+  return (
+    <div ref={ref} className={className} style={style}>
+      {arr.map((child, i) => (
+        <div
+          key={i}
+          style={{
+            opacity: inView ? 1 : 0,
+            transform: inView ? 'translateY(0)' : 'translateY(28px)',
+            transition: `opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1)`,
+            transitionDelay: `${i * stagger}ms`,
+          }}
+        >{child}</div>
+      ))}
+    </div>
+  )
+}
+
+// ── MagnetButton — nav-style magnetic button ────────────────────────────────
+export function MagnetButton({ children, onClick, active = false, className = '', style = {}, strength = 0.35 }) {
+  const ref = useRef(null)
+  const [pos, setPos] = useState({ x: 0, y: 0 })
+  const onMove = (e) => {
+    const el = ref.current; if (!el) return
+    const r = el.getBoundingClientRect()
+    setPos({ x: (e.clientX - (r.left + r.width / 2)) * strength, y: (e.clientY - (r.top + r.height / 2)) * strength })
+  }
+  return (
+    <button
+      ref={ref}
+      onClick={onClick}
+      onMouseMove={onMove}
+      onMouseLeave={() => setPos({ x: 0, y: 0 })}
+      className={className}
+      style={{
+        transform: `translate(${pos.x}px, ${pos.y}px)`,
+        transition: pos.x === 0 && pos.y === 0 ? 'transform .5s cubic-bezier(.2,.7,.3,1)' : 'transform .12s ease-out',
+        ...style,
+      }}
     >{children}</button>
   )
 }
 
-// ─── ScrollReveal ─────────────────────────────────────────────────────────────
-// Wraps children and stagger-reveals them when scrolled into view
-export function ScrollReveal({ children, stagger = 80, y = 20, blur = false, className = '' }) {
-  const [ref, hit] = useIntersect(0.05)
-  const items = Array.isArray(children) ? children : [children]
-  return (
-    <div ref={ref} className={className}>
-      {items.map((child, i) => (
-        <div key={i} style={{
-          opacity: hit ? 1 : 0,
-          transform: hit ? 'translateY(0px)' : `translateY(${y}px)`,
-          filter: blur ? (hit ? 'blur(0px)' : 'blur(4px)') : 'none',
-          transition: `opacity .6s ease ${i * stagger}ms,
-                       transform .6s ease ${i * stagger}ms
-                       ${blur ? `, filter .6s ease ${i * stagger}ms` : ''}`,
-        }}>{child}</div>
-      ))}
-    </div>
-  )
-}
-
-// ─── CountUp ──────────────────────────────────────────────────────────────────
-export function CountUp({ end, decimals = 1, suffix = '', duration = 2000 }) {
-  const [ref, hit] = useIntersect(0.1)
-  const [val, setVal] = useState(0)
-  const ran = useRef(false)
-  useEffect(() => {
-    if (!hit || ran.current) return
-    ran.current = true
-    const start = performance.now()
-    const tick = (now) => {
-      const t = Math.min((now - start) / duration, 1)
-      const e = 1 - Math.pow(1 - t, 3)
-      setVal((e * end).toFixed(decimals))
-      if (t < 1) requestAnimationFrame(tick)
-    }
-    requestAnimationFrame(tick)
-  }, [hit])
-  return <span ref={ref}>{val}{suffix}</span>
-}
-
-// ─── TextRevealByWord ─────────────────────────────────────────────────────────
-// Paragraph where each word reveals as page scrolls (like Apple-style)
-export function TextRevealByWord({ text, className = '', style = {} }) {
-  const [ref, hit] = useIntersect(0.02)
-  const words = text.split(' ')
-  return (
-    <p ref={ref} className={className} style={{ ...style }}>
-      {words.map((w, i) => (
-        <span key={i} style={{
-          display: 'inline-block', marginRight: '0.3em',
-          opacity: hit ? 1 : 0.12,
-          transition: `opacity .5s ease ${i * 45}ms`,
-        }}>{w}</span>
-      ))}
-    </p>
-  )
-}
-
-// ─── NumberTicker ─────────────────────────────────────────────────────────────
-// Large animated percentage display
-export function NumberTicker({ value, decimals = 1, label, note }) {
-  const [ref, hit] = useIntersect(0.1)
-  const [disp, setDisp] = useState('0.0')
-  const ran = useRef(false)
-  useEffect(() => {
-    if (!hit || ran.current) return
-    ran.current = true
-    const target = parseFloat(value)
-    const start  = performance.now()
-    const dur    = 2200
-    const tick   = (now) => {
-      const t = Math.min((now - start) / dur, 1)
-      const e = 1 - Math.pow(1 - t, 4)
-      setDisp((e * target).toFixed(decimals))
-      if (t < 1) requestAnimationFrame(tick)
-      else setDisp(String(value))
-    }
-    requestAnimationFrame(tick)
-  }, [hit])
-  return (
-    <div ref={ref} className="stat-block">
-      <div className="stat-num">{disp}<span className="stat-pct">%</span></div>
-      <div className="stat-lbl">{label}</div>
-      <div className="stat-note">{note}</div>
-    </div>
-  )
+// ── NumberTicker — alias of CountUp for compatibility ───────────────────────
+export function NumberTicker({ value, ...props }) {
+  return <CountUp to={value} {...props} />
 }

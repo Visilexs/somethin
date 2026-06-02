@@ -3,6 +3,7 @@ import { Reveal, QuoteBlock } from '../components/UI'
 import { DISCIPLES } from '../data'
 import { AyubIcon, AbdullahIcon, EnricoIcon, KorrinIcon, YashIcon } from '../components/Icons'
 import { TypewriterText } from '../components/StoryAnim'
+import { ShinyButton } from '../components/ReactBits'
 
 const ICON_MAP = { ayub:AyubIcon, abdullah:AbdullahIcon, enrico:EnricoIcon, korrin:KorrinIcon, yash:YashIcon }
 
@@ -14,9 +15,9 @@ function DiscipleIcon({ id, size=80 }) {
 function DiscipleDetail({ d, setActive }) {
   return (
     <div>
-      <button onClick={()=>setActive(null)} className="back-btn" style={{marginBottom:32,display:'inline-flex',alignItems:'center',gap:8}}>
+      <ShinyButton onClick={()=>setActive(null)} style={{marginBottom:32}}>
         ← All Disciples
-      </button>
+      </ShinyButton>
 
       <Reveal>
         <div style={{display:'flex',alignItems:'flex-start',gap:36,flexWrap:'wrap',marginBottom:44,paddingBottom:36,borderBottom:'1px solid rgba(168,200,74,0.1)'}}>
@@ -135,7 +136,7 @@ export default function DisciplesPage({ setPage }) {
             </Reveal>
 
             <div style={{textAlign:'center',padding:'40px 0 72px'}}>
-              <button className="cta-btn" onClick={()=>setPage('chronicles')}>Continue to Chronicles →</button>
+              <ShinyButton onClick={() => setPage("chronicles")}>Continue to Chronicles →</ShinyButton>
             </div>
           </>
         )}

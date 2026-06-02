@@ -2,6 +2,7 @@ import { Reveal, QuoteBlock, GrudgeItem } from '../components/UI'
 import { CHESS_QUOTES, GRUDGES, MIRACLES } from '../data'
 import { KopeckySymbol } from '../components/Icons'
 import { DecreeBox, TypewriterText, RuneParticles } from '../components/StoryAnim'
+import { ShinyButton } from '../components/ReactBits'
 
 export default function ChroniclesPage({ setPage }) {
   return (
@@ -248,9 +249,9 @@ export default function ChroniclesPage({ setPage }) {
         </div>
 
         <div style={{ textAlign:'center', padding:'40px 0 72px' }}>
-          <button className="cta-btn" onClick={() => setPage('texts')}>Sacred Texts →</button>
+          <ShinyButton onClick={() => setPage("texts")}>Sacred Texts →</ShinyButton>
           <span style={{ margin:'0 12px', color:'rgba(168,200,74,0.2)' }}>·</span>
-          <button className="back-btn" onClick={() => setPage('laws')}>The Laws of Chudhood</button>
+          <ShinyButton amber onClick={() => setPage("laws")}>The Laws of Chudhood</ShinyButton>
         </div>
       </div>
       <footer>© Cirkev Kopeckého · Chronicles Volume · The Chess Argument Is In The 2.7% · The Grudges Are Accurate Records · The Miracles Are Verified · Mostly</footer>

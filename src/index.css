@@ -576,3 +576,26 @@ footer  { position: relative; z-index: 1; text-align: center; padding: 38px 24px
 /* ── Remove old .page-wrap.out/.in classes (replaced by phase classes) ── */
 .page-wrap.out,
 .page-wrap.in { animation: none; opacity: 1; transform: none; transition: none; }
+
+/* ── Magnet nav button class ─────────────────────────────────────────────── */
+.nb {
+  font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: .17em;
+  text-transform: uppercase; color: rgba(168,200,74,.58);
+  background: none; border: none; border-right: 1px solid rgba(168,200,74,.1);
+  padding: 14px 18px; cursor: none; white-space: nowrap;
+  transition: color .22s, background .22s; position: relative; overflow: hidden;
+}
+.nb:first-child { border-left: 1px solid rgba(168,200,74,.1); }
+.nb::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, var(--g), transparent);
+  transform: scaleX(0); transition: transform .3s ease;
+}
+.nb:hover::after, .nb.active::after { transform: scaleX(1); }
+.nb:hover, .nb.active { color: var(--g); background: var(--g1); }
+.nb.laws-btn { color: rgba(200,168,74,.62); }
+.nb.laws-btn::after { background: linear-gradient(90deg, transparent, var(--am), transparent); }
+.nb.laws-btn:hover, .nb.laws-btn.active { color: var(--am); background: var(--am1); }
+.nb.game-btn { color: rgba(100,180,220,.62); }
+.nb.game-btn::after { background: linear-gradient(90deg, transparent, rgba(100,180,220,.8), transparent); }
+.nb.game-btn:hover, .nb.game-btn.active { color: rgba(120,200,240,.9); background: rgba(80,160,220,.07); }

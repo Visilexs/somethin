@@ -1,6 +1,7 @@
 import { Reveal, QuoteBlock } from '../components/UI'
 import { TIMELINE } from '../data'
 import { AnimatedTimelineItem, TypewriterText} from '../components/StoryAnim'
+import { ShinyButton } from '../components/ReactBits'
 
 export default function OriginsPage({ setPage }) {
   return (
@@ -81,7 +82,7 @@ export default function OriginsPage({ setPage }) {
         </div>
 
         <div style={{ textAlign:'center', padding:'40px 0 72px' }}>
-          <button className="cta-btn" onClick={() => setPage('chud')}>Continue to The Chud →</button>
+          <ShinyButton onClick={() => setPage("chud")}>Continue to The Chud →</ShinyButton>
         </div>
       </div>
       <footer>© Cirkev Kopeckého · Origins Volume · Tatranská Kniha · He Came Down the Mountain · He Was Correct About the Wood Stack · He Was Less Correct About the Váh</footer>

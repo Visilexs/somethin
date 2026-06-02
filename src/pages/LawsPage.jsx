@@ -2,6 +2,7 @@ import { Reveal } from '../components/UI'
 import LawGroup from '../components/LawGroup'
 import { LAW_GROUPS } from '../data'
 import { TypewriterText } from '../components/StoryAnim'
+import { ShinyButton } from '../components/ReactBits'
 
 export default function LawsPage({ setPage }) {
   return (
@@ -44,9 +45,9 @@ export default function LawsPage({ setPage }) {
             <div className="sec-title amber" style={{ textAlign:'center' }}>A Final Note on the Laws</div>
             <p className="prose" style={{ maxWidth:560, margin:'0 auto 16px', textAlign:'center' }}>The Fifteen Laws of Chudhood were received, transcribed, and canonised within the same week. This is the fastest the Council of Devín has ever acted on anything. The Council has reflected on why it moved so quickly. The Council believes it did not want Kopecky to know it was deliberating. This instinct was correct. The Council is aware of the irony of being correct about avoiding the scrutiny of Kopecky.</p>
             <p className="prose" style={{ maxWidth:560, margin:'0 auto 32px', textAlign:'center', fontStyle:'italic', color:'var(--am)' }}>The laws are sacred. The Chud is a way of life. Kopecky was, in most ways, right. The queen is still not the target in chess. These facts coexist in the tradition and the Council has made its peace with that. Law X will remain. We have asked. The answer is yes. The answer is always yes with Law X. We have stopped asking.</p>
-            <button className="back-btn" onClick={() => setPage('home')}>← Return Home</button>
+            <ShinyButton amber onClick={() => setPage("home")}>← Return Home</ShinyButton>
             <span style={{ margin:'0 12px', color:'rgba(168,200,74,0.2)' }}>·</span>
-            <button className="cta-btn" onClick={() => setPage('prayer')}>The Morning Prayer →</button>
+            <ShinyButton onClick={() => setPage("prayer")}>The Morning Prayer →</ShinyButton>
           </div>
         </Reveal>
       </div>

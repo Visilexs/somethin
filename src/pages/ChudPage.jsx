@@ -1,6 +1,7 @@
 import { Reveal, QuoteBlock, PillarCard } from '../components/UI'
 import { PILLARS, CHUD_QUOTES } from '../data'
 import { TypewriterText } from '../components/StoryAnim'
+import { ShinyButton } from '../components/ReactBits'
 
 export default function ChudPage({ setPage }) {
   return (
@@ -75,9 +76,9 @@ export default function ChudPage({ setPage }) {
         </div>
 
         <div style={{ textAlign:'center', padding:'40px 0 72px' }}>
-          <button className="cta-btn" onClick={() => setPage('disciples')}>Meet the Disciples →</button>
+          <ShinyButton onClick={() => setPage("disciples")}>Meet the Disciples →</ShinyButton>
           <span style={{ margin:'0 12px', color:'rgba(168,200,74,0.2)' }}>·</span>
-          <button className="back-btn" onClick={() => setPage('laws')}>See the Laws of Chudhood</button>
+          <ShinyButton amber onClick={() => setPage("laws")}>The Laws of Chudhood</ShinyButton>
         </div>
       </div>
       <footer>© Cirkev Kopeckého · Čudová Cesta · The Strange Way · Three Days in the Spruce · The Bread Is the Foundation · Do Not Over-Salt It</footer>

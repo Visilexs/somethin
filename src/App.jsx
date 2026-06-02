@@ -12,6 +12,7 @@ import GamePage       from './pages/GamePage'
 import MusicPlayer    from './MusicPlayer'
 import { PAGES }      from './data'
 import { KopeckySymbol } from './components/Icons'
+import { MagnetButton } from './components/ReactBits'
 
 // ── Transition state machine ────────────────────────────────────────────────
 // phase: 'idle' → 'exit' → 'reveal' → 'enter' → 'idle'
@@ -220,14 +221,16 @@ export default function App() {
 
         <nav className="main-nav" role="navigation" aria-label="Main navigation">
           {PAGES.map(p => (
-            <button
+            <MagnetButton
               key={p.id}
-              className={`${p.id === 'laws' ? 'laws-btn' : ''} ${p.id === 'game' ? 'game-btn' : ''} ${state.current === p.id ? 'active' : ''}`}
+              className={`nb ${p.id === 'laws' ? 'laws-btn' : ''} ${p.id === 'game' ? 'game-btn' : ''} ${state.current === p.id ? 'active' : ''}`}
               onClick={() => navigateTo(p.id)}
               aria-current={state.current === p.id ? 'page' : undefined}
+              strength={0.22}
+              style={{ fontFamily:"'Cinzel',serif", fontSize:10, letterSpacing:'.17em', textTransform:'uppercase', color:'rgba(168,200,74,.58)', background:'none', border:'none', borderRight:'1px solid rgba(168,200,74,.1)', padding:'14px 18px' }}
             >
               {p.id === 'laws' ? '⚖ ' : p.id === 'game' ? '♟ ' : ''}{p.label}
-            </button>
+            </MagnetButton>
           ))}
         </nav>
 

@@ -1,6 +1,7 @@
 import { Reveal, QuoteBlock, BookCard, StatBlock } from '../components/UI'
-import { AnimatedStat, TypewriterText} from '../components/StoryAnim'
+import { TypewriterText} from '../components/StoryAnim'
 import { BOOKS, CHUD_QUOTES, CHESS_QUOTES } from '../data'
+import { ShinyButton, NumberTicker } from '../components/ReactBits'
 
 const ALL_QUOTES = [
   { text: 'The mountains were there before me. But I was there before the mountains knew what they were for.', source: 'Tatranská Kniha, Chapter 1' },
@@ -52,7 +53,7 @@ export default function TextsPage({ setPage }) {
             <div className="sec-title"><TypewriterText text="On the Matter of His Correctness" speed={20}/></div>
             <p className="prose">The scribes of the monastery of Devín kept the most complete records of the Kopeckian Era. Over fourteen years of the Walking, they tabulated every claim, judgment, prophecy, and opinion. The Council of Devín verified their work over three centuries. Do not question the number. The number has been checked. The number is correct. The irony of this — that the correctness of the correctness record has itself been verified — is noted in the preface of the record and then not mentioned again.</p>
           </Reveal>
-          <AnimatedStat
+          <NumberTicker
             value="97.3"
             label="Verified Correctness Rate · Kopeckian Era · All Domains · All Valleys · Both Rivers"
             note="The remaining 2.7% comprises: the Lower Váh Direction Incident, the Winter of the Pale Goat, Law X on chess, and one assessment of a horse at the Nitra market. Kopecky refers to these as 'the four circumstances requiring context.' The context has been provided multiple times. It was lengthy."
@@ -91,9 +92,9 @@ export default function TextsPage({ setPage }) {
         </div>
 
         <div style={{ textAlign:'center', padding:'40px 0 72px' }}>
-          <button className="cta-btn" onClick={() => setPage('laws')}>The Laws of Chudhood →</button>
+          <ShinyButton onClick={() => setPage("laws")}>The Laws of Chudhood →</ShinyButton>
           <span style={{ margin:'0 12px', color:'rgba(168,200,74,0.2)' }}>·</span>
-          <button className="back-btn" onClick={() => setPage('prayer')}>The Prayer</button>
+          <ShinyButton amber onClick={() => setPage("prayer")}>The Prayer</ShinyButton>
         </div>
       </div>
       <footer>© Cirkev Kopeckého · Sacred Texts Volume · Six Books · One Unwritten · The Invoice Is Still Outstanding · He Was Right 97.3% of the Time · The 2.7% Has Been Contextualised</footer>

@@ -41,8 +41,20 @@ html.lenis, html.lenis body { height: auto; }
 
 /* ── RESET ─────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
-body { background: var(--bg); color: var(--tx); font-family: 'EB Garamond', Georgia, serif; overflow-x: hidden; cursor: none; }
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  background: var(--bg); color: var(--tx);
+  font-family: 'EB Garamond', Georgia, serif;
+  overflow-x: hidden; cursor: none;
+  -webkit-tap-highlight-color: transparent;
+}
 @media (pointer: coarse) { body { cursor: auto; } .cursor-ring, .cursor-dot { display: none; } }
 
 /* ── SCROLL-DRIVEN SECTION REVEAL (native CSS, no JS) ────────────────────── */
@@ -132,7 +144,7 @@ body { background: var(--bg); color: var(--tx); font-family: 'EB Garamond', Geor
 }
 
 /* ── APP SHELL ─────────────────────────────────────────────────────────── */
-.app { min-height: 100vh; position: relative; }
+.app { min-height: 100vh; min-height: 100dvh; position: relative; }
 .page-wrap {
   position: relative; z-index: 1;
   /* will-change only set during animation phases via JS class — not permanently */

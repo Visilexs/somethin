@@ -74,7 +74,7 @@ export function ShinyText({ text, className = '', speed = 4, style = {} }) {
         background: 'linear-gradient(120deg, rgba(168,200,74,.55) 30%, rgba(220,240,160,1) 50%, rgba(168,200,74,.55) 70%)',
         backgroundSize: '200% auto',
         WebkitBackgroundClip: 'text', backgroundClip: 'text',
-        WebkitTextFillColor: 'transparent', color: 'transparent',
+        WebkitTextFillColor: 'transparent', color: '#a8c84a',
         animation: `shiny ${speed}s linear infinite`,
         ...style,
       }}
@@ -97,7 +97,7 @@ export function GradientText({ children, text, colors, className = '', style = {
         backgroundImage: `linear-gradient(90deg, ${stops.join(', ')})`,
         backgroundSize: '300% auto',
         WebkitBackgroundClip: 'text', backgroundClip: 'text',
-        WebkitTextFillColor: 'transparent', color: 'transparent',
+        WebkitTextFillColor: 'transparent', color: '#a8c84a',
         animation: `grad-flow ${speed}s linear infinite`,
         ...style,
       }}

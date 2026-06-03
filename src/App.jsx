@@ -7,7 +7,6 @@ import Lenis from 'lenis'
 import { motion } from 'motion/react'
 import { PAGES } from './data'
 import { KopeckySymbol } from './components/Icons'
-import { MagnetButton } from './components/ReactBits'
 import MusicPlayer from './MusicPlayer'
 import Notifications from './components/Notifications'
 import { useApp } from './AppContext'
@@ -248,20 +247,18 @@ export default function App() {
 
         <nav className="main-nav" role="navigation" aria-label="Main navigation">
           {PAGES.map(p => (
-            <MagnetButton
+            <button
               key={p.id}
               className={`nb ${p.id === 'laws' ? 'laws-btn' : ''} ${p.id === 'game' ? 'game-btn' : ''} ${page === p.id ? 'active' : ''}`}
               onClick={() => navigateTo(p.id)}
               onMouseEnter={() => prefetch(p.id)}
               aria-current={page === p.id ? 'page' : undefined}
-              strength={0.4}
-              max={14}
             >
               {p.id === 'laws' ? '⚖ ' : p.id === 'game' ? '♟ ' : ''}{p.label}
               {state.visitedPages.includes(p.id) && p.id !== 'home' && (
                 <span style={{ marginLeft: 5, fontSize: 7, color: 'rgba(168,200,74,.4)', verticalAlign: 'super' }}>✓</span>
               )}
-            </MagnetButton>
+            </button>
           ))}
         </nav>
 

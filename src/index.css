@@ -262,6 +262,19 @@ header::after {
 .chess-body em { color: var(--am); font-style: italic; }
 
 /* ── CARDS (pillar, book, disciple) ──────────────────────────────────────── */
+/* ── REUSABLE PANEL (coherent card surface used site-wide) ──────────────── */
+.panel {
+  background: rgba(168,200,74,.04);
+  border: 1px solid rgba(168,200,74,.14);
+  border-top: 2px solid rgba(168,200,74,.38);
+  transition: border-top-color .28s, box-shadow .28s, background .28s;
+}
+.panel:hover {
+  border-top-color: var(--g);
+  background: rgba(168,200,74,.065);
+  box-shadow: 0 18px 50px rgba(0,0,0,.42), 0 0 18px rgba(168,200,74,.07);
+}
+
 .pillar {
   background: rgba(168,200,74,.04); border: 1px solid rgba(168,200,74,.14);
   border-top: 2px solid rgba(168,200,74,.38);
@@ -428,27 +441,7 @@ footer  { position: relative; z-index: 1; text-align: center; padding: 38px 24px
 
 /* ── Page states ──────────────────────────────────────────────── */
 /* NOTE: filter:blur removed — causes dropped frames on Windows/Firefox GPU */
-/* Pure opacity + translateY — scale() causes compositing issues on Windows GPU */
-@keyframes page-exit {
-  from { opacity: 1; transform: translateY(0px);  }
-  to   { opacity: 0; transform: translateY(-18px); }
-}
-@keyframes page-enter {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0px);  }
-}
-
-.page-idle    { opacity: 1; }
-.page-hidden  { opacity: 0; pointer-events: none; }
-.page-exiting {
-  animation: page-exit 260ms ease-in forwards;
-  pointer-events: none;
-  will-change: opacity, transform;
-}
-.page-entering {
-  animation: page-enter 340ms ease-out forwards;
-  will-change: opacity, transform;
-}
+/* Page transitions are handled by Motion AnimatePresence in App.jsx */
 
 /* ── Transition overlay ───────────────────────────────────────── */
 .tov {

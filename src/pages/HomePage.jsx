@@ -188,7 +188,7 @@ export default function HomePage({ setPage }) {
         <Reveal>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(210px,1fr))', gap:14, marginBottom:72 }}>
             {PAGE_TILES.map(({ id, Icon, title, sub }, i) => (
-              <SpotlightCard key={id} onClick={() => setPage(id)} style={{ padding:'28px 20px', textAlign:'center' }}>
+              <SpotlightCard key={id} className="panel" onClick={() => setPage(id)} style={{ padding:'28px 20px', textAlign:'center', cursor:'none' }}>
                 <div style={{ marginBottom:12, display:'flex', justifyContent:'center', opacity:.85 }}>
                   <Icon size={34}/>
                 </div>

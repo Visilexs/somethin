@@ -1,5 +1,6 @@
 import { useState, useDeferredValue, useMemo } from 'react'
 import { Reveal, QuoteBlock, BookCard, StatBlock } from '../components/UI'
+import { SpotlightCard } from '../components/ReactBits'
 import { BOOKS, CHUD_QUOTES, CHESS_QUOTES } from '../data'
 import { ShinyButton, NumberTicker } from '../components/ReactBits'
 
@@ -82,10 +83,10 @@ export default function TextsPage({ setPage }) {
                 { title:'Weather Predictions', txt:'He correctly predicted every significant snowfall in the High Tatras during the Walking. When asked how, he said "the light on the Kriváň changes before snow." Shepherds have watched the Kriváň for centuries since. They see what he saw. Nobody has explained what exactly they are seeing. He would consider this appropriate.' },
               ].map((item, i) => (
                 <Reveal key={i} delay={i % 3 + 1}>
-                  <div className="correct-card">
+                  <SpotlightCard className="correct-card" style={{ height:'100%', cursor:'none' }}>
                     <div className="correct-card-title">{item.title}</div>
                     <div className="correct-card-text">{item.txt}</div>
-                  </div>
+                  </SpotlightCard>
                 </Reveal>
               ))}
             </div>

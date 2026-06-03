@@ -1,7 +1,7 @@
 import { Reveal, QuoteBlock, GrudgeItem } from '../components/UI'
 import { CHESS_QUOTES, GRUDGES, MIRACLES } from '../data'
 import { KopeckySymbol } from '../components/Icons'
-import { ShinyButton } from '../components/ReactBits'
+import { ShinyButton, SpotlightCard } from '../components/ReactBits'
 
 export default function ChroniclesPage({ setPage }) {
   return (
@@ -55,10 +55,10 @@ export default function ChroniclesPage({ setPage }) {
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:16, marginTop: 32 }}>
             {MIRACLES.map((m, i) => (
               <Reveal key={i} delay={i % 3 + 1}>
-                <div className="miracle-card">
+                <SpotlightCard className="miracle-card" style={{ height:'100%', cursor:'none' }}>
                   <div className="miracle-title">{m.title}</div>
                   <div className="miracle-body">{m.body}</div>
-                </div>
+                </SpotlightCard>
               </Reveal>
             ))}
           </div>

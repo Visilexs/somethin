@@ -4,7 +4,7 @@ import {
 } from 'react'
 import Background from './Background'
 import Lenis from 'lenis'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion } from 'motion/react'
 import { PAGES } from './data'
 import { KopeckySymbol } from './components/Icons'
 import { MagnetButton } from './components/ReactBits'
@@ -99,6 +99,21 @@ function ScrollProgress({ pct }) {
   return <div className="scroll-bar" style={{ width: `${pct}%` }} />
 }
 
+// ── Transition overlay — backdrop + sweeping line + centre symbol flash ──────
+function TransitionOverlay({ phase }) {
+  if (!phase) return null
+  return (
+    <div className={`tov tov-${phase}`} aria-hidden="true">
+      <div className="tov-line" />
+      {phase === 'hold' && (
+        <div className="tov-symbol">
+          <KopeckySymbol size={64} glow />
+        </div>
+      )}
+    </div>
+  )
+}
+
 function ScrollTop({ show }) {
   return (
     <button
@@ -112,6 +127,7 @@ function ScrollTop({ show }) {
 export default function App() {
   const { state, actions } = useApp()
   const [page,    setPage]    = useState('home')
+  const [tovPhase, setTovPhase] = useState('')   // '' | 'in' | 'hold' | 'out' — transition overlay
   const [scrollY, setScrollY] = useState(0)
   const [scrollPct, setScrollPct] = useState(0)
   const [showTop, setShowTop] = useState(false)
@@ -165,16 +181,37 @@ export default function App() {
     }
   }, [page, actions])
 
+  const navTimers = useRef([])
   const navigateTo = useCallback((target) => {
     if (target === page) return
-    startTransition(() => {
-      setPage(target)
-      actions.visitPage(target)
-    })
-    window.scrollTo(0, 0)
-    lenisRef.current?.scrollTo(0, { immediate: true })
-    setScrollY(0)
+
+    // Clear any in-flight transition timers
+    navTimers.current.forEach(clearTimeout)
+    navTimers.current = []
+
+    // Phase 1 — overlay sweeps in (backdrop + glowing line wipe across)
+    setTovPhase('in')
+
+    // Phase 2 — at the peak of the sweep, swap the page + flash the symbol/ring
+    navTimers.current.push(setTimeout(() => {
+      startTransition(() => {
+        setPage(target)
+        actions.visitPage(target)
+      })
+      window.scrollTo(0, 0)
+      lenisRef.current?.scrollTo(0, { immediate: true })
+      setScrollY(0)
+      setTovPhase('hold')
+    }, 300))
+
+    // Phase 3 — overlay fades back out, revealing the new page
+    navTimers.current.push(setTimeout(() => setTovPhase('out'), 480))
+
+    // Reset to idle once the fade-out finishes
+    navTimers.current.push(setTimeout(() => setTovPhase(''), 920))
   }, [page, actions])
+
+  useEffect(() => () => navTimers.current.forEach(clearTimeout), [])
 
   // Prefetch a page chunk on nav hover
   const prefetch = useCallback((id) => {
@@ -228,23 +265,21 @@ export default function App() {
         </nav>
 
         <main>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={page}
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -14 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              style={{ opacity: isPending ? 0.7 : undefined }}
-            >
-              <Suspense fallback={<PageLoader />}>
-                <PageComponent setPage={navigateTo} />
-              </Suspense>
-            </motion.div>
-          </AnimatePresence>
+          <motion.div
+            key={page}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.35, ease: 'easeOut', delay: 0.15 }}
+            style={{ opacity: isPending ? 0.7 : undefined }}
+          >
+            <Suspense fallback={<PageLoader />}>
+              <PageComponent setPage={navigateTo} />
+            </Suspense>
+          </motion.div>
         </main>
       </div>
 
+      <TransitionOverlay phase={tovPhase} />
       <ScrollTop show={showTop} />
       <MusicPlayer />
     </div>

@@ -1,29 +1,35 @@
 import { useEffect, useRef } from 'react'
 
-// New background: flowing aurora ribbons + drifting embers + slow rotating
-// sacred mandala. Calmer and more atmospheric than the particle-network look.
+// ─────────────────────────────────────────────────────────────────────────────
+// Custom background: a living sacred cartography of the Tatras.
+//   • Topographic contour lines (the mountains Kopecky descended from), drawn
+//     as flowing layered curves that slowly breathe.
+//   • A faint manuscript grid + meridian lines, like an ancient surveyor's chart.
+//   • A single slow light that sweeps the terrain (the "illumination" of an
+//     illuminated manuscript), brightening contours as it passes.
+//   • Scroll parallaxes the terrain; cursor subtly warps the nearest contours.
+// No premade particle systems — every element is drawn from the site's own
+// olive/amber palette and liturgical-cartographic concept.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const G = '168,200,74'   // olive-green
+const A = '200,168,74'   // amber
 
 export default function Background({ scrollY }) {
   const canvasRef = useRef(null)
-  const mouseRef  = useRef({ x: -1e4, y: -1e4 })
-  const scrollRef = useRef(0)
-  const velRef    = useRef(0)
-  const prevRef   = useRef(0)
-  const rafRef    = useRef()
-  const hiddenRef = useRef(false)
+  const mouse     = useRef({ x: -1e4, y: -1e4 })
+  const scroll    = useRef(0)
+  const raf       = useRef()
+  const hidden    = useRef(false)
 
-  useEffect(() => {
-    const sc = scrollY ?? 0
-    velRef.current = sc - prevRef.current
-    prevRef.current = sc
-    scrollRef.current = sc
-  }, [scrollY])
+  useEffect(() => { scroll.current = scrollY ?? 0 }, [scrollY])
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d', { alpha: true })
-    let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2)
+    let W = 0, H = 0
+    const DPR = Math.min(window.devicePixelRatio || 1, 2)
 
     const resize = () => {
       W = window.innerWidth; H = window.innerHeight
@@ -34,180 +40,136 @@ export default function Background({ scrollY }) {
     resize()
     window.addEventListener('resize', resize)
 
-    const onMove  = e => { mouseRef.current = { x: e.clientX, y: e.clientY } }
-    const onLeave = () => { mouseRef.current = { x: -1e4, y: -1e4 } }
-    const onVis   = () => { hiddenRef.current = document.hidden }
+    const onMove  = e => { mouse.current = { x: e.clientX, y: e.clientY } }
+    const onLeave = () => { mouse.current = { x: -1e4, y: -1e4 } }
+    const onVis   = () => { hidden.current = document.hidden }
     window.addEventListener('mousemove', onMove, { passive: true })
     window.addEventListener('mouseleave', onLeave)
     document.addEventListener('visibilitychange', onVis)
 
-    // ── EMBERS — slow drifting motes that rise ──────────────────
-    const EMBERS = Math.min(48, Math.floor(window.innerWidth / 28))
-    const embers = Array.from({ length: EMBERS }, () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: 0.6 + Math.random() * 1.8,
-      vy: -(0.15 + Math.random() * 0.4),
-      vx: (Math.random() - 0.5) * 0.25,
-      op: 0.1 + Math.random() * 0.4,
-      phase: Math.random() * Math.PI * 2,
-      ps: 0.006 + Math.random() * 0.01,
-      hue: Math.random() < 0.62 ? 'g' : 'a',
-    }))
-
-    // ── AURORA RIBBONS — flowing sine bands ─────────────────────
-    const ribbons = [
-      { amp: 90,  yf: 0.30, speed: 0.18, width: 150, hue: 'g', op: 0.05, phase: 0 },
-      { amp: 70,  yf: 0.55, speed: -0.13, width: 120, hue: 'a', op: 0.045, phase: 2 },
-      { amp: 110, yf: 0.72, speed: 0.10, width: 180, hue: 'g', op: 0.04, phase: 4 },
-    ]
-
-    const col = (hue, a) => hue === 'g' ? `rgba(168,200,74,${a})` : `rgba(200,168,74,${a})`
-
-    const drawRibbon = (rb, t) => {
-      const baseY = H * rb.yf - scrollRef.current * 0.04
-      const grad = ctx.createLinearGradient(0, baseY - rb.width, 0, baseY + rb.width)
-      grad.addColorStop(0, col(rb.hue, 0))
-      grad.addColorStop(0.5, col(rb.hue, rb.op))
-      grad.addColorStop(1, col(rb.hue, 0))
-      ctx.fillStyle = grad
-      ctx.beginPath()
-      ctx.moveTo(-50, baseY)
-      const step = 40
-      for (let x = -50; x <= W + 50; x += step) {
-        const y = baseY
-          + Math.sin(x * 0.004 + t * rb.speed + rb.phase) * rb.amp
-          + Math.sin(x * 0.011 - t * rb.speed * 0.6) * (rb.amp * 0.35)
-        ctx.lineTo(x, y)
-      }
-      // close along the bottom band
-      for (let x = W + 50; x >= -50; x -= step) {
-        const y = baseY
-          + Math.sin(x * 0.004 + t * rb.speed + rb.phase) * rb.amp
-          + Math.sin(x * 0.011 - t * rb.speed * 0.6) * (rb.amp * 0.35)
-          + rb.width
-        ctx.lineTo(x, y)
-      }
-      ctx.closePath()
-      ctx.fill()
+    // ── Contour field definition ──────────────────────────────────────────
+    // Each contour is a horizontal ridgeline made of summed sine waves.
+    // Stacking many of them at decreasing y gives a topographic-map feel.
+    const CONTOURS = 26
+    const ridge = (x, layer, t) => {
+      // layer 0 = lowest/closest, higher = further up the "mountain"
+      const f1 = Math.sin(x * 0.0017 + layer * 0.5 + t * 0.06) * 46
+      const f2 = Math.sin(x * 0.0039 - layer * 0.32 + t * 0.041) * 24
+      const f3 = Math.sin(x * 0.0072 + layer * 0.9 - t * 0.03) * 12
+      // peak emphasis toward centre — suggests a mountain massif
+      const centre = 1 - Math.min(1, Math.abs(x - W / 2) / (W * 0.62))
+      const massif = centre * centre * 120
+      return f1 + f2 + f3 - massif
     }
 
-    // ── MANDALA — slow rotating sacred geometry, centre ─────────
-    const drawMandala = (t) => {
-      const cx = W / 2, cy = H / 2 - scrollRef.current * 0.06
-      const rot = t * 0.02
-      ctx.save()
-      ctx.translate(cx, cy)
-
-      // concentric polygon rings
-      const rings = [
-        { r: 90,  sides: 12, rotMul: 1,  op: 0.05 },
-        { r: 160, sides: 6,  rotMul: -0.6, op: 0.045 },
-        { r: 240, sides: 24, rotMul: 0.4, op: 0.03 },
-        { r: 330, sides: 3,  rotMul: -0.3, op: 0.035 },
-      ]
-      for (const ring of rings) {
-        const pr = ring.r + Math.sin(t * 0.25 + ring.r) * 10
-        ctx.beginPath()
-        for (let i = 0; i <= ring.sides; i++) {
-          const a = rot * ring.rotMul + (i / ring.sides) * Math.PI * 2
-          const x = Math.cos(a) * pr, y = Math.sin(a) * pr
-          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
-        }
-        ctx.strokeStyle = `rgba(168,200,74,${ring.op})`
-        ctx.lineWidth = 0.7
-        ctx.stroke()
-      }
-
-      // radiating spokes
-      const spokes = 16
-      for (let i = 0; i < spokes; i++) {
-        const a = rot * 0.5 + (i / spokes) * Math.PI * 2
-        ctx.beginPath()
-        ctx.moveTo(Math.cos(a) * 70, Math.sin(a) * 70)
-        ctx.lineTo(Math.cos(a) * 340, Math.sin(a) * 340)
-        ctx.strokeStyle = `rgba(168,200,74,${0.015 + (i % 2) * 0.012})`
-        ctx.lineWidth = 0.5
-        ctx.stroke()
-      }
-      ctx.restore()
-    }
-
-    const animate = (ts) => {
-      if (hiddenRef.current) { rafRef.current = requestAnimationFrame(animate); return }
+    const draw = (ts) => {
+      if (hidden.current) { raf.current = requestAnimationFrame(draw); return }
       const t = ts * 0.001
-      const mx = mouseRef.current.x, my = mouseRef.current.y
+      const sc = scroll.current
+      const mx = mouse.current.x, my = mouse.current.y
       ctx.clearRect(0, 0, W, H)
 
-      // 1. base radial glow (top)
-      const g1 = ctx.createRadialGradient(W / 2, H * 0.2, 0, W / 2, H * 0.2, H * 0.85)
-      g1.addColorStop(0, 'rgba(168,200,74,0.05)')
-      g1.addColorStop(0.5, 'rgba(120,150,60,0.02)')
-      g1.addColorStop(1, 'rgba(0,0,0,0)')
-      ctx.fillStyle = g1
+      // 1 ── deep base wash (top-lit, like vellum under candlelight)
+      const wash = ctx.createRadialGradient(W / 2, H * 0.32, 0, W / 2, H * 0.32, H * 0.95)
+      wash.addColorStop(0, `rgba(${G},0.055)`)
+      wash.addColorStop(0.45, `rgba(${G},0.018)`)
+      wash.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx.fillStyle = wash
       ctx.fillRect(0, 0, W, H)
 
-      // 2. mandala (behind ribbons)
-      drawMandala(t)
+      // 2 ── manuscript meridian grid (faint vertical + horizontal rules)
+      ctx.lineWidth = 1
+      const gridGap = 96
+      const gridShift = (sc * 0.04) % gridGap
+      ctx.strokeStyle = `rgba(${G},0.035)`
+      ctx.beginPath()
+      for (let x = (-gridShift % gridGap); x < W; x += gridGap) {
+        ctx.moveTo(x, 0); ctx.lineTo(x, H)
+      }
+      for (let y = (-gridShift % gridGap); y < H; y += gridGap) {
+        ctx.moveTo(0, y); ctx.lineTo(W, y)
+      }
+      ctx.stroke()
 
-      // 3. aurora ribbons
-      for (const rb of ribbons) drawRibbon(rb, t)
+      // 3 ── the moving illumination (a slow sweep of light across the terrain)
+      const lightX = (Math.sin(t * 0.08) * 0.5 + 0.5) * W
+      const lightY = H * 0.4 + Math.cos(t * 0.05) * H * 0.12
 
-      // 4. embers
-      for (const e of embers) {
-        e.phase += e.ps
-        e.y += e.vy
-        e.x += e.vx + Math.sin(e.phase) * 0.2
-        if (e.y < -10) { e.y = H + 10; e.x = Math.random() * W }
-        if (e.x < -10) e.x = W + 10
-        if (e.x > W + 10) e.x = -10
+      // 4 ── topographic contour lines
+      const baseY = H * 0.72 + sc * 0.12   // terrain sits low, parallax on scroll
+      for (let i = 0; i < CONTOURS; i++) {
+        const layer = i
+        const yOff = baseY - i * (H * 0.6 / CONTOURS)
+        // distance of this contour band from the sweeping light → brightness
+        const distToLight = Math.abs((yOff) - lightY) / H
+        const lit = Math.max(0, 1 - distToLight * 1.6)
+        const isAmber = i % 7 === 3            // occasional amber ridgeline for accent
+        const colour = isAmber ? A : G
+        const alpha = 0.05 + lit * 0.22
+        ctx.strokeStyle = `rgba(${colour},${alpha})`
+        ctx.lineWidth = isAmber ? 1.1 : 0.8
 
-        // gentle mouse attraction
-        if (mx > 0) {
-          const dx = mx - e.x, dy = my - e.y
-          const d2 = dx * dx + dy * dy
-          if (d2 < 22000) {
-            const d = Math.sqrt(d2) || 1
-            e.x += (dx / d) * 0.4
-            e.y += (dy / d) * 0.4
+        ctx.beginPath()
+        for (let x = -20; x <= W + 20; x += 8) {
+          let y = yOff + ridge(x, layer, t)
+          // cursor warps nearby contour points outward, like a fingertip on a map
+          if (mx > 0) {
+            const dx = x - mx, dy = (y) - my
+            const d2 = dx * dx + dy * dy
+            if (d2 < 26000) {
+              const f = (1 - Math.sqrt(d2) / 161) * 18
+              y -= f
+            }
           }
+          x === -20 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
         }
-
-        const op = e.op * (0.6 + Math.sin(e.phase) * 0.4)
-        ctx.beginPath()
-        ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2)
-        ctx.fillStyle = col(e.hue, op)
-        ctx.fill()
-        // soft halo
-        ctx.beginPath()
-        ctx.arc(e.x, e.y, e.r * 3.5, 0, Math.PI * 2)
-        ctx.fillStyle = col(e.hue, op * 0.06)
-        ctx.fill()
+        ctx.stroke()
       }
 
-      // 5. mouse spotlight
+      // 5 ── light bloom where the illumination falls
+      const bloom = ctx.createRadialGradient(lightX, lightY, 0, lightX, lightY, 320)
+      bloom.addColorStop(0, `rgba(${G},0.05)`)
+      bloom.addColorStop(0.5, `rgba(${G},0.015)`)
+      bloom.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx.fillStyle = bloom
+      ctx.fillRect(0, 0, W, H)
+
+      // 6 ── the summit star: a single fixed point of light at the massif peak
+      //      (Kopecky's descent point) with a slow breathing halo
+      const peakX = W / 2
+      const peakY = baseY - CONTOURS * (H * 0.6 / CONTOURS) - 10
+      const breathe = 0.5 + Math.sin(t * 0.6) * 0.5
+      const star = ctx.createRadialGradient(peakX, peakY, 0, peakX, peakY, 60 + breathe * 30)
+      star.addColorStop(0, `rgba(${A},${0.18 + breathe * 0.12})`)
+      star.addColorStop(0.4, `rgba(${G},0.05)`)
+      star.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx.fillStyle = star
+      ctx.fillRect(peakX - 100, peakY - 100, 200, 200)
+      ctx.fillStyle = `rgba(${A},${0.5 + breathe * 0.4})`
+      ctx.beginPath(); ctx.arc(peakX, peakY, 1.6, 0, Math.PI * 2); ctx.fill()
+
+      // 7 ── cursor halo (a soft reading-light following the cursor)
       if (mx > 0) {
-        const sp = ctx.createRadialGradient(mx, my, 0, mx, my, 240)
-        sp.addColorStop(0, 'rgba(168,200,74,0.05)')
-        sp.addColorStop(0.5, 'rgba(168,200,74,0.015)')
-        sp.addColorStop(1, 'rgba(168,200,74,0)')
-        ctx.fillStyle = sp
+        const halo = ctx.createRadialGradient(mx, my, 0, mx, my, 200)
+        halo.addColorStop(0, `rgba(${G},0.04)`)
+        halo.addColorStop(1, 'rgba(0,0,0,0)')
+        ctx.fillStyle = halo
         ctx.fillRect(0, 0, W, H)
       }
 
-      // 6. vignette
-      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.9)
+      // 8 ── vignette to seat everything in candle-lit darkness
+      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, H * 0.92)
       vg.addColorStop(0, 'rgba(0,0,0,0)')
-      vg.addColorStop(1, 'rgba(0,0,0,0.6)')
+      vg.addColorStop(1, 'rgba(0,0,0,0.62)')
       ctx.fillStyle = vg
       ctx.fillRect(0, 0, W, H)
 
-      rafRef.current = requestAnimationFrame(animate)
+      raf.current = requestAnimationFrame(draw)
     }
-    rafRef.current = requestAnimationFrame(animate)
+    raf.current = requestAnimationFrame(draw)
 
     return () => {
-      cancelAnimationFrame(rafRef.current)
+      cancelAnimationFrame(raf.current)
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mouseleave', onLeave)
@@ -217,7 +179,7 @@ export default function Background({ scrollY }) {
 
   return (
     <div className="bg-layer">
-      <canvas ref={canvasRef} style={{ position:'absolute', inset:0, width:'100%', height:'100%' }} />
+      <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
       <div className="grain" />
     </div>
   )

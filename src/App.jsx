@@ -254,7 +254,8 @@ export default function App() {
               onClick={() => navigateTo(p.id)}
               onMouseEnter={() => prefetch(p.id)}
               aria-current={page === p.id ? 'page' : undefined}
-              strength={0.22}
+              strength={0.4}
+              max={14}
             >
               {p.id === 'laws' ? '⚖ ' : p.id === 'game' ? '♟ ' : ''}{p.label}
               {state.visitedPages.includes(p.id) && p.id !== 'home' && (

@@ -10,24 +10,55 @@ html.lenis, html.lenis body { height: auto; }
 
 /* ── CSS CUSTOM PROPERTIES ─────────────────────────────────────────────────── */
 :root {
-  --g:     #a8c84a;
+  /* ── Core palette ─────────────────────────────────────────── */
+  --g:     #a8c84a;                  /* olive-green — primary */
+  --am:    #c8a84a;                  /* amber — accent */
+  --bg:    #060805;                  /* near-black olive ground */
+  --tx:    #d5ceab;                  /* parchment text */
+
+  /* ── Green opacity scale (logical: 04→90) ─────────────────── */
+  --g04:   rgba(168,200,74,.04);
+  --g06:   rgba(168,200,74,.06);
   --g1:    rgba(168,200,74,.10);
   --g2:    rgba(168,200,74,.20);
   --g3:    rgba(168,200,74,.35);
+  --g4:    rgba(168,200,74,.45);
   --g5:    rgba(168,200,74,.50);
-  --am:    #c8a84a;
+  --g7:    rgba(168,200,74,.70);
+  --g9:    rgba(168,200,74,.90);
+
+  /* ── Amber opacity scale ──────────────────────────────────── */
+  --am04:  rgba(200,168,74,.04);
+  --am06:  rgba(200,168,74,.06);
   --am1:   rgba(200,168,74,.10);
   --am2:   rgba(200,168,74,.20);
+  --am3:   rgba(200,168,74,.35);
   --am5:   rgba(200,168,74,.50);
-  --bg:    #060805;
-  --tx:    #d5ceab;
-  --txd:   rgba(213,206,171,.82);
-  --txdd:  rgba(213,206,171,.55);
+
+  /* ── Text scale ───────────────────────────────────────────── */
+  --txd:   rgba(213,206,171,.82);    /* dim body */
+  --txdd:  rgba(213,206,171,.55);    /* faint / captions */
+
+  /* ── Borders & surfaces ───────────────────────────────────── */
   --bdr:   rgba(168,200,74,.12);
   --bdrm:  rgba(168,200,74,.22);
+  --panel-bg:   rgba(168,200,74,.055);
+  --panel-bdr:  rgba(168,200,74,.28);
+  --panel-top:  rgba(168,200,74,.55);
+
+  /* ── Spacing rhythm (8px base) ────────────────────────────── */
+  --sp-1: 8px;  --sp-2: 16px; --sp-3: 24px; --sp-4: 32px;
+  --sp-6: 48px; --sp-8: 64px; --sp-10: 80px;
+
+  /* ── Type tracking ────────────────────────────────────────── */
+  --track-label: .28em;              /* uppercase Cinzel labels */
+  --track-title: .06em;              /* display headings */
+
+  /* ── Layout + motion ──────────────────────────────────────── */
   --nav-h: 45px;
   --sub-h: 38px;
   --ease:  cubic-bezier(.22,1,.36,1);
+  --radius: 0px;                     /* sharp liturgical edges, by design */
 }
 
 /* ── ANIMATED PROPERTY — wrapped for Firefox compat ──────────────────────── */
@@ -569,22 +600,23 @@ footer  { position: relative; z-index: 1; text-align: center; padding: 38px 24px
 /* ── Magnet nav button class ─────────────────────────────────────────────── */
 .nb {
   font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: .17em;
-  text-transform: uppercase; color: rgba(168,200,74,.58);
-  background: none; border: none; border-right: 1px solid rgba(168,200,74,.1);
-  padding: 14px 18px; cursor: none; white-space: nowrap;
-  transition: color .22s, background .22s; position: relative; overflow: hidden;
+  text-transform: uppercase; color: var(--g5);
+  background: none; border: 1px solid transparent;
+  padding: 12px 18px; cursor: none; white-space: nowrap;
+  transition: color .22s, background .22s, border-color .22s;
+  position: relative; border-radius: 2px;
+  margin: 0 1px;
 }
-.nb:first-child { border-left: 1px solid rgba(168,200,74,.1); }
 .nb::after {
   content:''; position:absolute; bottom:0; left:0; right:0; height:1px;
   background: linear-gradient(90deg, transparent, var(--g), transparent);
   transform: scaleX(0); transition: transform .3s ease;
 }
 .nb:hover::after, .nb.active::after { transform: scaleX(1); }
-.nb:hover, .nb.active { color: var(--g); background: var(--g1); }
+.nb:hover, .nb.active { color: var(--g); background: var(--g1); border-color: var(--g2); }
 .nb.laws-btn { color: rgba(200,168,74,.62); }
 .nb.laws-btn::after { background: linear-gradient(90deg, transparent, var(--am), transparent); }
-.nb.laws-btn:hover, .nb.laws-btn.active { color: var(--am); background: var(--am1); }
+.nb.laws-btn:hover, .nb.laws-btn.active { color: var(--am); background: var(--am1); border-color: var(--am2); }
 .nb.game-btn { color: rgba(100,180,220,.62); }
 .nb.game-btn::after { background: linear-gradient(90deg, transparent, rgba(100,180,220,.8), transparent); }
-.nb.game-btn:hover, .nb.game-btn.active { color: rgba(120,200,240,.9); background: rgba(80,160,220,.07); }
+.nb.game-btn:hover, .nb.game-btn.active { color: rgba(120,200,240,.9); background: rgba(80,160,220,.07); border-color: rgba(100,180,220,.25); }

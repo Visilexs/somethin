@@ -8,6 +8,7 @@ import { motion } from 'motion/react'
 import { PAGES } from './data'
 import { KopeckySymbol } from './components/Icons'
 import MusicPlayer from './MusicPlayer'
+import Achievements from './components/Achievements'
 import Notifications from './components/Notifications'
 import { useApp } from './AppContext'
 
@@ -230,7 +231,7 @@ export default function App() {
         <header>
           <div
             className="h-sym-wrap"
-            onClick={() => { navigateTo('home'); actions.clickSatchel() }}
+            onClick={() => { actions.clickSymbol(); if (page !== 'home') navigateTo('home') }}
             style={{ cursor: 'none', display: 'inline-block', marginBottom: 18 }}
           >
             <KopeckySymbol size={68} glow />
@@ -280,6 +281,7 @@ export default function App() {
       <TransitionOverlay phase={tovPhase} />
       <ScrollTop show={showTop} />
       <MusicPlayer />
+      <Achievements />
     </div>
   )
 }

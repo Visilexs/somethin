@@ -1,6 +1,7 @@
 import { Reveal, QuoteBlock } from '../components/UI'
 import { TIMELINE } from '../data'
 import { AnimatedContent, ShinyButton } from '../components/ReactBits'
+import HiddenGlyph from '../components/HiddenGlyph'
 
 export default function OriginsPage({ setPage }) {
   return (
@@ -85,7 +86,7 @@ export default function OriginsPage({ setPage }) {
           <ShinyButton onClick={() => setPage("chud")}>Continue to The Chud →</ShinyButton>
         </div>
       </div>
-      <footer>© Cirkev Kopeckého · Origins Volume · Tatranská Kniha · He Came Down the Mountain · He Was Correct About the Wood Stack · He Was Less Correct About the Váh</footer>
+      <footer><HiddenGlyph id="origins" /> © Cirkev Kopeckého · Origins Volume · Tatranská Kniha · He Came Down the Mountain · He Was Correct About the Wood Stack · He Was Less Correct About the Váh</footer>
     </>
   )
 }

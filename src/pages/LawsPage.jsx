@@ -2,6 +2,7 @@ import { Reveal } from '../components/UI'
 import LawGroup from '../components/LawGroup'
 import { LAW_GROUPS } from '../data'
 import { ShinyButton } from '../components/ReactBits'
+import HiddenGlyph from '../components/HiddenGlyph'
 
 export default function LawsPage({ setPage }) {
   return (
@@ -50,7 +51,7 @@ export default function LawsPage({ setPage }) {
           </div>
         </Reveal>
       </div>
-      <footer>© Cirkev Kopeckého · The Laws Are Sacred · Law X Is Factually Incorrect · The Council Is Aware · The Satchel Remains Closed · He Will Return · He Will Still Be Wrong About Chess</footer>
+      <footer><HiddenGlyph id="laws" /> © Cirkev Kopeckého · The Laws Are Sacred · Law X Is Factually Incorrect · The Council Is Aware · The Satchel Remains Closed · He Will Return · He Will Still Be Wrong About Chess</footer>
     </>
   )
 }

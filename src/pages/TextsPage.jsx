@@ -3,6 +3,7 @@ import { Reveal, QuoteBlock, BookCard, StatBlock } from '../components/UI'
 import { SpotlightCard } from '../components/ReactBits'
 import { BOOKS, CHUD_QUOTES, CHESS_QUOTES } from '../data'
 import { ShinyButton, NumberTicker } from '../components/ReactBits'
+import HiddenGlyph from '../components/HiddenGlyph'
 
 const ALL_QUOTES = [
   { text: 'The mountains were there before me. But I was there before the mountains knew what they were for.', source: 'Tatranská Kniha, Chapter 1' },
@@ -144,7 +145,7 @@ export default function TextsPage({ setPage }) {
           <ShinyButton amber onClick={() => setPage("prayer")}>The Prayer</ShinyButton>
         </div>
       </div>
-      <footer>© Cirkev Kopeckého · Sacred Texts Volume · Six Books · One Unwritten · The Invoice Is Still Outstanding · He Was Right 97.3% of the Time · The 2.7% Has Been Contextualised</footer>
+      <footer><HiddenGlyph id="texts" /> © Cirkev Kopeckého · Sacred Texts Volume · Six Books · One Unwritten · The Invoice Is Still Outstanding · He Was Right 97.3% of the Time · The 2.7% Has Been Contextualised</footer>
     </>
   )
 }

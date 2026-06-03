@@ -298,6 +298,12 @@ export default function LoginGate({ children }) {
   const attempt = () => {
     if (value.toLowerCase().trim() === PASSWORD) {
       ss.set(SESSION_KEY, '1')
+      // ARG: record that the founder's name was spoken at the barred gate
+      try {
+        const arg = JSON.parse(localStorage.getItem('kopecky_arg_v1') || '{}')
+        arg.spokeTheName = true
+        localStorage.setItem('kopecky_arg_v1', JSON.stringify(arg))
+      } catch {}
       setError('')
       setLeaving(true)
       setTimeout(() => setAuthed(true), 580)

@@ -2,8 +2,11 @@ import { Reveal, QuoteBlock, GrudgeItem } from '../components/UI'
 import { CHESS_QUOTES, GRUDGES, MIRACLES } from '../data'
 import { KopeckySymbol } from '../components/Icons'
 import { ShinyButton, SpotlightCard } from '../components/ReactBits'
+import { useApp } from '../AppContext'
+import { motion } from 'motion/react'
 
 export default function ChroniclesPage({ setPage }) {
+  const { actions } = useApp()
   return (
     <>
       <div className="page-hero">
@@ -43,6 +46,11 @@ export default function ChroniclesPage({ setPage }) {
           </Reveal>
 
           {CHESS_QUOTES.map((q, i) => <QuoteBlock key={i} amber text={q.text} source={q.source} />)}
+          <motion.div
+            onViewportEnter={() => actions.setFlag('chessRead')}
+            viewport={{ once: true, amount: 0.5 }}
+            style={{ height: 1 }}
+          />
         </div>
 
         {/* MIRACLES */}

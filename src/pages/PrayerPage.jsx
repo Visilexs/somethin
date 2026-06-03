@@ -1,4 +1,26 @@
+import { useState } from 'react'
 import { Reveal, QuoteBlock } from '../components/UI'
+import { ShinyButton } from '../components/ReactBits'
+import { useApp } from '../AppContext'
+
+function OfferPrayer() {
+  const { actions } = useApp()
+  const [offered, setOffered] = useState(false)
+  return (
+    <div style={{ textAlign: 'center', marginTop: 24 }}>
+      {!offered ? (
+        <ShinyButton amber onClick={() => { setOffered(true); actions.setFlag('prayerSaid') }}>
+          ✦ &nbsp; Offer This Prayer to Kopecky &nbsp; ✦
+        </ShinyButton>
+      ) : (
+        <div style={{ fontFamily: "'EB Garamond',serif", fontSize: 16, fontStyle: 'italic', color: 'rgba(200,168,74,.8)', lineHeight: 1.8, maxWidth: 460, margin: '0 auto' }}>
+          The prayer rises toward the high pass. Kopecky receives it. He will not respond — but the mountains
+          have absorbed your words, and that, the Council maintains, is the point.
+        </div>
+      )}
+    </div>
+  )
+}
 
 const OBSERVANCES = [
   { time:'Dawn', title:'The Morning Alignment', body:'Face the Tatras (roughly northeast from most valley locations) before opening your eyes fully. Do not face southwest. The Church does not explain why. Footnote 7 of the Hmlová Kniha explains why. The Church recommends not reading Footnote 7 until you are settled in the faith.' },
@@ -72,6 +94,9 @@ export default function PrayerPage({ setPage }) {
                 Amen. Tak nech sa stane.
               </div>
             </div>
+          </Reveal>
+          <Reveal delay={2}>
+            <OfferPrayer />
           </Reveal>
         </div>
 

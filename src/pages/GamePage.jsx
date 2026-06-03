@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { KopeckySymbol } from '../components/Icons'
+import { useApp } from '../AppContext'
 
 // ── CONSTANTS ──────────────────────────────────────────────────────────────
 const WATER_TARGET   = 8   // jugs needed
@@ -444,6 +445,7 @@ function WinScreen({ onRestart }) {
 const clamp = (min, max) => `clamp(${min}px, 3vw, ${max}px)`
 
 export default function GamePage({ setPage }) {
+  const { actions } = useApp()
   const [phase,    setPhase]    = useState('intro')  // intro | water | bread | win
   const [attempts, setAttempts] = useState(0)
 
@@ -519,14 +521,14 @@ export default function GamePage({ setPage }) {
 
           {phase === 'water' && (
             <div id="water-phase">
-              <WaterPhase onComplete={() => setPhase('bread')} />
+              <WaterPhase onComplete={() => { actions.setFlag('waterStolen'); setPhase('bread') }} />
               <button id="steal-btn" style={{ display:'none' }} onClick={() => document.getElementById('water-phase')?.querySelector('button:last-of-type')?.click()}/>
             </div>
           )}
 
           {phase === 'bread' && (
             <BreadPhase
-              onComplete={() => setPhase('win')}
+              onComplete={() => { actions.setFlag('saltPerfect'); setPhase('win') }}
               onFail={() => { setAttempts(a => a+1); setPhase('bread') }}
             />
           )}

@@ -213,3 +213,104 @@ export function YashIcon({ size = 72 }) {
     </svg>
   )
 }
+
+export function SaadIcon({ size = 72 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* wild halo of fervor */}
+      <circle cx="40" cy="30" r="20" stroke="rgba(200,168,74,0.18)" strokeWidth="0.8" strokeDasharray="2 3"/>
+      {/* manic head */}
+      <ellipse cx="40" cy="30" rx="9" ry="10" stroke="#a8c84a" strokeWidth="1.3" fill="rgba(168,200,74,0.05)"/>
+      {/* wide staring eyes */}
+      <circle cx="36" cy="29" r="2.4" stroke="#a8c84a" strokeWidth="0.9" fill="none"/>
+      <circle cx="44" cy="29" r="2.4" stroke="#a8c84a" strokeWidth="0.9" fill="none"/>
+      <circle cx="36" cy="29" r="0.9" fill="#a8c84a"/>
+      <circle cx="44" cy="29" r="0.9" fill="#a8c84a"/>
+      {/* unsettling grin */}
+      <path d="M34 35 Q40 40 46 35" stroke="#a8c84a" strokeWidth="1" strokeLinecap="round" fill="none"/>
+      {/* tangerine, held aloft like a relic */}
+      <circle cx="58" cy="16" r="6" stroke="rgba(200,168,74,0.6)" strokeWidth="1.1" fill="rgba(200,168,74,0.12)"/>
+      <path d="M58 10 Q60 8 59 6" stroke="rgba(200,168,74,0.5)" strokeWidth="0.8" strokeLinecap="round"/>
+      <path d="M54 16 L62 16 M58 12 L58 20" stroke="rgba(200,168,74,0.3)" strokeWidth="0.5"/>
+      {/* yogurt vessel, clutched */}
+      <path d="M14 48 L18 48 L17 60 L15 60 Z" stroke="rgba(213,206,171,0.5)" strokeWidth="1" fill="rgba(213,206,171,0.08)"/>
+      <ellipse cx="16" cy="48" rx="2" ry="0.8" stroke="rgba(213,206,171,0.5)" strokeWidth="0.7"/>
+      {/* arms raised in fervor */}
+      <path d="M31 42 Q24 38 18 46" stroke="#a8c84a" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+      <path d="M49 42 Q54 30 56 22" stroke="#a8c84a" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+      {/* trembling body */}
+      <path d="M32 44 Q30 56 33 68 L47 68 Q50 56 48 44 Z" stroke="#a8c84a" strokeWidth="1.2" fill="rgba(168,200,74,0.04)" strokeDasharray="2 1.5"/>
+      {/* scattering small tangerines */}
+      <circle cx="24" cy="66" r="2.5" stroke="rgba(200,168,74,0.4)" strokeWidth="0.7" fill="rgba(200,168,74,0.08)"/>
+      <circle cx="58" cy="64" r="2" stroke="rgba(200,168,74,0.35)" strokeWidth="0.7" fill="rgba(200,168,74,0.06)"/>
+      <rect x="4" y="4" width="72" height="72" rx="3" stroke="rgba(168,200,74,0.18)" strokeWidth="0.8" strokeDasharray="4 3"/>
+    </svg>
+  )
+}
+
+export function NekroIcon({ size = 72 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* creature silhouette — hunched, not quite human */}
+      <path d="M40 64 Q30 60 28 48 Q26 40 30 34 Q26 30 27 24 Q30 26 32 30 Q34 24 40 23 Q46 24 48 30 Q50 26 53 24 Q54 30 50 34 Q54 40 52 48 Q50 60 40 64 Z"
+        stroke="#a8c84a" strokeWidth="1.2" fill="rgba(168,200,74,0.05)"/>
+      {/* pointed ear-like tufts */}
+      <path d="M30 26 L27 18 L33 23 Z" stroke="#a8c84a" strokeWidth="1" fill="rgba(168,200,74,0.06)" strokeLinejoin="round"/>
+      <path d="M50 26 L53 18 L47 23 Z" stroke="#a8c84a" strokeWidth="1" fill="rgba(168,200,74,0.06)" strokeLinejoin="round"/>
+      {/* slit, luminous eyes */}
+      <path d="M34 33 Q36 31 38 33 Q36 35 34 33 Z" fill="#a8c84a" opacity="0.7"/>
+      <path d="M42 33 Q44 31 46 33 Q44 35 42 33 Z" fill="#a8c84a" opacity="0.7"/>
+      <line x1="36" y1="31.5" x2="36" y2="34.5" stroke="#060805" strokeWidth="0.6"/>
+      <line x1="44" y1="31.5" x2="44" y2="34.5" stroke="#060805" strokeWidth="0.6"/>
+      {/* no mouth — just a faint mark where words would be */}
+      <path d="M37 40 Q40 41 43 40" stroke="rgba(168,200,74,0.3)" strokeWidth="0.7" strokeLinecap="round" strokeDasharray="1 1.5"/>
+      {/* sound waves instead of speech — the chittering */}
+      <path d="M56 36 Q60 38 56 42" stroke="rgba(200,168,74,0.4)" strokeWidth="0.8" strokeLinecap="round" fill="none"/>
+      <path d="M60 33 Q66 38 60 45" stroke="rgba(200,168,74,0.28)" strokeWidth="0.8" strokeLinecap="round" fill="none"/>
+      <path d="M24 36 Q20 38 24 42" stroke="rgba(200,168,74,0.4)" strokeWidth="0.8" strokeLinecap="round" fill="none"/>
+      {/* clawed hands */}
+      <path d="M30 46 L26 50 M30 46 L28 51 M30 46 L31 52" stroke="#a8c84a" strokeWidth="0.8" strokeLinecap="round"/>
+      <path d="M50 46 L54 50 M50 46 L52 51 M50 46 L49 52" stroke="#a8c84a" strokeWidth="0.8" strokeLinecap="round"/>
+      {/* venus/female mark, subtle */}
+      <circle cx="40" cy="56" r="3" stroke="rgba(200,168,74,0.35)" strokeWidth="0.7" fill="none"/>
+      <line x1="40" y1="59" x2="40" y2="63" stroke="rgba(200,168,74,0.35)" strokeWidth="0.7"/>
+      <line x1="38" y1="61" x2="42" y2="61" stroke="rgba(200,168,74,0.35)" strokeWidth="0.7"/>
+      <rect x="4" y="4" width="72" height="72" rx="3" stroke="rgba(168,200,74,0.18)" strokeWidth="0.8" strokeDasharray="4 3"/>
+    </svg>
+  )
+}
+
+export function QuantaviusIcon({ size = 72 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* swaying prophet head, tilted */}
+      <g transform="rotate(-8 40 30)">
+        <ellipse cx="40" cy="30" rx="9" ry="10" stroke="#a8c84a" strokeWidth="1.3" fill="rgba(168,200,74,0.05)"/>
+        {/* half-lidded drunk eyes */}
+        <path d="M35 29 Q37 30 39 29" stroke="#a8c84a" strokeWidth="1" strokeLinecap="round" fill="none"/>
+        <path d="M41 29 Q43 30 45 29" stroke="#a8c84a" strokeWidth="1" strokeLinecap="round" fill="none"/>
+        {/* loose, questioning mouth */}
+        <path d="M37 35 Q40 34 43 36" stroke="#a8c84a" strokeWidth="0.9" strokeLinecap="round" fill="none"/>
+      </g>
+      {/* floating question marks — the weird questions */}
+      <text x="58" y="20" fontSize="11" fill="rgba(200,168,74,0.45)" fontStyle="italic">?</text>
+      <text x="16" y="24" fontSize="8" fill="rgba(200,168,74,0.3)" fontStyle="italic">?</text>
+      <text x="62" y="40" fontSize="6" fill="rgba(200,168,74,0.25)" fontStyle="italic">?</text>
+      {/* drinking vessel / jug, central */}
+      <path d="M33 50 Q32 44 36 44 L44 44 Q48 44 47 50 L46 64 Q46 68 40 68 Q34 68 34 64 Z"
+        stroke="rgba(200,168,74,0.55)" strokeWidth="1.1" fill="rgba(200,168,74,0.1)"/>
+      {/* jug handle */}
+      <path d="M47 48 Q53 50 47 58" stroke="rgba(200,168,74,0.5)" strokeWidth="1" fill="none"/>
+      {/* liquid line + bubbles */}
+      <path d="M35 54 L45 54" stroke="rgba(200,168,74,0.4)" strokeWidth="0.7"/>
+      <circle cx="38" cy="58" r="0.8" fill="rgba(200,168,74,0.3)"/>
+      <circle cx="42" cy="60" r="0.6" fill="rgba(200,168,74,0.25)"/>
+      {/* unsteady arms */}
+      <path d="M31 46 Q26 48 24 54" stroke="#a8c84a" strokeWidth="1.1" strokeLinecap="round" fill="none"/>
+      {/* spilled drops */}
+      <circle cx="22" cy="60" r="1.2" fill="rgba(200,168,74,0.2)"/>
+      <circle cx="20" cy="64" r="0.9" fill="rgba(200,168,74,0.15)"/>
+      <rect x="4" y="4" width="72" height="72" rx="3" stroke="rgba(168,200,74,0.18)" strokeWidth="0.8" strokeDasharray="4 3"/>
+    </svg>
+  )
+}

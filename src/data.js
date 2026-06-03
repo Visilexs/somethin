@@ -192,6 +192,99 @@ The goat has its own entry in the Sťažnostná Kniha. It is a footnote of fourt
     disciple_quote: `[The space provided for a direct quote from Yash contains a drawing of a goat. The drawing is quite good. The scribe responsible has not been identified. On the back of the page, in handwriting that matches nobody in the official record, are the words: "The goat agrees." Nothing further is written.]`,
     disciple_source: 'Čudové Záznamy · Page 47 · Following the question "What do you wish to be remembered for?"',
   },
+  {
+    id: 'saad',
+    name: 'Saad',
+    epithet: 'The Trembling Devotion',
+    origin: 'Unknown · Arrived Already Mid-Ritual',
+    role: 'Confused Religious Maniac · Self-Ordained Liturgist · Keeper of the Tangerine Rites · Custodian of Yogurts Nobody Requested',
+    status: 'Active · Theologically Unsupervised · Permitted to Remain Only If He Stays Outside the Main Hall',
+    bio: `Saad arrived in the eleventh year of the Walking. Nobody saw him arrive. He was simply present one morning at the edge of the assembly, holding a tangerine in both hands at chest height, eyes wide, breathing as though he had been running, though there was nowhere nearby he could have run from. When asked his name he said "Saad" and then said it four more times, each time slightly differently, as though testing which pronunciation would be received as holiest. The Council recorded all five.
+
+He had, it emerged, constructed an entire private religion before encountering the Church of Kopecky, and he did not so much convert as graft his existing practices onto whatever Kopecky said, often in ways that horrified everyone present. Where Kopecky spoke of the Honest Bread, Saad heard a calling toward the Honest Tangerine, and began peeling tangerines during sermons with an intensity that made the front rows relocate. Where Kopecky spoke of patience, Saad sat perfectly still for nine hours holding a clay pot of yogurt to his chest, whispering to it. The yogurt, by hour nine, had turned. He consumed it anyway. He said the turning was "part of it." Nobody asked what "it" was. Nobody has ever asked Saad what "it" is, because the few who have were given answers, and the answers were worse than the not-knowing.
+
+Kopecky's position on Saad is unusually restrained. He has not mocked him — which, given Kopecky's treatment of Abdullah, is itself notable. The Council believes this is because Saad operates at a level of sincerity so total and so unhinged that mockery would simply pass through him without contact, like a hand through fog. Kopecky watched Saad conduct what Saad called "the Tangerine Vespers" — an hour-long ceremony involving the arrangement, blessing, peeling, and tearful consumption of seven tangerines in a specific order — and at the end said only: "He believes it completely. That is the part I cannot dismiss." It is the closest Kopecky has come to respecting anyone, and it was directed at a man weeping over citrus.`,
+    incidents: [
+      {
+        title: 'The Tangerine Vespers',
+        body: `Saad's central rite. Performed at dusk, requiring exactly seven tangerines arranged in what Saad calls "the configuration." He has never written the configuration down, claiming it "reveals itself nightly," which means it is different every time and therefore cannot be wrong. Each tangerine is addressed individually before peeling — Saad leans close and murmurs to it, and witnesses report the murmurs are not words in any known language but are clearly, unmistakably, devotional. The peeling is done slowly. The consumption is done weeping. When asked why he weeps, Saad said: "Because they give themselves so completely and I can never give back as much." The Council filed this under "leave it." Kopecky, present at one Vespers, did not interrupt. He stayed the full hour. He said afterward it was "more coherent than Ayub's pamphlet, and more honest."`
+      },
+      {
+        title: 'The Yogurt That Was Permitted to Turn',
+        body: `Saad keeps yogurts. Not for eating — or not only for eating. He keeps them in clay vessels arranged along the south wall of wherever he is staying, and he visits them. He believes yogurt occupies a sacred middle state — "alive but still, becoming but patient" — and that to interrupt its turning is a kind of violence. He therefore allows them to turn fully, past any point of edibility, and then consumes them as an act he describes only as "communion with the patient thing." Several disciples have become ill merely from being in the room during this. Saad has never become ill. Abdullah suggested the yogurts had "reached an understanding" with Saad, the way Abdullah believes bears can. This is the only recorded instance of Abdullah and Saad's theologies intersecting. Both men considered it a profound moment. Everyone else left the room.`
+      },
+      {
+        title: 'The Sermon He Gave to the Tangerines',
+        body: `On one occasion Saad was found in the orchard delivering a full sermon — structured, with an opening, three points, and a benediction — to a tree of unripe tangerines. He spoke for forty minutes. The sermon, as overheard and transcribed by a deeply uncomfortable Ondrej, was theologically incoherent but rhetorically polished, and concerned the duty of the fruit to "ripen toward the truth at its own pace, without the corruption of haste." When Saad noticed he was being observed, he did not stop. He finished the benediction, turned to Ondrej, and said: "They were not ready to hear it. But it had to be said in their presence. You understand." Ondrej wrote "I do not understand" in the margin. The sermon is preserved in full. The Council has never decided what it is.`
+      },
+    ],
+    kopecky_quote: `"I do not mock Saad. I have considered mocking Saad and found that there is nothing to grip. He has wrapped himself so completely in his own devotion that he cannot be reached, cannot be embarrassed, cannot be corrected — and, I will say this once, cannot be doubted on the matter of his sincerity. He weeps over tangerines. He means it more than most men mean anything. I do not understand it. I do not endorse the yogurts. But I will not pretend it is nothing."`,
+    kopecky_source: 'To the apostle Vladimír · Year Eleven · The only recorded instance of Kopecky declining to mock someone available to be mocked',
+    disciple_quote: `"The tangerine gives everything. The yogurt waits. Kopecky understands the waiting — he calls it patience, I call it the becoming, we are speaking of the same holy thing in two tongues. He came down from the mountain. I came up from somewhere I do not name. We met in the middle, where the patient things are. He has not told me to stop. That is permission. That is enough."`,
+    disciple_source: 'Saad · Spoken to a clay vessel · Recorded by an unwilling scribe from the doorway',
+  },
+  {
+    id: 'nekro',
+    name: 'Nekro',
+    epithet: 'The One Who Does Not Speak',
+    origin: 'Found at the Treeline · Was Not Brought · Simply Began Appearing',
+    role: 'Disciple Without Words · Believer in Her Own Other-Nature · Maker of Sounds · Keeper of Her Own Counsel',
+    status: 'Active · Communicates Only in Utterance · Understood Perfectly by No One, Tolerated Fondly by All',
+    bio: `Nekro does not speak. This is not an affliction and not a vow — the Council has established, over years of careful observation, that she is fully capable of speech and has simply elected, completely, not to use it. She communicates instead through a vocabulary of sounds: chitters, low trilling notes, a particular click of the tongue that seems to mean assent, a soft keening that the scribes learned to associate with disapproval, and one rare, rising warble that has only ever been heard three times and is believed to indicate something close to joy.
+
+She believes herself to be a creature. Not metaphorically — she carries herself with the settled, unbothered certainty of something that has always known it was not quite human and has made its peace with the arrangement. She moves low and careful, watches from the edges of rooms, tilts her head at sounds others do not notice, and regards direct eye contact as either a challenge or an intimacy depending on a logic only she follows. The Council does not record what kind of creature she believes herself to be, because she has never told anyone, because she does not tell anyone anything. The belief is simply evident in everything she does.
+
+She keeps to her own company and to the company of women, toward whom her strange sounds soften noticeably — the keening becomes something gentler, the chittering slows. The Council noted this without comment, in the way the Council notes most things about Nekro: a single line, no elaboration, an implicit agreement that she is to be left to be what she is. Kopecky, on first encountering her, did something he rarely does: he was quiet, and he watched, and he waited. When she finally made a sound at him — a low, questioning trill — he made a sound back. Nobody knows what either sound meant. Both seemed satisfied. She has followed the Church loosely ever since, appearing and disappearing at the treeline, present at the important moments, never once explaining herself, never once asked to.`,
+    incidents: [
+      {
+        title: 'The Conversation Nobody Could Transcribe',
+        body: `In Year Twelve, Kopecky and Nekro were observed for the better part of an afternoon sitting opposite one another at the forest's edge, exchanging sounds. Not words — sounds. Kopecky, who is ordinarily economical with everything including breath, participated fully: low hums, a click, once a sound the apostle Vladimír described as "something I did not know he could make and have chosen not to describe." Nekro answered each in her own register. The exchange had the unmistakable rhythm of conversation — turns taken, pauses honoured, something building. At the end, Kopecky stood, nodded once, and walked away looking as though something had been settled. Asked what they had discussed, he said: "That is between Nekro and myself." It is the only secret Kopecky has ever admitted to keeping that does not involve the satchel.`
+      },
+      {
+        title: 'The Three Warbles',
+        body: `Nekro's rising joy-warble has been heard exactly three times. Once when a particular woman of the Nitra valley returned after a long absence — Nekro emerged from the treeline, warbled, and the two sat together in silence until dark. Once when the first snow fell on a year the Church had feared would have none. And once, unexpectedly, during one of Abdullah's bear addresses — though the Council has been careful to note this may have been directed at something behind Abdullah rather than at the address itself, as a hawk was visible in the distance at the time. Nekro has declined to clarify, in the sense that she declines to clarify everything, which is to say she made a short dismissive chitter and left.`
+      },
+      {
+        title: 'What She Will Not Do',
+        body: `The Church has, gently and only once, tested whether Nekro would speak if the situation demanded it. During a tense moment at the Devín assembly — a dispute that words might have resolved — every face turned to her, as if hoping she might, this once, simply say the thing. She looked back at all of them. She held the silence for a long, deliberate moment. Then she made a single sound — flat, final, unimpressed — and the meaning was so completely clear that the dispute resolved itself without her ever forming a word. Kopecky, watching, was reported to have almost smiled. "She said more than any of you," he noted. "She simply declined to use your method."`
+      },
+    ],
+    kopecky_quote: `"Nekro does not speak because she has decided your words are not adequate to what she is, and I am not certain she is wrong. We understand each other. I will not tell you how. She is a creature of some kind. So, I have been told, am I. We recognise each other. That is all I will say, and it is already more than she would say, which is fitting, as I have always talked too much by her standard."`,
+    kopecky_source: 'To the Council of Devín · Year Twelve · When asked, formally, to explain his understanding with Nekro · He did not explain it',
+    disciple_quote: `[Nekro was offered the space for a quote. She regarded the offered parchment for some time. Then she made a sound — recorded by the scribe, phonetically and with evident difficulty, as "a low descending trill, three notes, the last held, not unkind." The scribe has annotated: "I believe this was her quote. I believe she gave it deliberately. I have left the rest of the space empty, as she would have wanted, though I cannot say how I know that she would have wanted it."]`,
+    disciple_source: 'Čudové Záznamy · The Nekro Page · Largely Blank, By Design',
+  },
+  {
+    id: 'quantavius',
+    name: 'Quantavius',
+    epithet: 'The Prophet of the Bottom of the Cup',
+    origin: 'The Taverns · All of Them · Sequentially',
+    role: 'Self-Declared Prophet · Confirmed Degenerate · Asker of Questions Nobody Can Answer or Wants To · Drinks',
+    status: 'Active · Rarely Sober · Somehow Always Present at the Important Moments · Nobody Invites Him · He Is Simply There',
+    bio: `Quantavius calls himself a prophet. The Church has not confirmed this title and has not been able to fully revoke it either, because on three separate occasions Quantavius, deep in drink and apropos of nothing, has asked a question so unexpectedly piercing that it changed the course of a Council debate. Nobody can predict when this will happen. Most of his questions are nonsense. A small, statistically troubling fraction are not. He cannot tell the difference himself and does not try.
+
+He drinks. This is his primary and arguably only consistent activity. He drinks in the morning, which he calls "aligning," and through the day, which he calls "maintaining," and into the night, which he does not call anything because by then he is no longer narrating. From within this permanent haze he produces questions — endless, strange, unprompted questions — directed at whoever is nearest, at the air, at the drink itself. "If a man stacks wood correctly but no one corrects him, was it ever wrong?" "Why does the goat know?" "What is on the other side of the stew?" "If Kopecky returned and nobody recognised him, would he be annoyed, or would he find it instructive?" That last one circulated for months. Even Kopecky was reported to have paused at it.
+
+Kopecky's relationship with Quantavius is one of wary, irritated tolerance. He finds the man's degeneracy genuinely tiresome and has said so. But he has also admitted — once, grudgingly — that Quantavius "asks the questions everyone is too dignified to ask, and occasionally one of them matters, and you cannot have the second kind without tolerating the first." Quantavius, for his part, regards Kopecky with the loose, fearless familiarity of a man with no reputation left to protect. He is the only disciple who interrupts Kopecky. He does it constantly. Kopecky has stopped reacting, which Quantavius interprets as respect and which is in fact the opposite, though the gap between the two has long since stopped mattering to either of them.`,
+    incidents: [
+      {
+        title: 'The Question That Stopped the Council',
+        body: `During a heated Year Ten debate over whether the Laws of Chudhood should be formally numbered or left as a loose tradition, Quantavius — who had not been invited, was lying along a bench at the back, and was understood to be asleep — said, without opening his eyes: "If you number them, which one do you put last, and what does it mean that something has to be last?" The Council fell silent. The debate, which had been about format, was suddenly about hierarchy, meaning, and the implicit theology of order. They argued about Quantavius's question for two more days. Quantavius did not participate further. He had returned to drinking and, when reminded that he had said something important, said he did not remember saying it and asked whether anyone was going to finish their drink.`
+      },
+      {
+        title: 'The Drinking That Has No Bottom',
+        body: `No one has ever seen Quantavius finish drinking. He has been observed to start, to continue, to slow, and to resume, but the act has no recorded conclusion. The taverns of four valleys know him. He has been barred from none of them — unlike Yash — not because he behaves well but because he is, when drunk, strangely good for business: people gather to hear what he will ask next. A tavern keeper in Zvolen described him as "a terrible man and my most reliable income," which Quantavius, when told, considered the finest thing anyone had ever said about him and wept, briefly, before asking the keeper why the floor was "doing that."`
+      },
+      {
+        title: 'The Prophecy That May Have Been a Hiccup',
+        body: `Quantavius's claim to prophecy rests largely on an incident in Year Eleven when, mid-sentence and mid-drink, he stopped, stared at the middle distance, and said "the bread will be wrong on the day it matters most" — and then, much later, the Holy Decree crisis occurred, during which, among other things, Ayub offered to replace the scriptures and a great deal went briefly wrong. Quantavius has claimed this as a fulfilled prophecy. The Council has noted that he says many things, that some of them are bound to align with later events, and that the specific words may also have been a hiccup that happened to contain consonants. Quantavius rejects this interpretation. Kopecky, asked to rule on whether it was prophecy, said: "It was a drunk man making a sound that later resembled a fact. The valley is full of those. Three of them, regrettably, have been right." He did not specify which three. Quantavius assumes he is one of them.`
+      },
+    ],
+    kopecky_quote: `"Quantavius is a degenerate. I want that recorded plainly, because what follows might be mistaken for praise and it is not. He drinks his life into a blur and asks the air questions and most of them are worth nothing. But he asks the ones the dignified will not ask, and once in a great while the blur produces something true, and I have learned — against my preference — that you cannot reliably separate the man who asks the foolish questions from the man who occasionally asks the necessary one. They are the same man. He is usually drunk. I tolerate him. Do not read more into it than that. He certainly does."`,
+    kopecky_source: 'To the apostle Vladimír · Year Eleven · Immediately after Quantavius interrupted a teaching to ask "what is on the other side of the stew"',
+    disciple_quote: `"Kopecky came down from a mountain. Fine. Good. But what was he doing UP there? Nobody asks. I ask. I ask everything. The cup is empty again — is that a sign? Everything is a sign if you have had enough to drink and not so much that you stop noticing. He thinks I don't see him. I see him. I see everything. I just also see two of it. Are you going to finish that?"`,
+    disciple_source: 'Quantavius · The Zvolen tavern · Hour unknown · Drink number unknown · Recorded by a patron who found him "upsettingly lucid for a moment, then not"',
+  },
 ]
 
 

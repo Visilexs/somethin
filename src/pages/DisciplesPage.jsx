@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Reveal, QuoteBlock } from '../components/UI'
 import { DISCIPLES } from '../data'
-import { AyubIcon, AbdullahIcon, EnricoIcon, KorrinIcon, YashIcon } from '../components/Icons'
+import { AyubIcon, AbdullahIcon, EnricoIcon, KorrinIcon, YashIcon, SaadIcon, NekroIcon, QuantaviusIcon } from '../components/Icons'
 import { ShinyButton, SpotlightCard } from '../components/ReactBits'
 
-const ICON_MAP = { ayub:AyubIcon, abdullah:AbdullahIcon, enrico:EnricoIcon, korrin:KorrinIcon, yash:YashIcon }
+const ICON_MAP = { ayub:AyubIcon, abdullah:AbdullahIcon, enrico:EnricoIcon, korrin:KorrinIcon, yash:YashIcon, saad:SaadIcon, nekro:NekroIcon, quantavius:QuantaviusIcon }
 
 function DiscipleIcon({ id, size=80 }) {
   const Comp = ICON_MAP[id]

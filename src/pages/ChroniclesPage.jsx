@@ -97,6 +97,77 @@ export default function ChroniclesPage({ setPage }) {
           </Reveal>
         </div>
 
+        {/* THE FORBIDDEN MAC AND CHEESE */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label" style={{ color:'var(--am)' }}>Known Only to Kopecky · Spoken of Often · Never Fully Explained</div>
+            <div className="sec-title" style={{ color:'var(--am)' }}>The Forbidden Mac and Cheese</div>
+            <p className="prose">
+              There is a thing Kopecky speaks of that the Council has never been able to source, verify, or
+              fully transcribe, because every account of it is incomplete and every incomplete account is
+              incomplete in a different place. It is referred to, in the surviving fragments, only as
+              <em style={{ color:'var(--am)' }}> the Forbidden Mac and Cheese.</em> Kopecky knows of it. Kopecky
+              knows of it <em>well.</em> He has raised it, unprompted, on no fewer than thirty-one recorded
+              occasions, in contexts ranging from the theological to the agricultural to, on one occasion,
+              the middle of an unrelated argument about fencing.
+            </p>
+          </Reveal>
+
+          <Reveal delay={1}>
+            <div style={{
+              border:'1px solid rgba(200,168,74,.3)', background:'rgba(200,168,74,.035)',
+              padding:'30px 34px', margin:'28px 0', position:'relative', overflow:'hidden',
+            }}>
+              <div style={{ position:'absolute', top:0, left:0, right:0, height:2, background:'linear-gradient(90deg,transparent,rgba(200,168,74,.5),transparent)' }}/>
+              <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.82)', marginBottom:16 }}>
+                What is known is this. There exists — or existed, or will exist; the tense Kopecky uses shifts
+                and he does not correct it — a dish. It is, by every fragmentary description, simply a dish of
+                pasta and cheese. And yet Kopecky speaks of it the way other men speak of a thing they have
+                survived. He has called it <em style={{ color:'var(--am)' }}>"the one recipe that should not have
+                been written down."</em> He has said that he knows what is in it, that he knows what it does, and
+                that the knowing is itself the burden. He has refused — every single time, without exception —
+                to say what either the contents or the consequences are.
+              </p>
+              <p style={{ fontFamily:"'EB Garamond',serif", fontSize:16, lineHeight:2, color:'rgba(213,206,171,.82)', marginBottom:16 }}>
+                When the apostle Vladimír once asked, gently, whether the Forbidden Mac and Cheese was perhaps
+                a metaphor, Kopecky looked at him for a long time and said: <em style={{ color:'var(--am)' }}>"You
+                would prefer that it were."</em> Vladimír did not ask again. Nobody who has heard Kopecky speak
+                of it has come away believing it is a metaphor. Nobody who has heard him speak of it has come
+                away believing anything comfortable at all.
+              </p>
+              <p style={{ fontFamily:"'EB Garamond',serif", fontSize:15, lineHeight:2, color:'rgba(213,206,171,.62)', fontStyle:'italic', marginBottom:0 }}>
+                It is the only subject other than the satchel that Kopecky guards completely. The Council has
+                noted that he discusses the satchel by refusing to discuss it, but discusses the Mac and Cheese
+                constantly while still revealing nothing — which they consider, in its way, more alarming. A man
+                who will not speak of a thing is keeping a secret. A man who speaks of a thing endlessly and
+                tells you nothing is keeping something worse.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={1}>
+            <QuoteBlock
+              amber
+              text="I know of the Forbidden Mac and Cheese. I will not be making it. I will not be telling you what is in it, or what happens, or why it is forbidden, or by whom. I will say only this: it is forbidden for a reason, the reason is correct, and you should be grateful that the one person who knows the recipe is also the one person disciplined enough never to make it again. Do not ask me about the third ingredient. There are people for whom the third ingredient is not survivable information."
+              source="Kopecky · Unprompted · During what had been, until that moment, a discussion about fence posts · Year Ten"
+            />
+          </Reveal>
+
+          <Reveal>
+            <div className="warn-box">
+              <div className="warn-label">Council Note · Sťažnostná Kniha, Sealed Appendix</div>
+              <div className="warn-text">
+                Thirty-one recorded mentions. Zero recorded explanations. The Council has cross-referenced every
+                fragment in the hope that the omissions, laid side by side, might reveal by their gaps what
+                Kopecky will not say directly. They do not. The gaps do not align. It is as though the dish
+                resists even being described around. The investigation has been formally suspended. The reason
+                given for the suspension is one line, in Vladimír's hand: <em>"He asked us to stop. He did not
+                explain why. For the first time, we did not need him to."</em>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
 
         {/* MOCKERY SECTION */}
         <div className="content-section">

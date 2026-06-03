@@ -2,207 +2,271 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { useApp } from './AppContext'
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TWO-TRACK AMBIENT ENGINE
-// Track A — "The Walking" : A minor drone, warm, steady
-// Track B — "The Tatras"  : D Phrygian, colder, higher, more movement
-// Crossfades every ~32s seamlessly via equal-power curve
+// MULTI-TRACK AMBIENT ENGINE — four procedural movements, seamless crossfades.
+//
+//   I.   "The Walking"  — A minor, warm low drones + slow pentatonic melody
+//   II.  "The Tatras"   — D Phrygian, colder, higher movement, glass bells
+//   III. "The Vigil"    — E minor, deep candle-lit chord swells + sub heartbeat
+//   IV.  "The Fog"      — C Lydian, weightless shimmer, high chimes
+//
+// Each track is a config (drones + scale + optional chord swells / bells / sub).
+// The engine builds a gain bus + drone layer per track, fades the master in,
+// and crossfades to a random *different* track every ~30–45s via an equal-power
+// curve. Tracks are richer than static drones: chords breathe underneath, glass
+// bells accent, and a slow sub pulse gives some movements a heartbeat.
 // ─────────────────────────────────────────────────────────────────────────────
 
-class TwoTrackEngine {
+const TRACKS = [
+  {
+    id: 'walking', name: 'The Walking',
+    drones: [
+      { f: 55,    vol: 0.30, lfoRate: 0.07 },
+      { f: 110,   vol: 0.26, lfoRate: 0.11 },
+      { f: 164.8, vol: 0.18, lfoRate: 0.09, detune: 3 },
+      { f: 220,   vol: 0.14, lfoRate: 0.13, detune: -2 },
+      { f: 110.6, vol: 0.08, lfoRate: 0.06, detune: 9 },
+    ],
+    scale: [220, 261.6, 293.7, 329.6, 392, 440, 523.3],   // A minor pentatonic
+    melodyInterval: 3.0, melodyVol: 0.032,
+    chords: [[110, 164.8, 220], [98, 146.8, 196], [123.5, 164.8, 247]],
+    chordVol: 0.05, chordEvery: 11,
+    bells: false, subPulse: true,
+  },
+  {
+    id: 'tatras', name: 'The Tatras',
+    drones: [
+      { f: 73.4,  vol: 0.28, lfoRate: 0.06 },
+      { f: 146.8, vol: 0.24, lfoRate: 0.08, detune: 2 },
+      { f: 196,   vol: 0.16, lfoRate: 0.12, detune: -3 },
+      { f: 220,   vol: 0.12, lfoRate: 0.10, detune: 5 },
+      { f: 293.7, vol: 0.10, lfoRate: 0.07 },
+    ],
+    scale: [293.7, 349.2, 392, 440, 523.3, 587.3, 659.3],
+    melodyInterval: 3.4, melodyVol: 0.028,
+    chords: [[146.8, 220, 293.7], [164.8, 196, 247]],
+    chordVol: 0.04, chordEvery: 13,
+    bells: true, subPulse: false,
+  },
+  {
+    id: 'vigil', name: 'The Vigil',
+    drones: [
+      { f: 41.2,  vol: 0.30, lfoRate: 0.05 },
+      { f: 82.4,  vol: 0.26, lfoRate: 0.07 },
+      { f: 123.5, vol: 0.18, lfoRate: 0.09, detune: 2 },
+      { f: 164.8, vol: 0.13, lfoRate: 0.11, detune: -4 },
+      { f: 246.9, vol: 0.07, lfoRate: 0.06, detune: 6 },
+    ],
+    scale: [164.8, 196, 246.9, 293.7, 329.6, 392],   // E minor
+    melodyInterval: 4.2, melodyVol: 0.03,
+    chords: [[82.4, 123.5, 164.8], [98, 146.8, 196], [110, 164.8, 220]],
+    chordVol: 0.06, chordEvery: 9,
+    bells: true, subPulse: true,
+  },
+  {
+    id: 'fog', name: 'The Fog',
+    drones: [
+      { f: 65.4,  vol: 0.24, lfoRate: 0.05 },
+      { f: 130.8, vol: 0.20, lfoRate: 0.08 },
+      { f: 196,   vol: 0.15, lfoRate: 0.10, detune: 4 },
+      { f: 246.9, vol: 0.11, lfoRate: 0.12, detune: -3 },
+      { f: 392,   vol: 0.06, lfoRate: 0.07, detune: 8 },
+    ],
+    scale: [392, 440, 493.9, 587.3, 659.3, 740],   // C Lydian upper
+    melodyInterval: 3.8, melodyVol: 0.024,
+    chords: [[130.8, 196, 246.9], [146.8, 220, 277.2]],
+    chordVol: 0.035, chordEvery: 12,
+    bells: true, subPulse: false,
+  },
+]
+
+class AmbientEngine {
   constructor() {
-    this.ctx    = null
+    this.ctx = null
     this.master = null
-    this.gainA  = null
-    this.gainB  = null
-    this.nodes  = []
+    this.comp = null
+    this.buses = []
+    this.nodes = []
+    this.timers = []
     this.active = false
-    this.track  = 'A'  // which is currently louder
-    this._xfTimer = null
-    this._melTimer = null
-    this._vol   = 0.5
+    this.current = 0
+    this.name = TRACKS[0].name
+    this._vol = 0.5
   }
 
   _osc(freq, type, detune = 0) {
     const o = this.ctx.createOscillator()
-    o.type = type
-    o.frequency.value = freq
-    o.detune.value = detune
+    o.type = type; o.frequency.value = freq; o.detune.value = detune
     return o
   }
 
   _lfo(freq, range, target) {
     const l = this.ctx.createOscillator()
     const g = this.ctx.createGain()
-    l.frequency.value = freq
-    g.gain.value = range
-    l.connect(g)
-    g.connect(target)
-    l.start()
+    l.frequency.value = freq; g.gain.value = range
+    l.connect(g); g.connect(target); l.start()
     this.nodes.push(l, g)
   }
 
-  // Build one drone track and return its gain node
-  _buildTrack(freqs, gainBus) {
+  _buildDrones(drones, bus) {
     const ctx = this.ctx
-    freqs.forEach(({ f, vol, detune = 0, type = 'sine', lfoRate = 0.09, lfoAmt }) => {
-      const osc  = this._osc(f, type, detune)
-      const gn   = ctx.createGain()
+    drones.forEach(({ f, vol, detune = 0, type = 'sine', lfoRate = 0.09, lfoAmt }) => {
+      const osc = this._osc(f, type, detune)
+      const gn = ctx.createGain()
       const filt = ctx.createBiquadFilter()
-      filt.type = 'lowpass'
-      filt.frequency.value = 800
-      filt.Q.value = 0.6
+      filt.type = 'lowpass'; filt.frequency.value = 820; filt.Q.value = 0.6
       gn.gain.value = vol
-      // tremolo
       this._lfo(lfoRate + Math.random() * 0.04, (lfoAmt ?? vol * 0.18), gn.gain)
-      osc.connect(filt)
-      filt.connect(gn)
-      gn.connect(gainBus)
-      osc.start()
+      osc.connect(filt); filt.connect(gn); gn.connect(bus); osc.start()
       this.nodes.push(osc, gn, filt)
     })
   }
 
-  // Pentatonic melody notes (A minor / D Phrygian)
-  _schedMelody(gainBus, scale, interval = 3.2, vol = 0.032) {
-    if (!this.active) return
+  _note(bus, freq, start, dur, vol, type = 'triangle', filterHz = 1400) {
     const ctx = this.ctx
-    const t   = ctx.currentTime
-
-    const patterns = [
-      [0,2,4,2,0,-1,1,3],
-      [4,3,1,0,2,-1,3,1],
-      [0,1,3,4,-1,2,0,-1],
-      [2,4,3,-1,1,0,2,-1],
-    ]
-    const pat = patterns[Math.floor(Math.random() * patterns.length)]
-
-    pat.forEach((idx, i) => {
-      if (idx < 0 || idx >= scale.length) return
-      const osc = ctx.createOscillator()
-      const gn  = ctx.createGain()
-      const fl  = ctx.createBiquadFilter()
-      osc.type = 'triangle'
-      osc.frequency.value = scale[idx]
-      fl.type = 'lowpass'
-      fl.frequency.value = 1400
-      const s = t + i * interval
-      const d = interval * 1.15
-      gn.gain.setValueAtTime(0, s)
-      gn.gain.linearRampToValueAtTime(vol, s + d * 0.12)
-      gn.gain.setValueAtTime(vol, s + d * 0.72)
-      gn.gain.linearRampToValueAtTime(0, s + d)
-      osc.connect(fl); fl.connect(gn); gn.connect(gainBus)
-      osc.start(s); osc.stop(s + d + 0.05)
-      this.nodes.push(osc, gn, fl)
-    })
-
-    const nextIn = pat.length * interval + 4 + Math.random() * 8
-    this._melTimer = setTimeout(() => this._schedMelody(gainBus, scale, interval, vol), nextIn * 1000)
+    const osc = ctx.createOscillator()
+    const gn = ctx.createGain()
+    const fl = ctx.createBiquadFilter()
+    osc.type = type; osc.frequency.value = freq
+    fl.type = 'lowpass'; fl.frequency.value = filterHz
+    gn.gain.setValueAtTime(0, start)
+    gn.gain.linearRampToValueAtTime(vol, start + dur * 0.12)
+    gn.gain.setValueAtTime(vol, start + dur * 0.6)
+    gn.gain.linearRampToValueAtTime(0, start + dur)
+    osc.connect(fl); fl.connect(gn); gn.connect(bus)
+    osc.start(start); osc.stop(start + dur + 0.05)
+    this.nodes.push(osc, gn, fl)
   }
 
-  // Equal-power crossfade between track A (down) and B (up)
-  _crossfade(toTrack) {
+  _schedMelody(trackIdx) {
+    if (!this.active) return
+    const cfg = TRACKS[trackIdx]
+    const bus = this.buses[trackIdx]
+    const t = this.ctx.currentTime
+    const { scale, melodyInterval: iv = 3.2, melodyVol: vol = 0.03 } = cfg
+    const phrase = 3 + Math.floor(Math.random() * 3)
+    let idx = Math.floor(Math.random() * Math.max(1, scale.length - phrase))
+    for (let i = 0; i < phrase; i++) {
+      const step = Math.random() < 0.5 ? 1 : (Math.random() < 0.5 ? 2 : 0)
+      idx = Math.max(0, Math.min(scale.length - 1, idx + (Math.random() < 0.5 ? step : -step)))
+      const d = iv * (0.9 + Math.random() * 0.5)
+      this._note(bus, scale[idx], t + i * iv * 0.85, d, vol)
+    }
+    const nextIn = (phrase * iv * 0.85) + 2 + Math.random() * 5
+    this.timers.push(setTimeout(() => this._schedMelody(trackIdx), nextIn * 1000))
+  }
+
+  _schedChords(trackIdx) {
+    if (!this.active) return
+    const cfg = TRACKS[trackIdx]
+    if (!cfg.chords) return
+    const bus = this.buses[trackIdx]
+    const t = this.ctx.currentTime
+    const chord = cfg.chords[Math.floor(Math.random() * cfg.chords.length)]
+    const dur = (cfg.chordEvery || 11) * 0.85
+    chord.forEach((f, i) => this._note(bus, f, t + i * 0.04, dur, cfg.chordVol || 0.04, 'sine', 600))
+    this.timers.push(setTimeout(() => this._schedChords(trackIdx), (cfg.chordEvery || 11) * 1000))
+  }
+
+  _schedBells(trackIdx) {
+    if (!this.active) return
+    const cfg = TRACKS[trackIdx]
+    if (!cfg.bells) return
+    const bus = this.buses[trackIdx]
+    const t = this.ctx.currentTime
+    const note = cfg.scale[Math.floor(Math.random() * cfg.scale.length)] * 2
+    this._note(bus, note, t, 3.5 + Math.random() * 2, 0.02, 'sine', 3000)
+    const nextIn = 8 + Math.random() * 14
+    this.timers.push(setTimeout(() => this._schedBells(trackIdx), nextIn * 1000))
+  }
+
+  _schedSub(trackIdx) {
+    if (!this.active) return
+    const cfg = TRACKS[trackIdx]
+    if (!cfg.subPulse) return
+    const bus = this.buses[trackIdx]
+    const t = this.ctx.currentTime
+    this._note(bus, cfg.drones[0].f, t, 4, 0.06, 'sine', 200)
+    this.timers.push(setTimeout(() => this._schedSub(trackIdx), (7 + Math.random() * 4) * 1000))
+  }
+
+  _startTrackLayers(idx, delayMs = 0) {
+    this.timers.push(setTimeout(() => {
+      if (!this.active) return
+      this._schedMelody(idx)
+      this._schedChords(idx)
+      this._schedBells(idx)
+      this._schedSub(idx)
+    }, delayMs))
+  }
+
+  _crossfade(toIdx) {
     if (!this.ctx) return
-    const ctx = this.ctx
-    const now = ctx.currentTime
-    const dur = 5.5  // crossfade duration seconds
-
-    const [fadeOut, fadeIn] = toTrack === 'B'
-      ? [this.gainA, this.gainB]
-      : [this.gainB, this.gainA]
-
-    // Equal-power curve: cos/sin so combined power stays constant
-    const STEPS = 60
+    const now = this.ctx.currentTime
+    const dur = 6
+    const fromBus = this.buses[this.current]
+    const toBus = this.buses[toIdx]
+    const STEPS = 64
     for (let i = 0; i <= STEPS; i++) {
       const frac = i / STEPS
       const t = now + frac * dur
-      // out: cos(frac * π/2), in: sin(frac * π/2)
-      fadeOut.gain.setValueAtTime(Math.cos(frac * Math.PI / 2) * this._vol, t)
-      fadeIn.gain.setValueAtTime( Math.sin(frac * Math.PI / 2) * this._vol, t)
+      fromBus.gain.setValueAtTime(Math.cos(frac * Math.PI / 2) * this._vol, t)
+      toBus.gain.setValueAtTime(Math.sin(frac * Math.PI / 2) * this._vol, t)
     }
-
-    this.track = toTrack
-    // Schedule next crossfade
-    const next = 28 + Math.random() * 16  // 28-44s between fades
-    this._xfTimer = setTimeout(() => {
-      if (this.active) this._crossfade(this.track === 'A' ? 'B' : 'A')
-    }, (dur + next) * 1000)
+    this.current = toIdx
+    this.name = TRACKS[toIdx].name
+    const next = 30 + Math.random() * 15
+    this.timers.push(setTimeout(() => {
+      if (!this.active) return
+      let n = Math.floor(Math.random() * TRACKS.length)
+      if (n === this.current) n = (n + 1) % TRACKS.length
+      this._crossfade(n)
+    }, (dur + next) * 1000))
   }
 
   async start() {
     if (this.active) return
-    this.ctx    = new (window.AudioContext || window.webkitAudioContext)()
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)()
     this.master = this.ctx.createGain()
-    this.gainA  = this.ctx.createGain()
-    this.gainB  = this.ctx.createGain()
-
-    const comp = this.ctx.createDynamicsCompressor()
-    comp.threshold.value = -18
-    comp.ratio.value = 4
-    comp.attack.value = 0.1
-    comp.release.value = 0.4
-
-    this.gainA.connect(comp)
-    this.gainB.connect(comp)
-    comp.connect(this.master)
+    this.comp = this.ctx.createDynamicsCompressor()
+    this.comp.threshold.value = -18; this.comp.ratio.value = 4
+    this.comp.attack.value = 0.1; this.comp.release.value = 0.4
+    this.comp.connect(this.master)
     this.master.connect(this.ctx.destination)
 
-    // Start: A at volume, B silent
-    this.gainA.gain.value = this._vol
-    this.gainB.gain.value = 0
+    this.buses = TRACKS.map((cfg, i) => {
+      const bus = this.ctx.createGain()
+      bus.gain.value = i === 0 ? this._vol : 0
+      bus.connect(this.comp)
+      this._buildDrones(cfg.drones, bus)
+      return bus
+    })
 
-    // ── TRACK A — "The Walking" — A minor, warm low drones ──────────────────
-    this._buildTrack([
-      { f: 55,    vol: 0.30, lfoRate: 0.07 },  // A1 sub
-      { f: 110,   vol: 0.26, lfoRate: 0.11, detune: 0 },   // A2 root
-      { f: 164.8, vol: 0.18, lfoRate: 0.09, detune: 3 },   // E3 fifth
-      { f: 220,   vol: 0.14, lfoRate: 0.13, detune: -2 },  // A3 octave
-      { f: 110.6, vol: 0.08, lfoRate: 0.06, detune: 9 },   // warm detune
-    ], this.gainA)
+    this.current = 0
+    this.name = TRACKS[0].name
+    this.active = true
 
-    // ── TRACK B — "The Tatras" — D Phrygian, colder, higher movement ────────
-    this._buildTrack([
-      { f: 73.4,  vol: 0.28, lfoRate: 0.06 },  // D2 sub
-      { f: 146.8, vol: 0.24, lfoRate: 0.08, detune: 2 },   // D3 root
-      { f: 196,   vol: 0.16, lfoRate: 0.12, detune: -3 },  // G3 minor third
-      { f: 220,   vol: 0.12, lfoRate: 0.10, detune: 5 },   // A3 (shared)
-      { f: 293.7, vol: 0.10, lfoRate: 0.07 },  // D4 octave
-    ], this.gainB)
-
-    // Pentatonic scales for each track
-    const scaleA = [220, 261.6, 293.7, 329.6, 392, 440, 523.3]  // A minor pent
-    const scaleB = [293.7, 349.2, 392, 440, 523.3, 587.3, 659.3] // D Phrygian pent
-
-    // Master fade in
     this.master.gain.value = 0
     this.master.gain.linearRampToValueAtTime(1, this.ctx.currentTime + 4)
 
-    this.active = true
+    this._startTrackLayers(0, 4500)
+    for (let i = 1; i < TRACKS.length; i++) this._startTrackLayers(i, 5000 + i * 800)
 
-    // Start melodies staggered
-    this._melTimer = setTimeout(() => this._schedMelody(this.gainA, scaleA, 3.0), 5000)
-    setTimeout(() => {
-      if (this.active) this._schedMelody(this.gainB, scaleB, 3.4, 0.028)
-    }, 6500)
-
-    // First crossfade after 30-38s
-    this._xfTimer = setTimeout(() => {
-      if (this.active) this._crossfade('B')
-    }, (30 + Math.random() * 8) * 1000)
+    this.timers.push(setTimeout(() => {
+      if (!this.active) return
+      this._crossfade(1)
+    }, (32 + Math.random() * 14) * 1000))
   }
 
   setVolume(v) {
     this._vol = v
     if (!this.ctx) return
     const now = this.ctx.currentTime
-    // Scale current track gains proportionally
-    const curA = this.gainA.gain.value
-    const curB = this.gainB.gain.value
-    const total = curA + curB || 1
-    this.gainA.gain.cancelScheduledValues(now)
-    this.gainB.gain.cancelScheduledValues(now)
-    this.gainA.gain.linearRampToValueAtTime((curA / total) * v, now + 0.4)
-    this.gainB.gain.linearRampToValueAtTime((curB / total) * v, now + 0.4)
+    this.buses.forEach((bus) => {
+      if (bus.gain.value > 0.001) {
+        bus.gain.cancelScheduledValues(now)
+        bus.gain.linearRampToValueAtTime(v, now + 0.4)
+      }
+    })
   }
 
   async resume() {
@@ -211,8 +275,8 @@ class TwoTrackEngine {
 
   stop() {
     this.active = false
-    clearTimeout(this._xfTimer)
-    clearTimeout(this._melTimer)
+    this.timers.forEach(clearTimeout)
+    this.timers = []
     if (this.ctx && this.master) {
       const now = this.ctx.currentTime
       this.master.gain.cancelScheduledValues(now)
@@ -222,7 +286,8 @@ class TwoTrackEngine {
         this.nodes.forEach(n => { try { n.disconnect() } catch (_) {} })
         this.nodes = []
         this.ctx?.close()
-        this.ctx = this.master = this.gainA = this.gainB = null
+        this.ctx = this.master = this.comp = null
+        this.buses = []
       }, 3000)
     }
   }
@@ -230,7 +295,8 @@ class TwoTrackEngine {
 
 // Module-level singleton
 let ENG = null
-const eng = () => { if (!ENG) ENG = new TwoTrackEngine(); return ENG }
+const eng = () => { if (!ENG) ENG = new AmbientEngine(); return ENG }
+
 
 // ── UI ────────────────────────────────────────────────────────────────────────
 export default function MusicPlayer() {
@@ -238,7 +304,7 @@ export default function MusicPlayer() {
   const [playing,  setPlaying]  = useState(false)
   const [vol,      setVol]      = useState(0.5)
   const [open,     setOpen]     = useState(false)
-  const [track,    setTrack]    = useState('A')  // visual indicator only
+  const [track,    setTrack]    = useState('The Walking')  // visual indicator only
   const started    = useRef(false)
   const interacted = useRef(false)
 
@@ -276,7 +342,7 @@ export default function MusicPlayer() {
   // Track visual: poll which is louder every 4s
   useEffect(() => {
     if (!playing) return
-    const t = setInterval(() => { const tk = ENG?.track || 'A'; setTrack(tk); actions.setTrack(tk) }, 4000)
+    const t = setInterval(() => { const nm = ENG?.name || 'The Walking'; setTrack(nm); actions.setTrack(nm) }, 3000)
     return () => clearInterval(t)
   }, [playing, actions])
 
@@ -289,7 +355,7 @@ export default function MusicPlayer() {
         await eng().start()
         started.current = true
       } else {
-        ENG = new TwoTrackEngine()
+        ENG = new AmbientEngine()
         ENG._vol = vol
         await ENG.start()
       }
@@ -307,7 +373,7 @@ export default function MusicPlayer() {
     if (playing) eng().setVolume(v)
   }
 
-  const trackName = track === 'A' ? 'The Walking' : 'The Tatras'
+  const trackName = track
 
   return (
     <div style={{

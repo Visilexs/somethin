@@ -4,6 +4,7 @@ import {
 } from 'react'
 import Background from './Background'
 import Lenis from 'lenis'
+import { motion, AnimatePresence } from 'motion/react'
 import { PAGES } from './data'
 import { KopeckySymbol } from './components/Icons'
 import { MagnetButton } from './components/ReactBits'
@@ -111,7 +112,6 @@ function ScrollTop({ show }) {
 export default function App() {
   const { state, actions } = useApp()
   const [page,    setPage]    = useState('home')
-  const [trans,   setTrans]   = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [scrollPct, setScrollPct] = useState(0)
   const [showTop, setShowTop] = useState(false)
@@ -166,22 +166,15 @@ export default function App() {
   }, [page, actions])
 
   const navigateTo = useCallback((target) => {
-    if (target === page && trans === false) return
-    setTrans(true)
-    actions.setPhase('exit')
-    setTimeout(() => {
-      // useTransition keeps UI responsive while the lazy chunk resolves
-      startTransition(() => {
-        setPage(target)
-        actions.visitPage(target)
-      })
-      window.scrollTo(0, 0)
-      lenisRef.current?.scrollTo(0, { immediate: true })
-      setScrollY(0)
-      actions.setPhase('enter')
-      setTimeout(() => { setTrans(false); actions.setPhase('idle') }, 360)
-    }, 280)
-  }, [page, trans, actions])
+    if (target === page) return
+    startTransition(() => {
+      setPage(target)
+      actions.visitPage(target)
+    })
+    window.scrollTo(0, 0)
+    lenisRef.current?.scrollTo(0, { immediate: true })
+    setScrollY(0)
+  }, [page, actions])
 
   // Prefetch a page chunk on nav hover
   const prefetch = useCallback((id) => {
@@ -189,7 +182,6 @@ export default function App() {
   }, [])
 
   const PageComponent = PAGE_MAP[page] || HomePage
-  const pageClass = trans ? 'page-exiting' : 'page-entering'
 
   return (
     <div className="app">
@@ -198,7 +190,7 @@ export default function App() {
       <ScrollProgress pct={scrollPct} />
       <Notifications />
 
-      <div className={`page-wrap ${pageClass}`} style={{ opacity: isPending ? 0.6 : undefined, transition: isPending ? 'opacity .2s' : undefined }}>
+      <div className="page-wrap">
         <header>
           <div
             className="h-sym-wrap"
@@ -236,9 +228,20 @@ export default function App() {
         </nav>
 
         <main>
-          <Suspense fallback={<PageLoader />}>
-            <PageComponent setPage={navigateTo} />
-          </Suspense>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={page}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              style={{ opacity: isPending ? 0.7 : undefined }}
+            >
+              <Suspense fallback={<PageLoader />}>
+                <PageComponent setPage={navigateTo} />
+              </Suspense>
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
 

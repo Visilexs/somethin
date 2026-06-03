@@ -267,7 +267,6 @@ header::after {
   border-top: 2px solid rgba(168,200,74,.38);
   padding: 20px 16px;
   transition: border-top-color .28s, box-shadow .28s;
-  transform-style: preserve-3d; will-change: transform;
 }
 .pillar:hover { border-top-color: var(--g); box-shadow: 0 18px 50px rgba(0,0,0,.4), 0 0 18px rgba(168,200,74,.07); }
 .pillar-num { font-family: 'Cinzel Decorative', serif; font-size: 26px; color: rgba(168,200,74,.11); margin-bottom: 7px; }
@@ -280,11 +279,9 @@ header::after {
 .book-card {
   background: rgba(168,200,74,.04); border: 1px solid rgba(168,200,74,.14);
   border-top: 2px solid rgba(168,200,74,.38); padding: 26px 20px;
-  transition: all .32s var(--ease); transform-style: preserve-3d; will-change: transform;
+  transition: border-top-color .32s var(--ease), box-shadow .32s var(--ease);
   cursor: none; position: relative; overflow: hidden;
 }
-.book-card::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(168,200,74,.06) 0%, transparent 65%); opacity: 0; transition: opacity .28s; pointer-events: none; }
-.book-card:hover::after { opacity: 1; }
 .book-card:hover { border-top-color: var(--g); box-shadow: 0 18px 50px rgba(0,0,0,.48), 0 0 24px rgba(168,200,74,.07); }
 .book-num { font-family: 'Cinzel Decorative', serif; font-size: 34px; color: rgba(168,200,74,.11); margin-bottom: 9px; }
 .book-sk  { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: .12em; color: var(--g); text-transform: uppercase; margin-bottom: 3px; }
@@ -295,7 +292,7 @@ header::after {
 .disciple-card {
   background: rgba(168,200,74,.04); border: 1px solid rgba(168,200,74,.14);
   border-top: 2px solid rgba(168,200,74,.38); padding: 26px 18px;
-  text-align: center; cursor: none; transform-style: preserve-3d; will-change: transform;
+  text-align: center; cursor: none;
   transition: border-top-color .28s, box-shadow .28s, background .28s;
 }
 .disciple-card:hover { border-top-color: var(--g); background: rgba(168,200,74,.07); box-shadow: 0 18px 50px rgba(0,0,0,.42), 0 0 18px rgba(168,200,74,.07); }

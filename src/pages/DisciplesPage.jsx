@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Reveal, QuoteBlock } from '../components/UI'
 import { DISCIPLES } from '../data'
 import { AyubIcon, AbdullahIcon, EnricoIcon, KorrinIcon, YashIcon } from '../components/Icons'
-import { ShinyButton } from '../components/ReactBits'
+import { ShinyButton, SpotlightCard } from '../components/ReactBits'
 
 const ICON_MAP = { ayub:AyubIcon, abdullah:AbdullahIcon, enrico:EnricoIcon, korrin:KorrinIcon, yash:YashIcon }
 
@@ -73,7 +73,7 @@ function DiscipleDetail({ d, setActive }) {
 
 function DiscipleCard({ d, onClick }) {
   return (
-    <div className="disciple-card" onClick={onClick}>
+    <SpotlightCard className="disciple-card" onClick={onClick}>
       <div style={{marginBottom:16}}><DiscipleIcon id={d.id} size={84}/></div>
       <div style={{fontFamily:"'Cinzel',serif",fontSize:13,letterSpacing:'.1em',color:'var(--g)',textTransform:'uppercase',marginBottom:5}}>{d.name}</div>
       <div style={{fontFamily:"'Cinzel Decorative',serif",fontSize:11,color:'var(--am)',marginBottom:12}}>"{d.epithet}"</div>
@@ -83,7 +83,7 @@ function DiscipleCard({ d, onClick }) {
       <div style={{marginTop:14,fontSize:10,fontFamily:"'Cinzel',serif",letterSpacing:'.12em',color:'rgba(168,200,74,0.35)',textTransform:'uppercase'}}>
         Click to read full account →
       </div>
-    </div>
+    </SpotlightCard>
   )
 }
 

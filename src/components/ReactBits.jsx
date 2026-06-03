@@ -1,77 +1,70 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useRef, useState, useEffect } from 'react'
+import {
+  motion,
+  useInView,
+  useMotionValue,
+  useSpring,
+  useMotionTemplate,
+  animate,
+} from 'motion/react'
 
 // ════════════════════════════════════════════════════════════════════════════
-// ReactBits-style components — ported to source (MIT, reactbits.dev pattern)
+// Motion-powered component library (motion.dev / motion@12)
+// Replaces the previous hand-rolled IntersectionObserver + rAF system.
 // ════════════════════════════════════════════════════════════════════════════
 
-// Shared in-view hook with reliable firing
-function useReveal(threshold = 0.15) {
+const EASE = [0.22, 1, 0.36, 1]
+
+// ── SplitText — per-character spring reveal, staggered ──────────────────────
+export function SplitText({ text = '', className = '', style = {}, delay = 0, stagger = 0.026, tag = 'span' }) {
   const ref = useRef(null)
-  const [inView, setInView] = useState(false)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const fb = setTimeout(() => setInView(true), 600)
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setInView(true); clearTimeout(fb); obs.disconnect() } },
-      { threshold, rootMargin: '0px 0px -8% 0px' }
-    )
-    obs.observe(el)
-    return () => { obs.disconnect(); clearTimeout(fb) }
-  }, [threshold])
-  return [ref, inView]
-}
-
-// ── SplitText — animates each character in, staggered ───────────────────────
-export function SplitText({ text = '', className = '', style = {}, delay = 0, stagger = 26, tag: Tag = 'span' }) {
-  const [ref, inView] = useReveal(0.2)
+  const inView = useInView(ref, { once: true, amount: 0.3 })
   const chars = Array.from(String(text ?? ''))
+  const MotionTag = motion[tag] || motion.span
+
   return (
-    <Tag ref={ref} className={className} style={{ display: 'inline-block', ...style }} aria-label={text}>
+    <MotionTag ref={ref} className={className} style={{ display: 'inline-block', ...style }} aria-label={text}>
       {chars.map((ch, i) => (
-        <span
+        <motion.span
           key={i}
-          aria-hidden="true"
-          style={{
-            display: 'inline-block',
-            whiteSpace: ch === ' ' ? 'pre' : 'normal',
-            opacity: inView ? 1 : 0,
-            transform: inView ? 'translateY(0) rotateX(0)' : 'translateY(0.5em) rotateX(-40deg)',
-            transition: `opacity .5s ease, transform .5s cubic-bezier(.2,.7,.3,1)`,
-            transitionDelay: `${delay + i * stagger}ms`,
-            transformOrigin: '50% 100%',
-          }}
-        >{ch === ' ' ? '\u00A0' : ch}</span>
+          aria-hidden
+          style={{ display: 'inline-block', whiteSpace: ch === ' ' ? 'pre' : 'normal', transformOrigin: '50% 100%' }}
+          initial={{ opacity: 0, y: '0.5em', rotateX: -45 }}
+          animate={inView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+          transition={{ delay: delay + i * stagger, type: 'spring', stiffness: 320, damping: 24 }}
+        >
+          {ch === ' ' ? '\u00A0' : ch}
+        </motion.span>
       ))}
-    </Tag>
+    </MotionTag>
   )
 }
 
-// ── BlurText — words blur+fade in ───────────────────────────────────────────
-export function BlurText({ text = '', className = '', style = {}, delay = 0, stagger = 70, tag: Tag = 'p' }) {
-  const [ref, inView] = useReveal(0.12)
+// ── BlurText — word-by-word blur+fade reveal ────────────────────────────────
+export function BlurText({ text = '', className = '', style = {}, delay = 0, stagger = 0.07, tag = 'p' }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, amount: 0.2 })
   const words = String(text ?? '').split(' ')
+  const MotionTag = motion[tag] || motion.p
+
   return (
-    <Tag ref={ref} className={className} style={style}>
+    <MotionTag ref={ref} className={className} style={style}>
       {words.map((w, i) => (
-        <span
+        <motion.span
           key={i}
-          style={{
-            display: 'inline-block',
-            opacity: inView ? 1 : 0,
-            filter: inView ? 'blur(0px)' : 'blur(8px)',
-            transform: inView ? 'translateY(0)' : 'translateY(8px)',
-            transition: 'opacity .6s ease, filter .6s ease, transform .6s ease',
-            transitionDelay: `${delay + i * stagger}ms`,
-            marginRight: '0.28em',
-          }}
-        >{w}</span>
+          style={{ display: 'inline-block', marginRight: '0.28em' }}
+          initial={{ opacity: 0, filter: 'blur(8px)', y: 8 }}
+          animate={inView ? { opacity: 1, filter: 'blur(0px)', y: 0 } : {}}
+          transition={{ delay: delay + i * stagger, duration: 0.6, ease: EASE }}
+        >
+          {w}
+        </motion.span>
       ))}
-    </Tag>
+    </MotionTag>
   )
 }
 
-// ── ShinyText — sweeping shine across text ──────────────────────────────────
+// ── ShinyText — sweeping shine across text (CSS keyframe) ───────────────────
 export function ShinyText({ text, className = '', speed = 4, style = {} }) {
   return (
     <span
@@ -80,10 +73,8 @@ export function ShinyText({ text, className = '', speed = 4, style = {} }) {
         display: 'inline-block',
         background: 'linear-gradient(120deg, rgba(168,200,74,.55) 30%, rgba(220,240,160,1) 50%, rgba(168,200,74,.55) 70%)',
         backgroundSize: '200% auto',
-        WebkitBackgroundClip: 'text',
-        backgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        color: 'transparent',
+        WebkitBackgroundClip: 'text', backgroundClip: 'text',
+        WebkitTextFillColor: 'transparent', color: 'transparent',
         animation: `shiny ${speed}s linear infinite`,
         ...style,
       }}
@@ -97,21 +88,16 @@ export function ShinyText({ text, className = '', speed = 4, style = {} }) {
 // ── GradientText — animated gradient fill ───────────────────────────────────
 export function GradientText({ children, text, colors, className = '', style = {}, speed = 6 }) {
   const content = text ?? children
-  const stops = Array.isArray(colors) && colors.length >= 2
-    ? colors
-    : ['#a8c84a', '#c8a84a', '#d8e890', '#a8c84a']
-  const gradient = `linear-gradient(90deg, ${stops.join(', ')})`
+  const stops = Array.isArray(colors) && colors.length >= 2 ? colors : ['#a8c84a', '#c8a84a', '#d8e890', '#a8c84a']
   return (
     <span
       className={className}
       style={{
         display: 'inline-block',
-        backgroundImage: gradient,
+        backgroundImage: `linear-gradient(90deg, ${stops.join(', ')})`,
         backgroundSize: '300% auto',
-        WebkitBackgroundClip: 'text',
-        backgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        color: 'transparent',
+        WebkitBackgroundClip: 'text', backgroundClip: 'text',
+        WebkitTextFillColor: 'transparent', color: 'transparent',
         animation: `grad-flow ${speed}s linear infinite`,
         ...style,
       }}
@@ -122,262 +108,246 @@ export function GradientText({ children, text, colors, className = '', style = {
   )
 }
 
-// ── AnimatedContent — slide/fade in on scroll ───────────────────────────────
+// ── AnimatedContent — slide/fade in on scroll (whileInView) ─────────────────
 export function AnimatedContent({ children, distance = 40, direction = 'vertical', delay = 0, duration = 0.7, className = '', style = {} }) {
-  const [ref, inView] = useReveal(0.1)
-  const axis = direction === 'horizontal' ? 'translateX' : 'translateY'
+  const offset = direction === 'horizontal' ? { x: distance } : { y: distance }
   return (
-    <div
-      ref={ref}
+    <motion.div
       className={className}
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? `${axis}(0)` : `${axis}(${distance}px)`,
-        transition: `opacity ${duration}s ease, transform ${duration}s cubic-bezier(.2,.7,.3,1)`,
-        transitionDelay: `${delay}s`,
-        ...style,
-      }}
-    >{children}</div>
+      style={style}
+      initial={{ opacity: 0, ...offset }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ delay, duration, ease: EASE }}
+    >
+      {children}
+    </motion.div>
   )
 }
 
-// ── Magnet — element follows cursor when near (clamped + safe) ──────────────
+// ── Magnet — spring-physics cursor follow ───────────────────────────────────
 export function Magnet({ children, strength = 0.3, max = 14, className = '', style = {} }) {
   const ref = useRef(null)
-  const [pos, setPos] = useState({ x: 0, y: 0 })
-  const raf = useRef(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const sx = useSpring(x, { stiffness: 260, damping: 18, mass: 0.4 })
+  const sy = useSpring(y, { stiffness: 260, damping: 18, mass: 0.4 })
 
-  const onMove = useCallback((e) => {
-    const el = ref.current
-    if (!el) return
+  const onMove = (e) => {
+    const el = ref.current; if (!el) return
     const r = el.getBoundingClientRect()
-    let x = (e.clientX - (r.left + r.width / 2)) * strength
-    let y = (e.clientY - (r.top + r.height / 2)) * strength
-    x = Math.max(-max, Math.min(max, x))
-    y = Math.max(-max, Math.min(max, y))
-    if (raf.current) return
-    raf.current = requestAnimationFrame(() => { setPos({ x, y }); raf.current = null })
-  }, [strength, max])
-
-  const onLeave = useCallback(() => {
-    if (raf.current) { cancelAnimationFrame(raf.current); raf.current = null }
-    setPos({ x: 0, y: 0 })
-  }, [])
-
-  // Cancel any pending frame on unmount
-  useEffect(() => () => { if (raf.current) cancelAnimationFrame(raf.current) }, [])
+    const dx = (e.clientX - (r.left + r.width / 2)) * strength
+    const dy = (e.clientY - (r.top + r.height / 2)) * strength
+    x.set(Math.max(-max, Math.min(max, dx)))
+    y.set(Math.max(-max, Math.min(max, dy)))
+  }
+  const reset = () => { x.set(0); y.set(0) }
 
   return (
-    <div
+    <motion.div
       ref={ref}
       className={className}
       onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      style={{
-        display: 'inline-block',
-        transform: `translate(${pos.x}px, ${pos.y}px)`,
-        transition: pos.x === 0 && pos.y === 0 ? 'transform .45s cubic-bezier(.2,.7,.3,1)' : 'transform .08s ease-out',
-        ...style,
-      }}
-    >{children}</div>
+      onMouseLeave={reset}
+      style={{ display: 'inline-block', x: sx, y: sy, ...style }}
+    >
+      {children}
+    </motion.div>
   )
 }
 
-// ── SpotlightCard — cursor-tracking spotlight ───────────────────────────────
-export function SpotlightCard({ children, className = '', style = {}, spotlightColor = 'rgba(168,200,74,0.12)', onClick }) {
+// ── SpotlightCard — real cursor-tracked spotlight + 3D tilt via motion values ─
+export function SpotlightCard({ children, className = '', style = {}, spotlightColor = 'rgba(168,200,74,0.14)', onClick }) {
   const ref = useRef(null)
-  const [spot, setSpot] = useState({ x: 50, y: 50, on: false })
+  const mx = useMotionValue(50)   // spotlight % position
+  const my = useMotionValue(50)
+  const rx = useSpring(useMotionValue(0), { stiffness: 200, damping: 20 })
+  const ry = useSpring(useMotionValue(0), { stiffness: 200, damping: 20 })
+  const [hovered, setHovered] = useState(false)
 
   const onMove = (e) => {
-    const el = ref.current
-    if (!el) return
+    const el = ref.current; if (!el) return
     const r = el.getBoundingClientRect()
-    setSpot({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100, on: true })
+    const px = (e.clientX - r.left) / r.width
+    const py = (e.clientY - r.top) / r.height
+    mx.set(px * 100); my.set(py * 100)
+    ry.set((px - 0.5) * 10)        // rotateY follows horizontal
+    rx.set(-(py - 0.5) * 10)       // rotateX follows vertical
   }
+  const onLeave = () => { setHovered(false); rx.set(0); ry.set(0) }
+
+  const bg = useMotionTemplate`radial-gradient(circle at ${mx}% ${my}%, ${spotlightColor} 0%, transparent 55%)`
 
   return (
-    <div
+    <motion.div
       ref={ref}
       className={className}
       onClick={onClick}
       onMouseMove={onMove}
-      onMouseEnter={() => setSpot(s => ({ ...s, on: true }))}
-      onMouseLeave={() => setSpot(s => ({ ...s, on: false }))}
-      style={{ position: 'relative', overflow: 'hidden', ...style }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={onLeave}
+      style={{ position: 'relative', overflow: 'hidden', rotateX: rx, rotateY: ry, transformPerspective: 900, ...style }}
+      whileHover={{ scale: 1.012 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 22 }}
     >
-      <div style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none',
-        background: `radial-gradient(circle at ${spot.x}% ${spot.y}%, ${spotlightColor} 0%, transparent 55%)`,
-        opacity: spot.on ? 1 : 0,
-        transition: 'opacity .35s ease',
-        zIndex: 0,
-      }}/>
+      <motion.div
+        style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: bg, zIndex: 0 }}
+        animate={{ opacity: hovered ? 1 : 0 }}
+        transition={{ duration: 0.35 }}
+      />
       <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
-    </div>
+    </motion.div>
   )
 }
 
-// ── CountUp — number counts up when in view ─────────────────────────────────
+// ── CountUp — animated number, fires when scrolled into view ────────────────
 export function CountUp({ to, end, value, from = 0, duration = 1.8, decimals = 0, suffix = '', prefix = '', className = '', style = {} }) {
-  // Accept to / end / value as aliases; coerce to a safe number
-  const targetRaw = to ?? end ?? value ?? 0
-  const target = Number(targetRaw)
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, amount: 0.4 })
+  const target = Number(to ?? end ?? value ?? 0)
   const safeTarget = Number.isFinite(target) ? target : 0
   const safeFrom = Number.isFinite(Number(from)) ? Number(from) : 0
-
-  const [ref, inView] = useReveal(0.3)
-  const [val, setVal] = useState(safeFrom)
-  const raf = useRef()
+  const [display, setDisplay] = useState(safeFrom.toFixed(decimals))
 
   useEffect(() => {
     if (!inView) return
-    const start = performance.now()
-    const tick = (now) => {
-      const t = Math.min((now - start) / (duration * 1000), 1)
-      const eased = 1 - Math.pow(1 - t, 3)
-      setVal(safeFrom + (safeTarget - safeFrom) * eased)
-      if (t < 1) raf.current = requestAnimationFrame(tick)
-      else setVal(safeTarget)
-    }
-    raf.current = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf.current)
-  }, [inView, safeTarget, safeFrom, duration])
+    const controls = animate(safeFrom, safeTarget, {
+      duration, ease: 'easeOut',
+      onUpdate: (v) => setDisplay(v.toFixed(decimals)),
+    })
+    return () => controls.stop()
+  }, [inView, safeTarget, safeFrom, duration, decimals])
 
-  const shown = Number.isFinite(val) ? val.toFixed(decimals) : String(safeTarget)
-  return <span ref={ref} className={className} style={style}>{prefix}{shown}{suffix}</span>
+  return <span ref={ref} className={className} style={style}>{prefix}{display}{suffix}</span>
 }
 
-// ── ShinyButton — magnetic + shine + spotlight button ───────────────────────
+// ── ShinyButton — spotlight + shine sweep, spring tap ───────────────────────
 export function ShinyButton({ children, onClick, variant = 'g', amber = false, style = {}, className = '' }) {
   const ref = useRef(null)
-  const [spot, setSpot] = useState({ x: 50, y: 50, on: false })
+  const mx = useMotionValue(50)
+  const my = useMotionValue(50)
+  const [hovered, setHovered] = useState(false)
   const col = (amber || variant === 'a') ? '200,168,74' : '168,200,74'
 
   const onMove = (e) => {
     const el = ref.current; if (!el) return
     const r = el.getBoundingClientRect()
-    setSpot({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100, on: true })
+    mx.set(((e.clientX - r.left) / r.width) * 100)
+    my.set(((e.clientY - r.top) / r.height) * 100)
   }
+  const spot = useMotionTemplate`radial-gradient(circle at ${mx}% ${my}%, rgba(${col},.18) 0%, transparent 50%)`
 
   return (
-    <button
+    <motion.button
       ref={ref}
       onClick={onClick}
       onMouseMove={onMove}
-      onMouseEnter={() => setSpot(s => ({ ...s, on: true }))}
-      onMouseLeave={() => setSpot(s => ({ ...s, on: false }))}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       className={className}
       style={{
         position: 'relative', overflow: 'hidden',
         fontFamily: "'Cinzel',serif", fontSize: 10, letterSpacing: '.22em', textTransform: 'uppercase',
-        color: `rgba(${col},.92)`,
-        background: `rgba(${col},.07)`,
-        border: `1px solid rgba(${col},.3)`,
-        padding: '14px 32px', cursor: 'none',
-        transition: 'border-color .3s, box-shadow .3s',
-        boxShadow: spot.on ? `0 0 24px rgba(${col},.14)` : 'none',
-        borderColor: spot.on ? `rgba(${col},.55)` : `rgba(${col},.3)`,
+        color: `rgba(${col},.92)`, background: `rgba(${col},.07)`,
+        border: `1px solid rgba(${col},.3)`, padding: '14px 32px', cursor: 'none',
         ...style,
       }}
+      animate={{
+        borderColor: hovered ? `rgba(${col},.55)` : `rgba(${col},.3)`,
+        boxShadow: hovered ? `0 0 24px rgba(${col},.16)` : `0 0 0px rgba(${col},0)`,
+      }}
+      whileTap={{ scale: 0.97 }}
+      transition={{ duration: 0.3 }}
     >
-      <span style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none',
-        background: `radial-gradient(circle at ${spot.x}% ${spot.y}%, rgba(${col},.18) 0%, transparent 50%)`,
-        opacity: spot.on ? 1 : 0, transition: 'opacity .3s',
-      }}/>
-      {/* Shine sweep */}
-      <span style={{
-        position: 'absolute', top: 0, left: '-60%', width: '50%', height: '100%',
-        background: `linear-gradient(120deg, transparent, rgba(${col},.18), transparent)`,
-        transform: 'skewX(-20deg)',
-        animation: spot.on ? 'btn-shine 0.9s ease' : 'none',
-        pointerEvents: 'none',
-      }}/>
+      <motion.span
+        style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: spot }}
+        animate={{ opacity: hovered ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+      />
+      {/* Shine sweep on hover */}
+      <motion.span
+        style={{
+          position: 'absolute', top: 0, width: '45%', height: '100%',
+          background: `linear-gradient(120deg, transparent, rgba(${col},.22), transparent)`,
+          transform: 'skewX(-20deg)', pointerEvents: 'none',
+        }}
+        initial={{ left: '-60%' }}
+        animate={hovered ? { left: '130%' } : { left: '-60%' }}
+        transition={{ duration: hovered ? 0.9 : 0, ease: 'easeOut' }}
+      />
       <span style={{ position: 'relative', zIndex: 1 }}>{children}</span>
-      <style>{`@keyframes btn-shine { from { left: -60%; } to { left: 120%; } }`}</style>
-    </button>
+    </motion.button>
   )
 }
 
-// ── ScrollReveal — staggered children reveal ────────────────────────────────
-export function ScrollReveal({ children, className = '', style = {}, stagger = 80 }) {
-  const [ref, inView] = useReveal(0.08)
+// ── ScrollReveal — staggered children via Motion variants ───────────────────
+export function ScrollReveal({ children, className = '', style = {}, stagger = 0.08 }) {
   const arr = Array.isArray(children) ? children : [children]
   return (
-    <div ref={ref} className={className} style={style}>
+    <motion.div
+      className={className}
+      style={style}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.1 }}
+      variants={{ show: { transition: { staggerChildren: stagger } } }}
+    >
       {arr.map((child, i) => (
-        <div
+        <motion.div
           key={i}
-          style={{
-            opacity: inView ? 1 : 0,
-            transform: inView ? 'translateY(0)' : 'translateY(28px)',
-            transition: `opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1)`,
-            transitionDelay: `${i * stagger}ms`,
-          }}
-        >{child}</div>
+          variants={{ hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0 } }}
+          transition={{ duration: 0.7, ease: EASE }}
+        >
+          {child}
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   )
 }
 
-// ── MagnetButton — nav-style magnetic button (clamped + safe) ───────────────
+// ── MagnetButton — nav button with spring magnet pull ───────────────────────
 export function MagnetButton({ children, onClick, active = false, className = '', style = {}, strength = 0.25, max = 10 }) {
   const ref = useRef(null)
-  const [pos, setPos] = useState({ x: 0, y: 0 })
-  const raf = useRef(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const sx = useSpring(x, { stiffness: 300, damping: 20, mass: 0.3 })
+  const sy = useSpring(y, { stiffness: 300, damping: 20, mass: 0.3 })
 
   const onMove = (e) => {
     const el = ref.current; if (!el) return
     const r = el.getBoundingClientRect()
-    let x = (e.clientX - (r.left + r.width / 2)) * strength
-    let y = (e.clientY - (r.top + r.height / 2)) * strength
-    // Clamp so the button never travels far from its origin
-    x = Math.max(-max, Math.min(max, x))
-    y = Math.max(-max, Math.min(max, y))
-    if (raf.current) return            // throttle to one update per frame
-    raf.current = requestAnimationFrame(() => { setPos({ x, y }); raf.current = null })
+    const dx = (e.clientX - (r.left + r.width / 2)) * strength
+    const dy = (e.clientY - (r.top + r.height / 2)) * strength
+    x.set(Math.max(-max, Math.min(max, dx)))
+    y.set(Math.max(-max, Math.min(max, dy)))
   }
-  const reset = () => {
-    if (raf.current) { cancelAnimationFrame(raf.current); raf.current = null }
-    setPos({ x: 0, y: 0 })
-  }
-
-  useEffect(() => () => { if (raf.current) cancelAnimationFrame(raf.current) }, [])
+  const reset = () => { x.set(0); y.set(0) }
 
   return (
-    <button
+    <motion.button
       ref={ref}
       onClick={onClick}
       onMouseMove={onMove}
       onMouseLeave={reset}
       className={className}
-      style={{
-        transform: `translate(${pos.x}px, ${pos.y}px)`,
-        transition: pos.x === 0 && pos.y === 0 ? 'transform .45s cubic-bezier(.2,.7,.3,1)' : 'transform .08s ease-out',
-        ...style,
-      }}
-    >{children}</button>
+      style={{ x: sx, y: sy, ...style }}
+    >
+      {children}
+    </motion.button>
   )
 }
 
-// ── NumberTicker — counts up; renders a full stat block if label/note given ──
+// ── NumberTicker — CountUp; full stat block when label/note present ─────────
 export function NumberTicker({ value, to, end, label, note, decimals, suffix = '%', ...props }) {
   const raw = value ?? to ?? end ?? 0
   const num = Number(raw)
   const dec = decimals ?? (String(raw).includes('.') ? 1 : 0)
 
-  // Simple inline ticker (no label) — original behaviour
-  if (!label && !note) {
-    return <CountUp to={num} decimals={dec} suffix={suffix} {...props} />
-  }
+  if (!label && !note) return <CountUp to={num} decimals={dec} suffix={suffix} {...props} />
 
-  // Full stat block
   return (
     <div className="stat-block">
-      <div className="stat-num">
-        <CountUp to={num} decimals={dec} />
-        <span className="stat-pct">{suffix}</span>
-      </div>
+      <div className="stat-num"><CountUp to={num} decimals={dec} /><span className="stat-pct">{suffix}</span></div>
       {label && <div className="stat-lbl">{label}</div>}
       {note && <div className="stat-note">{note}</div>}
     </div>

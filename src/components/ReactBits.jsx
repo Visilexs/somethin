@@ -95,13 +95,18 @@ export function ShinyText({ text, className = '', speed = 4, style = {} }) {
 }
 
 // ── GradientText — animated gradient fill ───────────────────────────────────
-export function GradientText({ children, className = '', style = {}, speed = 6 }) {
+export function GradientText({ children, text, colors, className = '', style = {}, speed = 6 }) {
+  const content = text ?? children
+  const stops = Array.isArray(colors) && colors.length >= 2
+    ? colors
+    : ['#a8c84a', '#c8a84a', '#d8e890', '#a8c84a']
+  const gradient = `linear-gradient(90deg, ${stops.join(', ')})`
   return (
     <span
       className={className}
       style={{
         display: 'inline-block',
-        background: 'linear-gradient(90deg, #a8c84a, #c8a84a, #d8e890, #a8c84a)',
+        backgroundImage: gradient,
         backgroundSize: '300% auto',
         WebkitBackgroundClip: 'text',
         backgroundClip: 'text',
@@ -111,7 +116,7 @@ export function GradientText({ children, className = '', style = {}, speed = 6 }
         ...style,
       }}
     >
-      {children}
+      {content}
       <style>{`@keyframes grad-flow { to { background-position: 300% center; } }`}</style>
     </span>
   )
@@ -210,9 +215,15 @@ export function SpotlightCard({ children, className = '', style = {}, spotlightC
 }
 
 // ── CountUp — number counts up when in view ─────────────────────────────────
-export function CountUp({ to, from = 0, duration = 1.8, decimals = 0, suffix = '', className = '', style = {} }) {
+export function CountUp({ to, end, value, from = 0, duration = 1.8, decimals = 0, suffix = '', prefix = '', className = '', style = {} }) {
+  // Accept to / end / value as aliases; coerce to a safe number
+  const targetRaw = to ?? end ?? value ?? 0
+  const target = Number(targetRaw)
+  const safeTarget = Number.isFinite(target) ? target : 0
+  const safeFrom = Number.isFinite(Number(from)) ? Number(from) : 0
+
   const [ref, inView] = useReveal(0.3)
-  const [val, setVal] = useState(from)
+  const [val, setVal] = useState(safeFrom)
   const raf = useRef()
 
   useEffect(() => {
@@ -221,22 +232,23 @@ export function CountUp({ to, from = 0, duration = 1.8, decimals = 0, suffix = '
     const tick = (now) => {
       const t = Math.min((now - start) / (duration * 1000), 1)
       const eased = 1 - Math.pow(1 - t, 3)
-      setVal(from + (to - from) * eased)
+      setVal(safeFrom + (safeTarget - safeFrom) * eased)
       if (t < 1) raf.current = requestAnimationFrame(tick)
-      else setVal(to)
+      else setVal(safeTarget)
     }
     raf.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf.current)
-  }, [inView, to, from, duration])
+  }, [inView, safeTarget, safeFrom, duration])
 
-  return <span ref={ref} className={className} style={style}>{val.toFixed(decimals)}{suffix}</span>
+  const shown = Number.isFinite(val) ? val.toFixed(decimals) : String(safeTarget)
+  return <span ref={ref} className={className} style={style}>{prefix}{shown}{suffix}</span>
 }
 
 // ── ShinyButton — magnetic + shine + spotlight button ───────────────────────
-export function ShinyButton({ children, onClick, variant = 'g', style = {}, className = '' }) {
+export function ShinyButton({ children, onClick, variant = 'g', amber = false, style = {}, className = '' }) {
   const ref = useRef(null)
   const [spot, setSpot] = useState({ x: 50, y: 50, on: false })
-  const col = variant === 'a' ? '200,168,74' : '168,200,74'
+  const col = (amber || variant === 'a') ? '200,168,74' : '168,200,74'
 
   const onMove = (e) => {
     const el = ref.current; if (!el) return
@@ -343,7 +355,26 @@ export function MagnetButton({ children, onClick, active = false, className = ''
   )
 }
 
-// ── NumberTicker — alias of CountUp for compatibility ───────────────────────
-export function NumberTicker({ value, ...props }) {
-  return <CountUp to={value} {...props} />
+// ── NumberTicker — counts up; renders a full stat block if label/note given ──
+export function NumberTicker({ value, to, end, label, note, decimals, suffix = '%', ...props }) {
+  const raw = value ?? to ?? end ?? 0
+  const num = Number(raw)
+  const dec = decimals ?? (String(raw).includes('.') ? 1 : 0)
+
+  // Simple inline ticker (no label) — original behaviour
+  if (!label && !note) {
+    return <CountUp to={num} decimals={dec} suffix={suffix} {...props} />
+  }
+
+  // Full stat block
+  return (
+    <div className="stat-block">
+      <div className="stat-num">
+        <CountUp to={num} decimals={dec} />
+        <span className="stat-pct">{suffix}</span>
+      </div>
+      {label && <div className="stat-lbl">{label}</div>}
+      {note && <div className="stat-note">{note}</div>}
+    </div>
+  )
 }

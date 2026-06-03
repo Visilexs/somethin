@@ -153,7 +153,7 @@ export default function HomePage({ setPage }) {
         {/* Stats row */}
         <div style={{ display:'flex', flexWrap:'wrap', justifyContent:'center', border:'1px solid rgba(168,200,74,.16)', background:'rgba(168,200,74,.03)' }}>
           {[
-            { val:<CountUp end={97.3} suffix="%"/>, label:'Correctness Rate' },
+            { val:<CountUp end={97.3} decimals={1} suffix="%"/>, label:'Correctness Rate' },
             { val:'XIV',  label:'Years of the Walking' },
             { val:'XV',   label:'Laws of Chudhood' },
             { val:'VI',   label:'Sacred Books' },

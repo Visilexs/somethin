@@ -264,20 +264,22 @@ header::after {
 /* ── CARDS (pillar, book, disciple) ──────────────────────────────────────── */
 /* ── REUSABLE PANEL (coherent card surface used site-wide) ──────────────── */
 .panel {
-  background: rgba(168,200,74,.04);
-  border: 1px solid rgba(168,200,74,.14);
-  border-top: 2px solid rgba(168,200,74,.38);
-  transition: border-top-color .28s, box-shadow .28s, background .28s;
+  background: rgba(168,200,74,.055);
+  border: 1px solid rgba(168,200,74,.28);
+  border-top: 2px solid rgba(168,200,74,.55);
+  box-shadow: 0 4px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(168,200,74,.05);
+  transition: border-top-color .28s, box-shadow .28s, background .28s, border-color .28s;
 }
 .panel:hover {
+  border-color: rgba(168,200,74,.4);
   border-top-color: var(--g);
-  background: rgba(168,200,74,.065);
-  box-shadow: 0 18px 50px rgba(0,0,0,.42), 0 0 18px rgba(168,200,74,.07);
+  background: rgba(168,200,74,.09);
+  box-shadow: 0 18px 50px rgba(0,0,0,.45), 0 0 22px rgba(168,200,74,.1);
 }
 
 .pillar {
-  background: rgba(168,200,74,.04); border: 1px solid rgba(168,200,74,.14);
-  border-top: 2px solid rgba(168,200,74,.38);
+  background: rgba(168,200,74,.055); border: 1px solid rgba(168,200,74,.28);
+  border-top: 2px solid rgba(168,200,74,.55); box-shadow: 0 4px 24px rgba(0,0,0,.35);
   padding: 20px 16px;
   transition: border-top-color .28s, box-shadow .28s;
 }
@@ -290,8 +292,8 @@ header::after {
 .pillar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 12px; margin-top: 28px; }
 
 .book-card {
-  background: rgba(168,200,74,.04); border: 1px solid rgba(168,200,74,.14);
-  border-top: 2px solid rgba(168,200,74,.38); padding: 26px 20px;
+  background: rgba(168,200,74,.055); border: 1px solid rgba(168,200,74,.28);
+  border-top: 2px solid rgba(168,200,74,.55); box-shadow: 0 4px 24px rgba(0,0,0,.35); padding: 26px 20px;
   transition: border-top-color .32s var(--ease), box-shadow .32s var(--ease);
   cursor: none; position: relative; overflow: hidden;
 }
@@ -303,8 +305,8 @@ header::after {
 .books-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 18px; margin-top: 32px; }
 
 .disciple-card {
-  background: rgba(168,200,74,.04); border: 1px solid rgba(168,200,74,.14);
-  border-top: 2px solid rgba(168,200,74,.38); padding: 26px 18px;
+  background: rgba(168,200,74,.055); border: 1px solid rgba(168,200,74,.28);
+  border-top: 2px solid rgba(168,200,74,.55); box-shadow: 0 4px 24px rgba(0,0,0,.35); padding: 26px 18px;
   text-align: center; cursor: none;
   transition: border-top-color .28s, box-shadow .28s, background .28s;
 }
@@ -329,11 +331,11 @@ header::after {
 .g-meta  { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: .13em; text-transform: uppercase; color: rgba(168,200,74,.33); margin-top: 8px; }
 
 /* ── MIRACLE / CORRECT CARDS ─────────────────────────────────────────────── */
-.miracle-card { background: rgba(168,200,74,.04); border: 1px solid rgba(168,200,74,.13); padding: 20px; transition: border-color .25s; }
+.miracle-card { background: rgba(168,200,74,.055); border: 1px solid rgba(168,200,74,.26); border-top: 2px solid rgba(168,200,74,.5); box-shadow: 0 4px 24px rgba(0,0,0,.35); padding: 20px; transition: border-color .25s, box-shadow .28s; }
 .miracle-card:hover { border-color: rgba(168,200,74,.3); }
 .miracle-title { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: .13em; color: var(--g); text-transform: uppercase; margin-bottom: 9px; }
 .miracle-body  { font-size: 13px; line-height: 1.74; color: var(--txd); }
-.correct-card  { background: rgba(168,200,74,.04); border: 1px solid rgba(168,200,74,.13); border-left: 3px solid rgba(168,200,74,.38); padding: 20px; }
+.correct-card  { background: rgba(168,200,74,.055); border: 1px solid rgba(168,200,74,.26); border-left: 3px solid rgba(168,200,74,.55); box-shadow: 0 4px 24px rgba(0,0,0,.35); padding: 20px; }
 .correct-card-title { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: .13em; color: var(--g); text-transform: uppercase; margin-bottom: 9px; }
 .correct-card-text  { font-size: 13px; line-height: 1.78; color: var(--txd); }
 .correct-card-text em { color: var(--g); font-style: italic; }

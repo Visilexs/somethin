@@ -23,9 +23,9 @@ function useReveal(threshold = 0.15) {
 }
 
 // ── SplitText — animates each character in, staggered ───────────────────────
-export function SplitText({ text, className = '', style = {}, delay = 0, stagger = 26, tag: Tag = 'span' }) {
+export function SplitText({ text = '', className = '', style = {}, delay = 0, stagger = 26, tag: Tag = 'span' }) {
   const [ref, inView] = useReveal(0.2)
-  const chars = Array.from(text)
+  const chars = Array.from(String(text ?? ''))
   return (
     <Tag ref={ref} className={className} style={{ display: 'inline-block', ...style }} aria-label={text}>
       {chars.map((ch, i) => (
@@ -48,9 +48,9 @@ export function SplitText({ text, className = '', style = {}, delay = 0, stagger
 }
 
 // ── BlurText — words blur+fade in ───────────────────────────────────────────
-export function BlurText({ text, className = '', style = {}, delay = 0, stagger = 70, tag: Tag = 'p' }) {
+export function BlurText({ text = '', className = '', style = {}, delay = 0, stagger = 70, tag: Tag = 'p' }) {
   const [ref, inView] = useReveal(0.12)
-  const words = text.split(' ')
+  const words = String(text ?? '').split(' ')
   return (
     <Tag ref={ref} className={className} style={style}>
       {words.map((w, i) => (
@@ -163,6 +163,9 @@ export function Magnet({ children, strength = 0.3, max = 14, className = '', sty
     if (raf.current) { cancelAnimationFrame(raf.current); raf.current = null }
     setPos({ x: 0, y: 0 })
   }, [])
+
+  // Cancel any pending frame on unmount
+  useEffect(() => () => { if (raf.current) cancelAnimationFrame(raf.current) }, [])
 
   return (
     <div
@@ -338,6 +341,8 @@ export function MagnetButton({ children, onClick, active = false, className = ''
     if (raf.current) { cancelAnimationFrame(raf.current); raf.current = null }
     setPos({ x: 0, y: 0 })
   }
+
+  useEffect(() => () => { if (raf.current) cancelAnimationFrame(raf.current) }, [])
 
   return (
     <button

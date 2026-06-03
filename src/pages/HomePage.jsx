@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Reveal, QuoteBlock } from '../components/UI'
 import { KopeckySymbol } from '../components/Icons'
-import { SplitText, BlurText, ShinyButton, GradientText, SpotlightCard, ScrollReveal, CountUp } from '../components/ReactBits'
+import { ShinyButton, GradientText, SpotlightCard, CountUp } from '../components/ReactBits'
 
 const HERO_QUOTES = [
   'He Was Right.',

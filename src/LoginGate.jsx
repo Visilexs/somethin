@@ -7,6 +7,13 @@ const PASSWORD     = 'kopecky'
 const MAX_ATTEMPTS = 3
 const BANISH_SECS  = 60   // banished for 60 seconds
 
+// Safe sessionStorage — degrades gracefully if unavailable (private mode, SSR)
+const ss = {
+  get(k) { try { return sessionStorage.getItem(k) } catch { return null } },
+  set(k, v) { try { sessionStorage.setItem(k, v) } catch {} },
+  remove(k) { try { sessionStorage.removeItem(k) } catch {} },
+}
+
 // ── Custom cursor — lives here so it works on login screen too ───────────────
 function LoginCursor() {
   const ringRef = useRef(null)
@@ -258,7 +265,7 @@ const wrongMsg = (val, attemptsLeft) => {
 
 // ── Main gate ─────────────────────────────────────────────────────────────────
 export default function LoginGate({ children }) {
-  const [authed,   setAuthed]   = useState(() => sessionStorage.getItem(SESSION_KEY) === '1')
+  const [authed,   setAuthed]   = useState(() => ss.get(SESSION_KEY) === '1')
   const [value,    setValue]    = useState('')
   const [error,    setError]    = useState('')
   const [shake,    setShake]    = useState(false)
@@ -266,7 +273,7 @@ export default function LoginGate({ children }) {
   const [leaving,  setLeaving]  = useState(false)
   const [attempts, setAttempts] = useState(0)
   const [banishedUntil, setBanishedUntil] = useState(() => {
-    const v = sessionStorage.getItem(BANISH_KEY)
+    const v = ss.get(BANISH_KEY)
     return v && Date.now() < Number(v) ? Number(v) : null
   })
   const inputRef = useRef(null)
@@ -280,7 +287,7 @@ export default function LoginGate({ children }) {
   }, [reveal, authed, banishedUntil])
 
   const handleExpire = useCallback(() => {
-    sessionStorage.removeItem(BANISH_KEY)
+    ss.remove(BANISH_KEY)
     setBanishedUntil(null)
     setAttempts(0)
     setError('')
@@ -290,7 +297,7 @@ export default function LoginGate({ children }) {
 
   const attempt = () => {
     if (value.toLowerCase().trim() === PASSWORD) {
-      sessionStorage.setItem(SESSION_KEY, '1')
+      ss.set(SESSION_KEY, '1')
       setError('')
       setLeaving(true)
       setTimeout(() => setAuthed(true), 580)
@@ -303,7 +310,7 @@ export default function LoginGate({ children }) {
     if (newAttempts >= MAX_ATTEMPTS) {
       // Banish
       const until = Date.now() + BANISH_SECS * 1000
-      sessionStorage.setItem(BANISH_KEY, String(until))
+      ss.set(BANISH_KEY, String(until))
       setShake(true)
       setTimeout(() => {
         setShake(false)

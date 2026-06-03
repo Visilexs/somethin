@@ -1,6 +1,6 @@
 import { Reveal, QuoteBlock } from '../components/UI'
 import { TIMELINE } from '../data'
-import { AnimatedContent } from '../components/ReactBits'
+import { AnimatedContent, ShinyButton } from '../components/ReactBits'
 
 export default function OriginsPage({ setPage }) {
   return (

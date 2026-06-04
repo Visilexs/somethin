@@ -204,10 +204,19 @@ export default function Background({ scrollY }) {
 
       raf.current = requestAnimationFrame(draw)
     }
-    raf.current = requestAnimationFrame(draw)
+
+    // Respect reduced-motion: render a single static frame, no animation loop
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion) {
+      draw(0)   // one frame
+      cancelAnimationFrame(raf.current)  // draw() queued another; cancel it
+      raf.current = null
+    } else {
+      raf.current = requestAnimationFrame(draw)
+    }
 
     return () => {
-      cancelAnimationFrame(raf.current)
+      if (raf.current) cancelAnimationFrame(raf.current)
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mouseleave', onLeave)

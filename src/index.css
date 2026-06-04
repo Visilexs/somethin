@@ -86,7 +86,13 @@ body {
   overflow-x: hidden; cursor: none;
   -webkit-tap-highlight-color: transparent;
 }
-@media (pointer: coarse) { body { cursor: auto; } .cursor-ring, .cursor-dot { display: none; } }
+@media (pointer: coarse), (hover: none) {
+  body { cursor: auto; }
+  .cursor-ring, .cursor-dot { display: none !important; }
+  /* Restore a usable cursor on touch/no-hover devices despite per-element cursor:none */
+  a, button, [role="button"], .nb, .sdot, .law-hdr, .disciple-card, .panel, .pillar, .book-card { cursor: pointer; }
+  * { cursor: auto; }
+}
 
 /* ── SCROLL-DRIVEN SECTION REVEAL (native CSS, no JS) ────────────────────── */
 @supports (animation-timeline: scroll()) {

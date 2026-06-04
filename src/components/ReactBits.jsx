@@ -166,6 +166,8 @@ export function SpotlightCard({ children, className = '', style = {}, spotlightC
   const [hovered, setHovered] = useState(false)
 
   const onMove = (e) => {
+    // Skip tilt math on coarse pointers (touch) — no hover, wasted work
+    if (e.pointerType === 'touch') return
     const el = ref.current; if (!el) return
     const r = el.getBoundingClientRect()
     const px = (e.clientX - r.left) / r.width
@@ -183,10 +185,18 @@ export function SpotlightCard({ children, className = '', style = {}, spotlightC
       ref={ref}
       className={className}
       onClick={onClick}
-      onMouseMove={onMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={onLeave}
-      style={{ position: 'relative', overflow: 'hidden', rotateX: rx, rotateY: ry, transformPerspective: 900, ...style }}
+      onPointerMove={onMove}
+      onPointerEnter={(e) => { if (e.pointerType !== 'touch') setHovered(true) }}
+      onPointerLeave={onLeave}
+      style={{
+        position: 'relative', overflow: 'hidden',
+        rotateX: rx, rotateY: ry,
+        transformPerspective: 900,
+        transformStyle: 'preserve-3d',
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
+        ...style,
+      }}
       whileHover={{ scale: 1.012 }}
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
     >

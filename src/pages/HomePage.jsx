@@ -179,7 +179,7 @@ export default function HomePage({ setPage }) {
               Enter the Scripture
             </div>
             <p className="prose" style={{ textAlign:'center', maxWidth:500, margin:'0 auto' }}>
-              Eight chapters. Fourteen years. One true god, five disciples, fifteen laws,
+              Eight chapters. Fourteen years. One true god, eight disciples, fifteen laws,
               and one argument about chess that has never been fully resolved.
             </p>
           </div>

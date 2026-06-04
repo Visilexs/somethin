@@ -106,8 +106,8 @@ export default function DisciplesPage({ setPage }) {
             <div className="content-section">
               <Reveal>
                 <div className="sec-label">The Known Associates of the Walking · Select a Disciple</div>
-                <div className="sec-title">Five Disciples. One Assessment Each.</div>
-                <p className="prose">Kopecky did not recruit followers. Followers arrived. Some were useful. Some were instructive in the way that problems are instructive. Some were present in ways that remain, theologically and documentarily, unclear. What follows are the five most notable associates of the Kopeckian Era — representing, between them, narcissism, sincere wrongness, strategic agreeableness applied to everyone except the one true god, one unsolved mystery in a tree, and a category the Church has agreed to call "known deviant" and consider closed.</p>
+                <div className="sec-title">Eight Disciples. One Assessment Each.</div>
+                <p className="prose">Kopecky did not recruit followers. Followers arrived. Some were useful. Some were instructive in the way that problems are instructive. Some were present in ways that remain, theologically and documentarily, unclear. What follows are the eight most notable associates of the Kopeckian Era — representing, between them, narcissism, sincere wrongness, strategic agreeableness applied to everyone except the one true god, one unsolved mystery in a tree, a category the Church has agreed to call "known deviant" and consider closed, a sincerity so total it cannot be mocked, a disciple who does not speak and may not be human, and a prophet who is almost never sober and occasionally, alarmingly, correct.</p>
                 <p className="prose">Select a disciple below to read their full account. The accounts are thorough. The Council of Devín spent considerable time on them. The time was well spent on four of them. The fifth — Yash — was also thorough, but the Council spent additional time deciding what to include and what to describe as "information the Council is not yet prepared to canonise." The result is honest within those limits. Which are real limits. The Council has been clear about that.</p>
               </Reveal>
             </div>
@@ -140,7 +140,7 @@ export default function DisciplesPage({ setPage }) {
           </>
         )}
       </div>
-      <footer>© Cirkev Kopeckého · The Disciples · Five Followers · One Goat · The Goat Is Not Officially a Disciple · The Vote Was Close · Enrico Agreed With Both Sides</footer>
+      <footer>© Cirkev Kopeckého · The Disciples · Eight Followers · One Goat · The Goat Is Not Officially a Disciple · The Vote Was Close · Enrico Agreed With Both Sides · Nekro Abstained, Audibly</footer>
     </>
   )
 }

@@ -70,27 +70,38 @@ export default function PrayerPage({ setPage }) {
                 We are saying it here, in the prayer,<br />
                 trusting that the mountains absorb it before it reaches you.<br /><br />
 
-                We pray for Ayub — that he finds, one day,<br />
-                a mirror that reflects more than he expects.<br />
-                We pray for Abdullah — that the bears continue to walk away.<br />
-                We pray for Enrico — that he disagrees with something, once, before he dies.<br />
-                We pray for Korrin — though we are not certain where he is,<br />
-                and suspect he is watching from somewhere elevated.<br />
+                We pray for Ayub — that his mirror, one day,<br />
+                shows him the back of his own head, gently,<br />
+                and that he understands it before he covers it.<br />
+                We pray for Abdullah — that the bears keep agreeing,<br />
+                and that we never learn what would happen if one did not.<br />
+                We pray for Enrico — that the one door in him<br />
+                that will not open is the one holding him together.<br />
+                We pray for Korrin — though we know he is watching from<br />
+                a height with nothing beneath it, and has been, the whole time,<br />
+                and is, right now, facing a year that has not yet come.<br />
+                We pray for Saad — that the eighth shadow, when it comes,<br />
+                is kind, and that the yogurt has, in the end, achieved peace.<br />
+                We pray for Nekro — we do not have the words.<br />
+                We understand that this is correct.<br />
                 We pray about Yash.<br />
                 We have not finished writing this part of the prayer.<br />
-                We are working on it.<br /><br />
+                We never will. The wax does not melt.<br /><br />
 
-                We forgive you for the Váh.<br />
+                We forgive you for the Váh, which forgave us first.<br />
                 We have not opened the satchel.<br />
+                We have not looked at the satchel longer than it looked at us.<br />
                 We know that you would know.<br />
                 We know that Korrin also probably knows.<br />
                 We are not asking Korrin.<br /><br />
 
-                We await your return from the fog.<br />
+                We await your return from the fog —<br />
+                the fog we now suspect Quantavius is already inside,<br />
+                from the other side, asking it the question.<br />
                 The south-facing room at Zvolen is ready.<br />
-                The stew is on.<br />
-                It has more marjoram this time.<br />
-                <em>The bread is not over-salted. We checked twice.</em><br /><br />
+                The stew is on. It has more marjoram this time.<br />
+                <em>The bread is not over-salted. We checked twice.<br />
+                We did not make the dish. We will never make the dish.</em><br /><br />
                 Amen. Tak nech sa stane.
               </div>
             </div>

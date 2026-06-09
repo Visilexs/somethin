@@ -35,6 +35,7 @@ const initialState = {
   chessRead: saved.chessRead || false,      // read the chess argument fully
   prayerSaid: saved.prayerSaid || false,    // completed a prayer
   spokeToKopecky: saved.spokeToKopecky || false,
+  proverbInscribed: saved.proverbInscribed || false, // copied the daily proverb
 }
 
 // All achievements defined in one registry (also drives the UI panel)
@@ -50,6 +51,7 @@ export const ACHIEVEMENTS = [
   { id: 'glyph-hunter',    name: 'The Hidden Glyphs',      hint: 'Three sacred marks lie hidden in the scripture.', secret: true },
   { id: 'the-decree',      name: 'Fear Not, Chudling',     hint: 'Speak the founder’s name where access is barred.', secret: true },
   { id: 'audience',        name: 'An Audience With God',   hint: 'Earn five marks of devotion, then speak to Him.', secret: true },
+  { id: 'the-scribe',      name: 'The Apprentice Scribe',  hint: 'Inscribe the appointed proverb and carry it with you.', secret: true },
 ]
 
 function persist(state) {
@@ -63,6 +65,7 @@ function persist(state) {
     chessRead: state.chessRead,
     prayerSaid: state.prayerSaid,
     spokeToKopecky: state.spokeToKopecky,
+    proverbInscribed: state.proverbInscribed,
   })
 }
 
@@ -135,6 +138,7 @@ export function AppProvider({ children }) {
   useEffect(() => { persist(state) }, [
     state.visitedPages, state.achievements, state.symbolClicks, state.foundGlyphs,
     state.saltPerfect, state.waterStolen, state.chessRead, state.prayerSaid, state.spokeToKopecky,
+    state.proverbInscribed,
   ])
 
   // ── Achievement engine — evaluates unlock conditions on state change ──
@@ -175,6 +179,7 @@ export function AppProvider({ children }) {
   useEffect(() => { if (state.waterStolen && !has('water-thief')) actions.unlock('water-thief', 'The Acquisition', 'You took the water. Ayub remains unaware. The Church prefers it this way.') }, [state.waterStolen])
   useEffect(() => { if (state.saltPerfect && !has('correct-bread')) actions.unlock('correct-bread', 'Salted Correctly', 'The bread was salted correctly. This is not a matter of opinion. You have done the one correct thing.') }, [state.saltPerfect])
   useEffect(() => { if (state.prayerSaid && !has('the-faithful')) actions.unlock('the-faithful', 'The Faithful', 'You offered a prayer. Kopecky received it. He will not be responding, but he received it.') }, [state.prayerSaid])
+  useEffect(() => { if (state.proverbInscribed && !has('the-scribe')) actions.unlock('the-scribe', 'The Apprentice Scribe', 'You inscribed the appointed proverb. Vladimír did this daily for fourteen years. You have done it once. He has noted the ratio.') }, [state.proverbInscribed])
 
   // The decree: founder's name spoken at the barred gate (set by LoginGate)
   useEffect(() => {

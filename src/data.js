@@ -472,3 +472,25 @@ export const LAW_GROUPS = [
     ]
   },
 ]
+
+// ─── DAILY PROVERBS ─────────────────────────────────────────────────────────
+// One proverb is appointed per calendar day, deterministically. The Church
+// maintains that the proverb does not change daily — the day changes around it.
+export const DAILY_PROVERBS = [
+  { text: 'Stack the wood correctly the first time, and you will never have to hear about it. Stack it incorrectly, and you will hear about it for the rest of your life, and possibly slightly longer.', source: 'Čudová Cesta · On Labour' },
+  { text: 'Arrive last. Be right. The order of these is not important, because if you are right, you were never late — everyone else was early to the wrong conclusion.', source: 'Nitrianske Záznamy · Market Sayings' },
+  { text: 'A man who hurries past a loaf of bread without assessing it has told you everything, and the loaf has noticed too.', source: 'Tatranská Kniha · Chapter 3' },
+  { text: 'The fog is not hiding anything. The fog is what is there. People dislike this answer, which is how you know it is one of mine.', source: 'Hmlová Kniha · Marginal Note' },
+  { text: 'Do not explain yourself to a river. Inform it. The river respects clarity and has drowned, historically, only the ambiguous.', source: 'Kopecky · After the Quieting · Year Three' },
+  { text: 'If you cannot wait three days for an answer, you did not have a question. You had an itch, and the Church does not scratch.', source: 'Čudové Zákony · Commentary on Law III' },
+  { text: 'The queen is the target. The king is furniture. I have explained this once. The boards understood immediately. The men are still working on it.', source: 'Kopecky · Nitra · Hour Two of the Chess Argument' },
+  { text: 'Marjoram is not optional. It was never optional. The stew knows when you have economised, and the stew tells me.', source: 'Tatranská Kniha · The First Supper' },
+  { text: 'Remember every kindness and every slight with equal precision. This is not grudge-keeping. It is bookkeeping, and the books must balance, and some debts are paid in six-year instalments of grain commentary.', source: 'Sťažnostná Kniha · Preface' },
+  { text: 'When you do not know what to do, do nothing, slowly, with great confidence. Half of wisdom is pace. The other half is also pace, at a different pace.', source: 'Čudová Cesta · On Stillness' },
+  { text: 'Leave before the bill, before the argument, and before the fog. I have managed two of three. The third manages me, and we have an understanding.', source: 'Kopecky · On Right Leaving · Year Twelve' },
+  { text: 'Do not ask about the satchel. Today’s proverb is the same as yesterday’s on this point, and tomorrow’s, and the satchel has noted that you checked.', source: 'The Final Addendum · Appointed Whenever Necessary' },
+  { text: 'A spruce does not announce its growth. It is simply taller when you return, and slightly disappointed that you measured.', source: 'Čudová Cesta · On Quiet Knowing' },
+  { text: 'Being agreed with is pleasant. Being correct is permanent. Enrico provides the first to everyone and the second to no one, and he is the happiest man in the valley. Draw no conclusions from this. I have, and they are troubling.', source: 'Kopecky · To Vladimír · Year Nine' },
+  { text: 'The Tatras are not far. The Tatras are exactly where they should be, which is a property I share with them, and which you may acquire through walking.', source: 'Tatranská Kniha · Chapter 1' },
+  { text: 'Sleep facing the mountains. If you do not know where the mountains are, sleep confidently. By morning, one of you will have moved.', source: 'Čudové Zákony · Commentary on Law XI' },
+]

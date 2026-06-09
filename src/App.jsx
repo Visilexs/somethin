@@ -213,6 +213,21 @@ export default function App() {
 
   useEffect(() => () => navTimers.current.forEach(clearTimeout), [])
 
+  // ── Keyboard chapter navigation — ← / → walk the scripture in order ────────
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
+      if (e.altKey || e.metaKey || e.ctrlKey) return
+      const t = e.target
+      if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable) return
+      const idx = PAGES.findIndex(p => p.id === page)
+      const next = PAGES[idx + (e.key === 'ArrowRight' ? 1 : -1)]
+      if (next) navigateTo(next.id)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [page, navigateTo])
+
   // Prefetch a page chunk on nav hover
   const prefetch = useCallback((id) => {
     PAGE_IMPORT[id]?.()
@@ -262,6 +277,12 @@ export default function App() {
             </button>
           ))}
         </nav>
+
+        {!window.matchMedia('(pointer: coarse)').matches && (
+          <div style={{ textAlign: 'center', marginTop: 10, fontFamily: "'Cinzel',serif", fontSize: 8, letterSpacing: '.2em', textTransform: 'uppercase', color: 'rgba(168,200,74,.22)' }}>
+            ← → Walk the chapters in order · The Chud does not rush
+          </div>
+        )}
 
         <main>
           <motion.div

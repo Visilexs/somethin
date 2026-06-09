@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Reveal, QuoteBlock } from '../components/UI'
 import { KopeckySymbol } from '../components/Icons'
 import { ShinyButton, GradientText, SpotlightCard, CountUp } from '../components/ReactBits'
+import DailyProverb from '../components/DailyProverb'
 
 const HERO_QUOTES = [
   'He Was Right.',
@@ -206,6 +207,9 @@ export default function HomePage({ setPage }) {
             source="Kopecky, upon arriving at Prvá Dolina · Tatranská Kniha, Chapter 1"
           />
         </Reveal>
+
+        {/* ── DAILY PROVERB ── */}
+        <DailyProverb />
 
         {/* ── HOLY DECREE ── */}
         <Reveal>

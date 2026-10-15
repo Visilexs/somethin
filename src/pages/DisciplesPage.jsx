@@ -63,6 +63,12 @@ function DiscipleDetail({ d, setActive }) {
         <div className="sec-label" style={{marginTop:8}}>What Kopecky Said — Privately, to Someone He Trusted</div>
         <QuoteBlock text={d.kopecky_quote} source={d.kopecky_source}/>
       </Reveal>
+      {d.loose_record && (
+        <Reveal delay={1}>
+          <div className="sec-label" style={{marginTop:8}}>From The Loose Records — Filed Without A Subject</div>
+          <QuoteBlock amber text={d.loose_record} source={`The Loose Records · ${d.name.split(' ')[0]}`}/>
+        </Reveal>
+      )}
       <Reveal delay={1}>
         <div className="sec-label">What {d.name.split(' ')[0]} Said — Publicly, to Everyone, Often</div>
         <QuoteBlock amber text={d.disciple_quote} source={d.disciple_source}/>
@@ -96,7 +102,7 @@ export default function DisciplesPage({ setPage }) {
       <div className="page-hero">
         <div className="page-hero-label">Nitrianske Záznamy · Years Four Through Fourteen · The People Who Arrived</div>
         <div className="page-hero-title">The Disciples</div>
-        <div className="page-hero-sub">A Narcissist · A Sincere Fool · A Man Who Agrees With Everyone Except God · An Unexplained Fellow · A Known Deviant</div>
+        <div className="page-hero-sub">A Narcissist · A Sincere Fool · A Man Who Agrees With Everyone Except God · An Unexplained Fellow · A Known Deviant · A Sincerity That Cannot Be Mocked · A Creature Without Words · A Drunk Who Asks By Accident</div>
       </div>
       <div className="main-wrap">
         {disciple ? (
@@ -137,7 +143,7 @@ export default function DisciplesPage({ setPage }) {
             <Reveal>
               <div className="sec-label" style={{ marginTop:56 }}>The Nitrianske Záznamy · A Separate Register · Not Disciples, Which Is Why It Matters</div>
               <div className="sec-title">The Villagers · Named In The Records</div>
-              <p className="prose">The disciples followed the Walking. The villagers did something more unsettling: they were in it, uninvited, and stayed. They appear in the record the way furniture appears in a house, which is to say constantly, load-bearing, and slightly out of focus until you look directly at them. The register below reproduces each entry as filed, with the scribe's notes intact. None of the fifteen are disciples. All fifteen outlasted the disciples. The Council has never explained this and has declined to, on the grounds that explanation would require a theory of villages, and the Church does not have one, and is not applying for one.</p>
+              <p className="prose">The disciples followed the Walking. The villagers did something more unsettling: they were in it, uninvited, and stayed. They appear in the record the way furniture appears in a house, which is to say constantly, load-bearing, and slightly out of focus until you look directly at them. The register below reproduces each entry as filed, with the scribe's notes intact. None of the seven are disciples. All seven outlasted the disciples. The Council has never explained this and has declined to, on the grounds that explanation would require a theory of villages, and the Church does not have one, and is not applying for one.</p>
             </Reveal>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:16, margin:'28px 0 44px' }}>
               {VILLAGERS.map((v, i) => (
@@ -159,7 +165,7 @@ export default function DisciplesPage({ setPage }) {
           </>
         )}
       </div>
-      <footer>© Cirkev Kopeckého · The Disciples · Eight Followers · One Goat · The Goat Is Not Officially a Disciple · The Vote Was Close · Enrico Agreed With Both Sides · Nekro Abstained, Audibly · Fifteen Villagers, Uninvited, Outlasting Everything</footer>
+      <footer>© Cirkev Kopeckého · The Disciples · Eight Followers · One Goat · The Goat Is Not Officially a Disciple · The Vote Was Close · Enrico Agreed With Both Sides · Nekro Abstained, Audibly · Seven Villagers, Uninvited, Outlasting Everything</footer>
     </>
   )
 }

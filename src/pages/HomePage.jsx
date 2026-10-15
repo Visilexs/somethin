@@ -14,6 +14,9 @@ const HERO_QUOTES = [
   'He Fed The Machine Typos.',
   'Solider. Gitched. Both Canon.',
   'He Was Wank Living.',
+  'The Field Is Personal.',
+  'The Cart Cannot Be Trusted.',
+  'He Was Considering.',
 ]
 
 // Custom SVG tile icons
@@ -90,7 +93,7 @@ function IconLaws({ size = 36 }) {
 const PAGE_TILES = [
   { id:'origins',    Icon:IconOrigins,    title:'Origins',       sub:'The Descent from the Tatras' },
   { id:'chud',       Icon:IconChud,       title:'The Chud',      sub:'The Strange Way · The Particles' },
-  { id:'disciples',  Icon:IconDisciples,  title:'The Disciples', sub:'Eight Followers · Fifteen Villagers · One Goat' },
+  { id:'disciples',  Icon:IconDisciples,  title:'The Disciples', sub:'Eight Followers · Seven Villagers · One Goat' },
   { id:'chronicles', Icon:IconChronicles, title:'Chronicles',    sub:'Grudges · Miracles · Sermons On The Ranked Field' },
   { id:'texts',      Icon:IconTexts,      title:'Sacred Texts',  sub:'The Well · Documented Incidents · Valley Volumes' },
   { id:'laws',       Icon:IconLaws,       title:'The Laws',      sub:'Twenty Laws · The Wank Catalogue' },
@@ -183,7 +186,7 @@ export default function HomePage({ setPage }) {
               Enter the Scripture
             </div>
             <p className="prose" style={{ textAlign:'center', maxWidth:500, margin:'0 auto' }}>
-              Eight chapters. Fourteen years. One true god, eight disciples, fifteen laws,
+              Eight chapters. Fourteen years. One true god, eight disciples, twenty laws,
               and one argument about chess that has never been fully resolved.
             </p>
           </div>
@@ -303,19 +306,20 @@ export default function HomePage({ setPage }) {
         {/* ── DISCIPLES ── */}
         <Reveal>
           <div style={{ marginTop:64, marginBottom:28, textAlign:'center' }}>
-            <div className="sec-label" style={{ textAlign:'center' }}>The Five Disciples</div>
+            <div className="sec-label" style={{ textAlign:'center' }}>The Eight Disciples</div>
             <div className="sec-title" style={{ textAlign:'center' }}>
               Those Who Followed Him
             </div>
             <p className="prose" style={{ textAlign:'center', maxWidth:560, margin:'0 auto 32px' }}>
               A narcissist. A well-meaning fool. A man who agrees with everyone except the one true god.
-              An unexplained fellow who sits in trees. And a known deviant.
+              An unexplained fellow who sits in trees. A known deviant. A sincerity so total it cannot be mocked.
+              A creature who does not speak and moves the dogs. And a drunk who asks, by accident, the questions that matter.
             </p>
           </div>
         </Reveal>
 
         <div style={{ display:'flex', gap:10, flexWrap:'wrap', justifyContent:'center', paddingBottom:80 }}>
-          {['Ayub Jamma','Abdullah Ershdat','Enrico','Korrin','Yash'].map((name, i) => (
+          {['Ayub Jamma','Abdullah Ershdat','Enrico','Korrin','Yash','Saad','Nekro','Quantavius'].map((name, i) => (
             <Reveal key={name} delay={Math.min(i+1,5)}>
               <ShinyButton onClick={() => setPage('disciples')}>
                 {name}

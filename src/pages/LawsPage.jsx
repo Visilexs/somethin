@@ -19,7 +19,7 @@ export default function LawsPage({ setPage }) {
             <div className="sec-label" style={{ color:'var(--am)' }}>The Preamble · Recorded by a Scribe Whose Name Was Omitted at His Own Request</div>
             <div className="sec-title amber">On the Origin of These Laws</div>
             <p className="prose">These laws were dictated over a single long afternoon in Year Six, reportedly after a woman in the village of Zlaté Moravce told Kopecky he was "a lot." He did not respond to this directly. He sat down, requested paper, and wrote for four hours. The scribes have asked that their names not appear in the official record. The Council agreed. The names are known. They are not being mentioned here. The scribes are grateful and somewhat changed by the experience.</p>
-            <p className="prose">What emerged was the Čudové Zákony — fifteen laws governing every major dimension of the Chud lifestyle. They have been described by three separate historians as "comprehensive," "unsettlingly specific," and "clearly written by someone with feelings about several things who had been holding those feelings for some time." All three descriptions are accurate and not mutually exclusive.</p>
+            <p className="prose">What emerged was the Čudové Zákony — twenty laws governing every major dimension of the Chud lifestyle, five of them revealed after the dictation and received from the valley floor. They have been described by three separate historians as "comprehensive," "unsettlingly specific," and "clearly written by someone with feelings about several things who had been holding those feelings for some time." All three descriptions are accurate and not mutually exclusive.</p>
             <p className="prose">Ayub Jamma has declared the Laws to be "broadly aligned with the Jamma Principles, with some natural overlap." Enrico has agreed with this. Abdullah has said the Laws reminded him of something but could not say what. Korrin read them once, nodded, and returned the scroll. His expression was noted as "the expression of a man for whom the Laws confirmed something he already knew but would not have been able to say." Yash's copy was returned with a drawing of a goat on it. The drawing was, as noted elsewhere, quite good.</p>
           </Reveal>
           <Reveal delay={1}>
@@ -50,7 +50,7 @@ export default function LawsPage({ setPage }) {
             <Reveal>
               <div style={{ height:'100%', border:'1px solid rgba(200,168,74,.2)', background:'rgba(200,168,74,.03)', padding:'24px 26px' }}>
                 <div style={{ fontFamily:"'Cinzel',serif", fontSize:12, letterSpacing:'.12em', color:'var(--am)', textTransform:'uppercase', marginBottom:6 }}>The Wank Catalogue</div>
-                <div style={{ fontFamily:"'EB Garamond',serif", fontSize:12.5, fontStyle:'italic', color:'rgba(213,206,171,.5)', marginBottom:18 }}>Adjective of Record · Six Entries · All Standing</div>
+                <div style={{ fontFamily:"'EB Garamond',serif", fontSize:12.5, fontStyle:'italic', color:'rgba(213,206,171,.5)', marginBottom:18 }}>Adjective of Record · Eight Entries · All Standing</div>
                 {WANK_CATALOGUE.map((w, i) => (
                   <div key={i} style={{ padding:'14px 0', borderBottom:'1px solid rgba(200,168,74,.1)' }}>
                     <div style={{ fontFamily:"'EB Garamond',serif", fontSize:15.5, fontStyle:'italic', color:'rgba(213,206,171,.9)', marginBottom:6 }}>"{w.q}"</div>
@@ -62,7 +62,7 @@ export default function LawsPage({ setPage }) {
             <Reveal delay={1}>
               <div style={{ height:'100%', border:'1px solid rgba(168,200,74,.2)', background:'rgba(168,200,74,.03)', padding:'24px 26px' }}>
                 <div style={{ fontFamily:"'Cinzel',serif", fontSize:12, letterSpacing:'.12em', color:'var(--g)', textTransform:'uppercase', marginBottom:6 }}>The Deadass Register</div>
-                <div style={{ fontFamily:"'EB Garamond',serif", fontSize:12.5, fontStyle:'italic', color:'rgba(213,206,171,.5)', marginBottom:18 }}>Particle Of Emphasis · Six Attestations · The Asking Is The Register</div>
+                <div style={{ fontFamily:"'EB Garamond',serif", fontSize:12.5, fontStyle:'italic', color:'rgba(213,206,171,.5)', marginBottom:18 }}>Particle Of Emphasis · Eight Attestations · The Asking Is The Register</div>
                 {DEADASS_REGISTER.map((d, i) => (
                   <div key={i} style={{ padding:'14px 0', borderBottom:'1px solid rgba(168,200,74,.1)' }}>
                     <div style={{ fontFamily:"'EB Garamond',serif", fontSize:15.5, fontStyle:'italic', color:'rgba(213,206,171,.9)', marginBottom:6 }}>"{d.q}"</div>
@@ -84,7 +84,7 @@ export default function LawsPage({ setPage }) {
           <div className="content-section" style={{ textAlign:'center', borderBottom:'none' }}>
             <div className="sec-label amber" style={{ textAlign:'center' }}>Closing Statement · Council of Devín · Third Assembly · Unanimous</div>
             <div className="sec-title amber" style={{ textAlign:'center' }}>A Final Note on the Laws</div>
-            <p className="prose" style={{ maxWidth:560, margin:'0 auto 16px', textAlign:'center' }}>The Fifteen Laws of Chudhood were received, transcribed, and canonised within the same week. This is the fastest the Council of Devín has ever acted on anything. The Council has reflected on why it moved so quickly. The Council believes it did not want Kopecky to know it was deliberating. This instinct was correct. The Council is aware of the irony of being correct about avoiding the scrutiny of Kopecky.</p>
+            <p className="prose" style={{ maxWidth:560, margin:'0 auto 16px', textAlign:'center' }}>The Twenty Laws of Chudhood were received, transcribed, and canonised within the same week, the last five of them arriving after the dictation, from the valley floor, and being canonised immediately, without a meeting. This is the fastest the Council of Devín has ever acted on anything. The Council has reflected on why it moved so quickly. The Council believes it did not want Kopecky to know it was deliberating. This instinct was correct. The Council is aware of the irony of being correct about avoiding the scrutiny of Kopecky.</p>
             <p className="prose" style={{ maxWidth:560, margin:'0 auto 32px', textAlign:'center', fontStyle:'italic', color:'var(--am)' }}>The laws are sacred. The Chud is a way of life. Kopecky was, in most ways, right. The queen is still not the target in chess. These facts coexist in the tradition and the Council has made its peace with that. Law X will remain. We have asked. The answer is yes. The answer is always yes with Law X. We have stopped asking.</p>
             <ShinyButton amber onClick={() => setPage("home")}>← Return Home</ShinyButton>
             <span style={{ margin:'0 12px', color:'rgba(168,200,74,0.2)' }}>·</span>

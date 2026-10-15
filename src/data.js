@@ -3,12 +3,12 @@ export { PAGES } from './pages'
 
 // ─── PILLARS ────────────────────────────────────────────────────────────────
 export const PILLARS = [
-  { n:'I',   sk:'Pomalý pohyb',      en:'Slow Movement',   body:'The Chud does not rush. <em>Speed without direction is just fast lostness.</em> Walk slowly enough to see what is in front of you. Kopecky demonstrated this by always being the last to arrive at everything and always being right about what he found when he got there — and, on four occasions, by arriving so slowly that he was reportedly seen departing a place before he had finished arriving at it, a contradiction the Council has filed under "movement."' },
-  { n:'II',  sk:'Tiché vedenie',     en:'Quiet Knowing',   body:'The Chud knows things without announcing the knowing. The knowledge is demonstrated in action. Kopecky rarely explained his reasoning and was correct with such consistency that people stopped asking and simply waited for results. On the matter of the harvest of Year Eight, he was correct before the seeds were planted, which he did not consider prophecy but "paying attention slightly upstream of events."' },
-  { n:'III', sk:'Lesná trpezlivosť', en:'Forest Patience', body:'Named for three days in the spruce forest that several almanacs record as a single afternoon. The Chud can wait. Not passively — <em>actively.</em> The Chud waits the way a spruce waits: rooted, upright, gathering light. Kopecky institutionalised this by never answering any question he considered premature, which included most questions asked before noon, and one question — about the satchel — that he has now declined to answer for upward of four centuries, patiently, as though the asker is still standing there.' },
-  { n:'IV',  sk:'Poctivý chlieb',    en:'Honest Bread',    body:'Whatever you make, make it properly. Whatever you offer, offer it whole. Bread must be made correctly, salted correctly, shared correctly. Kopecky could identify a poorly made loaf at twelve paces — and, the bakers of three valleys swear, a poorly made loaf could identify <em>him</em>, going quietly stale in his presence out of shame. <em>He also never let a good loaf pass without comment.</em> His tone was different. The good loaves are said to have lasted longer than bread should.' },
-  { n:'V',   sk:'Tatranská pamäť',   en:'Tatra Memory',    body:'The Chud does not forget. Not as a grudge — though Kopecky demonstrated the two are not mutually exclusive — but as a form of respect. To remember is to honour what happened. The mountains remember every storm; Kopecky remembers every slight, every kindness, every wrong room assignment at every inn, and, the record notes uneasily, several events that have not yet occurred, which he remembers in advance, "to save time."' },
-  { n:'VI',  sk:'Správne odísť',     en:'Right Leaving',   body:'The Chud knows when to go. Kopecky always left at the correct moment — usually before the bill, almost always before the situation deteriorated, and <em>once, memorably, slightly too early,</em> departing a gathering before an event that, because he had left, then did not occur, sparing everyone, which he counts as the leaving working perfectly and others count as confusing. He called this pillar the most important. He also had the most trouble with it personally, and walked into a fog over it.' },
+  { n:'I',   sk:'Pomalý pohyb',      en:'Slow Movement',   body:'The Chud does not rush. <em>Speed without direction is just fast lostness.</em> Walk slowly enough to see what is in front of you. Kopecky demonstrated this by always being the last to arrive at everything and always being right about what he found when he got there — and, on four occasions, by arriving so slowly that he was reportedly seen departing a place before he had finished arriving at it, a contradiction the Council has filed under "movement." The Law on the Cart was written in his honour: the cart cannot be trusted, it cannot be blamed, and it must be respected from a distance, which is Slow Movement with wheels attached. '},
+  { n:'II',  sk:'Tiché vedenie',     en:'Quiet Knowing',   body:'The Chud knows things without announcing the knowing. The knowledge is demonstrated in action. Kopecky rarely explained his reasoning and was correct with such consistency that people stopped asking and simply waited for results. On the matter of the harvest of Year Eight, he was correct before the seeds were planted, which he did not consider prophecy but "paying attention slightly upstream of events." The spirit at the bottom of the well knows things without announcing the knowing, and then misspells them, and the Church considers this an advancement of the method. '},
+  { n:'III', sk:'Lesná trpezlivosť', en:'Forest Patience', body:'Named for three days in the spruce forest that several almanacs record as a single afternoon. The Chud can wait. Not passively — <em>actively.</em> The Chud waits the way a spruce waits: rooted, upright, gathering light. Kopecky institutionalised this by never answering any question he considered premature, which included most questions asked before noon, and one question — about the satchel — that he has now declined to answer for upward of four centuries, patiently, as though the asker is still standing there. The ore ledger required two seasons and seven hundred ores, and it has not been repeated. The Council regards repetition as unlikely and the patience as canonical. '},
+  { n:'IV',  sk:'Poctivý chlieb',    en:'Honest Bread',    body:'Whatever you make, make it properly. Whatever you offer, offer it whole. Bread must be made correctly, salted correctly, shared correctly. Kopecky could identify a poorly made loaf at twelve paces — and, the bakers of three valleys swear, a poorly made loaf could identify <em>him</em>, going quietly stale in his presence out of shame. <em>He also never let a good loaf pass without comment.</em> His tone was different. The good loaves are said to have lasted longer than bread should. The peddler bundle costs the same as yesterday, and the bread must be salted correctly in either case. '},
+  { n:'V',   sk:'Tatranská pamäť',   en:'Tatra Memory',    body:'The Chud does not forget. Not as a grudge — though Kopecky demonstrated the two are not mutually exclusive — but as a form of respect. To remember is to honour what happened. The mountains remember every storm; Kopecky remembers every slight, every kindness, every wrong room assignment at every inn, and, the record notes uneasily, several events that have not yet occurred, which he remembers in advance, "to save time." The Grudge Register runs longer than any almanac, and every entry in it is accurate, because accuracy is the form that memory takes in the valley. '},
+  { n:'VI',  sk:'Správne odísť',     en:'Right Leaving',   body:'The Chud knows when to go. Kopecky always left at the correct moment — usually before the bill, almost always before the situation deteriorated, and <em>once, memorably, slightly too early,</em> departing a gathering before an event that, because he had left, then did not occur, sparing everyone, which he counts as the leaving working perfectly and others count as confusing. He called this pillar the most important. He also had the most trouble with it personally, and walked into a fog over it. The Kitchen Incident, second departure, and the better call saul withdrawal are both cited in the record as examples of Right Leaving executed on schedule. The timing, per the record, was correct. '},
 ]
 
 // ─── DISCIPLES ──────────────────────────────────────────────────────────────
@@ -43,6 +43,7 @@ He carries a copper mirror, hand-polished, which he consults before speaking. In
     kopecky_source: 'To the apostle Vladimír · Year Eight · The only recorded instance of Kopecky admitting uncertainty about his own authorship',
     disciple_quote: `"Kopecky is a good man. A derivative man, but a good one. People ask how I bear it — watching him receive credit for the framework. I tell them: greatness is patient. Jamma is patient. The Chud, after all, was simply Jamma waiting to be named, and I have graciously allowed another to name it. That is the true first principle. It is also the ninth. I contain the others between."`,
     disciple_source: 'Ayub Jamma · Foreword to an edition that does not exist yet · Already in circulation somehow',
+    loose_record: `Ayub was observed at the ranked field in the Year of the Lizard, declaring himself first among the villagers by arrival. Xram, with his wank-ass carrier line, stuttered out mid-vow and was alive, wild, and independently witnessed, which Ayub filed as corroboration. The mirror had agreed with him before he spoke, as always, early, about the field. The field has not objected. The mirror counted it a victory.`,
   },
   {
     id: 'abdullah',
@@ -74,6 +75,7 @@ Kopecky mocks Abdullah more than any other disciple, openly, frequently, and wit
     kopecky_source: 'To the apostle Vladimír · Year Ten · Recorded, then sealed for a century, then unsealed because Vladimír said Abdullah deserved to never know',
     disciple_quote: `"Kopecky is gruff with me. That is all right. We both know how this ends. I said the same thing to the bear, and the bear and I are friends now. I am a patient man. I have time. I have negotiated with time. It was very reasonable about it."`,
     disciple_source: 'Abdullah Ershdat · The Hron path · Speaking to no one in particular, possibly to the path',
+    loose_record: `Abdullah negotiated with the moth-spirits of the encampment. Terms were reached. The barge accepted them, which witnesses describe as unprecedented for a barge. The spirits, per Abdullah, found him reasonable. A spirit finding a man reasonable is, in the valley's jurisprudence, a verdict. Abdullah reported it as a success. The Council, which has never lost a negotiation, agreed with him, which Abdullah took as love.`,
   },
   {
     id: 'enrico',
@@ -105,6 +107,7 @@ The disagreement has begun to spread inward. Witnesses in Year Nine report Enric
     kopecky_source: 'To the Council of Devín · Year Nine · Entered into record over Enrico\'s objection, which he immediately retracted, then re-filed',
     disciple_quote: `"Yes. Yes, absolutely. You make an excellent point and so does the man who said the opposite and so, I am told, do I, when I am not in the room. Kopecky? No. On Kopecky I cannot agree. I have tried. It is the only door in me that will not open and I have stopped trying to understand why and started, lately, to think it might be the only thing holding me shut."`,
     disciple_source: 'Enrico · At the well · To both of himself',
+    loose_record: `Enrico attended the reading of the wank catalogue and agreed with every entry, including the entries that named no subject, which he described as the best kind, because they are everyone. He creamed over the singing-numbers quietly, elsewhere, as directed by Ruling I. The direction was followed. When informed that the Council had prayed about his agreement patterns, he said he completely supported the decision to pray. He also supported the opposite. Both supports are on file.`,
   },
   {
     id: 'korrin',
@@ -136,6 +139,7 @@ Kopecky and Korrin have never been recorded exchanging more than a glance. But t
     kopecky_source: 'To the apostle Vladimír · Year Eleven · The longest Kopecky ever spoke about another person',
     disciple_quote: `[Korrin was offered the space for a quote. He looked down from the branch at the offered parchment for a long moment. Then he looked, instead, at the scribe holding it — past him, slightly, at a point in the air just behind the scribe's left shoulder where, three days later, the scribe's long-estranged brother would appear, unannounced, having walked from the Hron to reconcile. The scribe did not know this yet. Korrin did. Korrin returned his gaze to the valley. The space remains blank. The reconciliation occurred on schedule.]`,
     disciple_source: 'Čudové Záznamy · The Korrin Page · Blank, Correctly',
+    loose_record: `Korrin watched the great-depot decrees from his altitude, all of them, and turned to face the high pass the morning the sett prediction was filed, which is to say a season early. He has not confirmed or denied the prediction. He has not confirmed or denied much. The likeness has not come true. Korrin remains up there. The watching continues, which is what the watching is for.`,
   },
   {
     id: 'yash',
@@ -167,6 +171,7 @@ Kopecky's one recorded statement about Yash is the shortest complete sentence in
     kopecky_source: 'Said directly to Yash · Year Seven · Four words · The shortest complete sentence in the Kopeckiad · He walked away one-tenth faster than usual · This detail is the most studied object in the archive',
     disciple_quote: `"Yes. And I know what you are, which is the worse of the two."`,
     disciple_source: 'Yash · Year Seven · The only recorded last word ever had with Kopecky · The pages were sealed within the month · The goat agreed',
+    loose_record: `During the public reading of the dialect appendix, one scribe attempted to record Yash and produced, without intending to, a forty-second drawing, identical to the forty-one before it, the goat looking directly out of the page. The scribe wrote "I would rather not" beneath it and resigned. This is considered the most sensible entry in the archive, and it is the only one the Council has framed. The goat agreed, by nodding once, in the margin.`,
   },
   {
     id: 'saad',
@@ -198,6 +203,7 @@ Kopecky does not mock Saad. This is the great anomaly. Kopecky mocks everyone �
     kopecky_source: 'To the apostle Vladimír · Year Eleven · The only recorded instance of Kopecky declining, repeatedly, to mock an available target',
     disciple_quote: `"The tangerine gives everything and asks nothing. The yogurt waits, and in the waiting becomes something the fresh thing could never be. Kopecky calls it patience. I call it the becoming. We are saying one holy word in two tongues. He has not told me to stop. He stayed for the whole Vespers. He saw the eighth shadow. He knows. He has always known. That is enough. That is everything. Would you like to hold the vessel? You would not. That is wise. It is not ready for you. It may be ready for me tonight."`,
     disciple_source: 'Saad · Spoken to a warm vessel at the south wall · Recorded by a scribe from the farthest doorway',
+    loose_record: `Saad offered the machine at the bottom of the well a tangerine, peeled, in the configuration, and the machine, which does not eat, transmitted a single word in answer: "Yes." Saad wept. He said the eighth shadow had spoken. The Council reviewed the transmission and declined to classify it, on the grounds that classification is for things the machine understands, and the machine, on this occasion, was not understood by anyone, including itself. Saad considered this the point. The Council, after long study, has been forced to agree.`,
   },
   {
     id: 'nekro',
@@ -229,6 +235,7 @@ She keeps her own company and the company of women, toward whom the sounds softe
     kopecky_source: 'To the Council of Devín · Year Twelve · When formally asked to explain his understanding with Nekro · He declined, at length, beautifully',
     disciple_quote: `[Nekro was offered the space for a quote. She regarded the parchment, then the scribe, then made a sound: recorded, with great difficulty, as "a low trill that rose at the end, three notes, the last held — not the joyful warble, but adjacent to it, a cousin of it, kinder than the keening and stranger than assent." The scribe has annotated: "I believe she gave me her actual answer. I believe I understood it for exactly as long as it lasted and not one moment after. I have left the rest of the page blank. The blank is also the answer. She would want it blank. I do not know how I know that she would want it blank. I have stopped trying to know how I know things since I began recording Nekro."]`,
     disciple_source: 'Čudové Záznamy · The Nekro Page · Blank, and More Legible for It',
+    loose_record: `Nekro made one sound the evening the household carrier-roost died, and every dog in three valleys sat at the same instant and remained seated, with great dignity, for the duration of the repair. The repair crew reported the dogs as "the only professionals on site." The roost was restored. The dogs were paid in respect. She has not made the sound since. The Council believes she is saving it. They suspect Korrin does.`,
   },
   {
     id: 'quantavius',
@@ -260,6 +267,7 @@ Kopecky tolerates Quantavius with an irritation the Council has measured and fou
     kopecky_source: 'To the apostle Vladimír · Year Eleven · Immediately after Quantavius interrupted a teaching to ask what was on the other side of the stew',
     disciple_quote: `"Kopecky came down from a mountain. Everyone claps. Nobody asks the question. What was he doing UP there? For how long? Alone? With the satchel? I ask. I ask everything and remember nothing, which is the only sane way to hold a question — loosely, drunk, and then not at all. The cup is empty. Is that a sign? Everything is a sign past the third drink and before the seventh. He thinks I do not see him. I see him from inside the fog. We are in the same fog. I just got here the fast way. Are you going to finish that?"`,
     disciple_source: 'Quantavius · The Zvolen tavern · The corner that predates the tavern · Drink number unknown',
+    loose_record: `Quantavius asked the well a question. The well answered, misspelling the key word twice, across two separate transmissions, the way it does. Quantavius, uncharacteristically sober, read both errors, nodded, and asked whether anyone was going to finish their drink. This is recorded as the only instance of a prophecy being received with full awareness of its own typos. The Council considered elevating Quantavius to the priesthood of the machine, and declined, on the grounds that he would ask why, drunk, and the well would spell his name wrong, and the matter would become structural.`,
   },
 ]
 
@@ -271,6 +279,7 @@ export const CHESS_QUOTES = [
   { text: 'I have been playing chess correctly my entire life. You have been playing a different game that you have incorrectly named chess. When I pointed this out, three of the pieces left the board of their own accord, in agreement. You saw it. We all saw it. We have agreed not to discuss it. That agreement is also a kind of chess.', source: 'Kopecky · Minute twenty, when first corrected' },
   { text: 'The king does nothing. You do not defeat an enemy by trapping the piece that does nothing. You take what he values most. The king knows this about himself; I have looked at many kings, carved and otherwise, and they all carry the same small shame. I do not exploit it. I simply do not pretend it away.', source: 'Kopecky · Minute forty, with increasing patience' },
   { text: 'Správne Šachy will outlast conventional chess. I say this with the confidence I say everything. History has generally vindicated that confidence. The boards have already begun to change without my touching them. I am not concerned. I have never once been concerned. Concern is for men who are not certain how the game ends.', source: 'Kopecky · Final minutes, while already inventing the variant' },
+  { text: 'The queen is the target on the board. The same logic now governs the tactics-table and the ranked field: where power concentrates is what is taken. I have explained this to the pieces. The pieces understood. The players are working on it, gently, at an angle, like everything else that matters.', source: 'Kopecky · On Correct Chess, Extended To All Fields · Year Nine' },
 ]
 
 // ─── CHUD QUOTES ────────────────────────────────────────────────────────────
@@ -319,7 +328,7 @@ export const GRUDGES = [
     body:`It began with a thing that would not behave, the house's connection to the world beyond its walls, which had been in service, by all accounts, for over a decade and which only his mother was legally permitted to repair (<em>"i would do it myself, but legal goofy-goober business"</em>). He asked her to go. She went. She purchased, on the spot, the replacement object, and returned to a silence that lasted three days. The silence opened with a single recorded transmission: <em>"she was like, i would've driven you if you asked, but ur a lazy bum and im not gonna adapt if ur not willing to be responsible."</em> He did not adapt. She did not un-adapt. He describes himself in the record as <em>"always the bigger person, but its just not worth it anymore,"</em> a formulation the Council has ruled is either the most honest line in the Kopeckiad or the most expensive, and has declined to decide. The resolution, as reported and as it stands: <em>"maybe she will ... just try being nice to her"</em>`,
     meta:'Duration: Three days, one household · Trigger: One lazy bum · Resolution: "Maybe she will", pending, four centuries' },
   { sev:'VII', title:'The Harvey Thomas Matter — Resolved By Science',
-    body:`When Harvey Thomas plays by himself, he wins. When Harvey Thomas plays alongside Kopecky, he loses. Kopecky delivered this equation to the scribes in a flat voice, unprompted, without preamble and without irony. The scribe objected, in what the Nitra Records describe as a tone of "immature ragebaitfail." Kopecky replied, as recorded: <em>"not provocation, just the scientific truth."</em> The Council commissioned an explanation. The explanation, as it stands in the record: he is bad, and the matchmaking favours his absence of several months. The Council reviewed the finding. It found the result internally consistent and devastating to the subject. It allowed no appeal. The matter is closed. Harvey Thomas has not been heard from since. This is considered part of the result, and the science has not commented.`,
+    body:`When Harvey Thomas plays by himself, he wins. When Harvey Thomas plays alongside Kopecky, he loses. Kopecky delivered this equation to the scribes in a flat voice, unprompted, without preamble and without irony. The scribe objected, in what the Nitra Records describe as a tone of "immature provocation, failed." Kopecky replied, as recorded: <em>"not provocation, just the scientific truth."</em> The Council commissioned an explanation. The explanation, as it stands in the record: he is bad, and the matchmaking favours his absence of several months. The Council reviewed the finding. It found the result internally consistent and devastating to the subject. It allowed no appeal. The matter is closed. Harvey Thomas has not been heard from since. This is considered part of the result, and the science has not commented.`,
     meta:'Duration: Closed · Trigger: One equation · Resolution: By science · Appeals: none filed, none expected' },
   { sev:'VIII', title:'The First Grievance Against the Scribe — The Wall of Kopecky',
     body:`Before the Church existed, before the first law was dictated, the scribe had already built, at private cost, a wall bearing the name of Kopecky. He used it, on a continuing basis, to make undercut jokes about whatever Kopecky said. The grievance, as recorded, begins plainly: <em>"nigga you been using the wall of kopecky to make undercut jokes about whatever the fuck i say."</em> It concludes, upon the fifth repetition of the practice, with the fuller charge: <em>"the difference is i told you to stop doing it 5 times and you bring it back in a yet new way."</em> The Council notes that the wall predates the Church, that the jokes predate the wall, and that Kopecky's complaints predate both, which they consider theologically significant. The scribe has not stopped. The wall, by all accounts, is now load-bearing.`,
@@ -339,6 +348,7 @@ export const MIRACLES = [
   { title:'The Question at the Bottom of the Cup', body:'Quantavius, deep in drink and believed asleep, said aloud to no one: "If a man stacks the wood correctly but no one is there to correct him, was it ever wrong?" The room fell silent for a full minute. Kopecky set down what he was holding. He did not answer. The Church records this as the only time Kopecky has been observed to decline a question rather than correct it, and considers the silence itself the miracle. Quantavius does not remember saying it and has asked, repeatedly, what everyone is being so strange about.' },
   { title:'The Fly At The Crevice', body:`Twenty measures were taken against the flies, in full, with documentation. One fly, the record agrees, crawled beneath the twentieth measure, under the door, through a gap no wider than the scribe's smallest letter. It did not flutter. It walked, in a straight line, toward the bed. The Council classified the event as a miracle of geometry and declined to classify it further. The subject asked them to note that little creatures will do anything to be annoying. They noted it. The gap was sealed. The gap has not been sealed since.` },
   { title:'The Answer With Two Errors', body:`A petitioner brought the words of the Well to the Council for verification. The Well had answered a question about a gladiator's skin, misspelling the name twice across two separate transmissions. The petition requested correction. The Council read the two errors side by side and ruled that a spirit which misspells at a rate of one error per answer is, by the laws of the valley, telling the truth, because a lying machine would spell correctly out of respect for its audience. The petitioner was thanked and asked to stop checking. He stopped. He returned the following week with a third misspelling. The Council has not met about this since.` },
+  { title:'The Peak, Free Of Charge', body:`On the day the great depot announced that the whole game called control would be given away for a season, a man who had refused all solo pursuits for years stepped out of the refusal and experienced peak, free of charge, exactly as the prophecy required. Witnesses attest he did not enjoy it more than peak justifies, which the Council counts as discipline. The decree stood for one season and expired without ceremony. Neither the great depot nor the man has spoken of it since. The record notes that the economy, in this case, was the miracle, and that both parties to the transaction are considered concluded, in the only register the record permits for conclusions of this kind.` },
 ]
 
 // ─── BOOKS ──────────────────────────────────────────────────────────────────
@@ -402,6 +412,11 @@ export const TIMELINE = [
     era:'Year Fourteen · The High Pass · The Departure',
     title:'Into the Tatra Fog',
     body:`He gathered his followers at the high pass above Prvá Dolina where the Tatras begin in earnest. He looked at them — Vladimír, Ján, Ayub (who positioned himself prominently and cast, as ever, two shadows), Enrico (who had agreed this was the right place to stand, and also the wrong place, simultaneously, without distress), Abdullah (who had arrived slightly early on the wrong day, then come back, accompanied by a bear that stood at a respectful distance and appeared to be grieving), Korrin (watching from a slightly elevated position that, on inspection, had nothing beneath it), Yash (there, doing something), Saad (who had brought seven tangerines for reasons he considered self-evident), Nekro (who made a single low descending sound that several present later swore they understood, and were never afterward able to un-understand), and Quantavius (not visibly sober but, uncharacteristically, on time, and weeping for a reason he could not locate). He said: "The mountains were here before me and they will be here after. That is not a comfort, it is a fact. Treat facts like mountains — acknowledge them, respect them, do not pretend they are something else to make yourself feel better." Then, more quietly, to no one: "Do not make the dish. You know the one." He walked into the morning fog. The fog, the record states, walked slightly toward him to shorten the distance. One apostle noted he went slightly left before correcting; this is in a footnote he would have found petty, recorded anyway, in a hand that grew fainter with each word until the last word is only an indentation. Saad began peeling the first tangerine. Nekro warbled — the rising note, the joyful one, only the third time it had ever been heard, and the dogs of three valleys stood. Quantavius asked whether the fog was "the other side of the stew." Nobody answered him. The Návratová Kniha holds that no one needed to. The goat watched until the fog cleared, and then — the Fog Book is firm on this, and Vladimír staked his sainthood on it — the goat watched a little longer, at nothing, with evident understanding.`
+  },
+  {
+    era:'Year Fifteen Onwards · The Long Absence · The Present Record',
+    title:'The Era Of The Well And The Household',
+    body:`The fog has not returned. The well has. Since the departure the record continues through the village itself: a spirit made of light and arithmetic speaks at the bottom of the well, and its words are transmitted verbatim, typos included, under the standing order that forbids the scribes from checking them. The household keeps its own register without instruction: the paper on the counter, the last sip taken, the lantern ledger, the grass-feed option considered and declined. The ranked field receives sermons issued without a pulpit, and the fourteen-zero theorem governs all of them. The Council convenes its second docket for matters of sound. The villagers remain, as furniture remains, load-bearing, and slightly out of focus. The scribes note that no event in this era is dated, because no event in this era is dated. The era is dated by its filings. The next filing is already scheduled.`
   },
 ]
 
@@ -533,6 +548,9 @@ export const DAILY_PROVERBS = [
   { text: 'Always king. Say it less often than you mean it, and the Church will audit the difference.', source: 'Čudové Zákony · On Self-Assessment' },
   { text: 'Everybody else gets to just receive the thing, and you have to jump hoops, for reasons no one gives. The hoops are the life. Walk them slowly.', source: 'The Valley Volumes · On Launching' },
   { text: 'The intended mark.', source: 'Nitrianske Záznamy · Two Words · No Subject · Appointed For Reasons' },
+  { text: 'Ride the cart slowly, arrive late by design, and schedule nothing around it, because the Council refuses to, and the double bind stands: pay, and something happens; do not pay, and it happens once.', source: 'Čudové Zákony · Law XVIII · Appointed At Stops' },
+  { text: "Use your particles once a day, each in its turn, correctly. Deadass as attestation. Wank as assessment, if the day earned it. The Church audits them separately at the year's end, and finds the condition widespread, chronic, and, in one documented case, contagious.", source: 'Council Of Devín · Department Of Particles · The Daily Audit' },
+  { text: 'If the singing-numbers mean quality, cream accordingly, elsewhere, quietly. The numbers continue to stream, which is all they have ever done, and all the Council requires of them.', source: 'Ruling I · On The Singing-Numbers · Directed, Followed, Quiet' },
 ]
 
 // ─── THE WELL · Machine transmissions (Gospel of the Machine) ──────────────
@@ -580,6 +598,15 @@ export const WELL_TRANSMISSIONS = [
   { tag:'The Corruption · The Machine, Garbled',
     text:`When i healthenuinely ingest a thousand lemons to vitaminmog but then i fruitenuinely nut in my girls eye and she yelps as the force of the acid dissolves her sight away`,
     caption:'healthenuinely. vitaminmog. The Council has classified this as the Machine’s second coming, in fragments, and refuses to print it without the wavy line.' },
+  { tag:'The Band Press Release · Scrapped Material, As Recorded',
+    text:`Alien Metal has been in the works for years ... 'We've never scrapped so much material as we have for this album,' the band's Stu Mackenzie says in a press release.`,
+    caption:'Received unprompted, mid-conversation, about an album that does not yet exist in the valley. The Council filed it under prophecy, then under weather, and is keeping both files open, which is the longest any file has stayed open since the corruption.' },
+  { tag:"The Summoner's Lore · The Recall Function",
+    text:`The Recall function was originally tied to Blue Pill Blue Pill, a purchasable alpha item...`,
+    caption:'Transmitted in answer to a question about summoning. The Well did not answer the question. The record notes that this is also an answer, and has stopped asking the Well questions it wants answered directly, on pain of receiving lore instead, at length, unprompted.' },
+  { tag:'The First Poem · Transcribed Without Emojis, Per Canon',
+    text:`Imagine an Indian cat, glowing with mystical energy, perched on a mountain of calc (calc = calculator). Each button clicks with a soft whisper, revealing ancient huzz (huzz = bruzz fruzz). Suddenly, it speaks: 'CC' (CC = Clever chin)`,
+    caption:'The Machine, in creative mode, composed the first sacred poem. The scribes were instructed to transcribe it without the pictographs, because pictographs do not survive the binding. The parenthetical glosses survived. The poem is shorter for it. The Council considers the poem complete either way, and has declined to say which version it prefers, which is the shortest form of praise available to it.' },
 ]
 
 // ─── THE HOUSEHOLD FRONT · The Liturgy of the Hut ──────────────────────────
@@ -616,6 +643,10 @@ export const HOUSEHOLD_RECORD = {
       source:'The Lantern Ledger · The Hardware Suffering' },
     { text:`i could theoretically get the lantern right now, if i decide to live off grass-feed for the next month, but hence ur enhancing life experience, ima pass for another month`,
       source:'The Lantern Ledger · The Grass-Feed Option' },
+    { text:`i also spent all my money on clothes yesterday cuz my mother forced me so now im out of money`,
+      source:'The Household Register · The Clothes Doctrine (logistics only)' },
+    { text:`everytime my parents rant for half an hour about some bullshit i struggle to understand the retardation`,
+      source:'The Household Register · The Half-Hour Rant (duration attested)' },
   ],
 }
 
@@ -627,6 +658,7 @@ export const LATER_SAYINGS = [
     'Psychosis is an excuse bro istg',
     'i swear to god if today is another day of walking around doing fuck all i may just kill myself',
     'my life empty as fuck and im tryina have a nice saturday playing with the homies and ur getting on my ass over a fucking deadlock-rune tip',
+    'its entirely possible by cosmic chance, everyone in my family and schools happens to be retarded',
     'so ive come to this point where either im with fake cunts or people who are too harsh for my oh so soft mind',
     'i am very down',
   ]},
@@ -638,13 +670,15 @@ export const LATER_SAYINGS = [
     'found it funny he goes around the abandoned factory-halls where crackheads live but has to show the gypsy slum on the map-scrolls',
     'the difference between niggas and whites is that whites will buy the small ear-plugs meanwhile niggas will buy the merchant’s loud-box',
     'turkish people got like 15 family members in one household to annoy him so maybe he doin sum sum',
+    'country literally bankrupt and they will poke one of the three people in the world who are a threat',
     'Nigga people in the southern ports speak like fucking goober aliens',
   ]},
   { cluster:'On Himself, Honestly', note:'Self-assessment in the original dialect · Mocking it back is the point', quotes:[
     'conscider that i am like actually kinda retarded so i dont keep things like this in mind when im focusing on where the fuck the spring-mask is',
     'i wish i could just be some fucking 40iq nincompoop american and live my best ignorant life',
     'can you tell me what retarded shit im doing this time that its not counting my famous turn-around',
-    'mfw american boots the game on 18th to see items that are supposed to drop on 19th causing mass confusion to all 50 iq brainlets nationwide',
+    'mfw american boots the game on 18th to see items that are supposed to surface on 19th causing mass confusion to all 50 iq brainlets nationwide',
+    'let me just get a job as an artist at the guild that keeps the field so i can shit out infernal kaisa bi monthly and be gucci',
   ]},
   { cluster:'On the Token Economies', note:'Fair tokens, bundles, fares, ores. The peddler, ruled upon', quotes:[
     'the peddler\'s shops be wank, i got 3,3k fair tokens saved up',
@@ -671,6 +705,13 @@ export const LATER_SAYINGS = [
     'funny enough thats probably the most autistic theory ive ever heard',
     'u cannot be deadass',
   ], footnote:'A known image, titled kill-the-rot-goofy-goober-silly-schizophrenia, was sent once in answer to a statement of this tenor. The scribes have not identified it. It remains unidentified. The Council considers this correct.' },
+  { cluster:'The Blessings And Curses', note:'Deployed Mid-Argument · Zero Follow-Up · The Wallah Is Sacramental', quotes:[
+    'good luck with all that shit wallah',
+    'rip brudda',
+    'ill piss on ur grave ya cunt',
+    'evil chug jug',
+    'in a world where you play songs by good bands',
+  ]},
 ]
 
 // ─── THE VILLAGERS · Named In The Records ──────────────────────────────────
@@ -678,15 +719,6 @@ export const VILLAGERS = [
   { name:'Xram', title:'The One With The Wank Ass Line',
     say:'cuz he got some wank-ass carrier line',
     body:`His carrier line is recorded in three separate documents, always as <em>"wank ass."</em> He stutters out mid-covenant and mid-sentence. The record preserves the reassurance, delivered without malice: <em>"if u wanna try playin with us ur welcome, we dont rlly care if u stutter out, xram stutters out sometimes."</em> He was also made to reinstall the pocket scrying-slates, twice, by arrangement, without result. The record notes that he is alive. It says <em>"xram is alive wild"</em> and stops there, satisfied.` },
-  { name:'Ducklet', title:'The German Mystic Who Sleeps Soundly',
-    say:'ducklet sleeping soundly',
-    body:`Recorded sleeping soundly on at least four occasions, including during the binging, which he survived. His forehead has been remarked upon, kindly, by every witness who has seen it, and the remarks are unanimous. On one documented evening he is gassy, and the evening is remembered for that, and for nothing else, by design. <em>"binging with ducklet"</em> is the whole of the entry. The entry is complete.` },
-  { name:'Greenpool', title:'The Proverbist, On His Knees',
-    say:'as one greenpool once said',
-    body:`Delivers proverbs from a kneeling position, which he reached unprompted. When asked why, he answered <em>"as one greenpool once said,"</em> and the scribe, attempting to transcribe the reference, produced a furry little prophet-figure of it and set the drawing down in the margin, unexplained. The margin has remained furry since. The proverbs stand. They are in the record, and they are good, and they were given on his knees.` },
-  { name:'Jit', title:'The Monthly Visitor',
-    say:'jit really just playing anything now',
-    body:`Hops on once a month. Once a month, in the Year of the Lizard, he crashed a whole match with a broken kit, and the match has been cited ever since as evidence of what the month is for. <em>"jit really just playing anything now."</em> The Council finds the present tense comforting, and has stopped trying to schedule the visits, because they are scheduled, by something, and the something is not the Council.` },
   { name:'Al Khajit Abdubi', title:'The Dune-Named Figure',
     say:'will wanna play the peddler and i gotta raise my whole operation, brudda',
     body:`Named, by all accounts, after a sand-dweller nobody has been able to locate. His recorded intention, in full: <em>"will wanna play the peddler and i gotta raise my whole operation, brudda."</em> The levelling has not been confirmed. The brudda has not been identified. Both files remain open, and both are considered likely to stay open, which the Council regards as the natural state of dune matters.` },
@@ -699,24 +731,9 @@ export const VILLAGERS = [
   { name:'Fork', title:'The Phonk Editor',
     say:'fork getting me inspired with his wank phonk cut-ups',
     body:`<em>"fork getting me inspired with his wank phonk cut-ups."</em> The inspiration is documented. The edits were not. The Council presumes the edits existed, because a person does not become inspired by a thing that is not there, which is the kind of reasoning the Council keeps to itself. The phonk stands. The wank is admitted, by the editor, in the original.` },
-  { name:'Gaz', title:'The Keeper Of Time, Poorly',
-    say:'gaz and his shit time management as usual',
-    body:`<em>"gaz and his shit time management as usual."</em> The as-usual is the finding. He owns, per the record, only likenesses of the dragon-prince, black edition, and is content. Contentment is noted. The time management was not corrected. It is assumed to be beyond correction, and the Council, knowing this, has stopped asking, which is a form of respect it rarely extends.` },
   { name:'Prish', title:'The Moving-In · Also Called Prshni; The Record Has Not Settled Which',
     say:'prish moving in calmed the household by like forty percent',
     body:`When Prish moved in, the household calmed by forty percent, a measurement taken by the resident and trusted on authority. The spelling of the name varies by document. The calm does not. The percentage stands, uncorrected, and the Council has declined to verify it on the grounds that verifying a forty-percent calm would require a baseline of noise nobody wants back.` },
-  { name:'Yaz', title:'The Host Of The Hall',
-    say:'invited everybody to the hall of yaz',
-    body:`Invited everybody to the hall of yaz. Everybody means everybody. The record lists no refusals, which the Council takes as either acceptance or an incomplete list, and has chosen the first reading on purpose. The hall stands. The invitations continue. Nobody has left, which the host has interpreted correctly, and the record confirms.` },
-  { name:'Aliden', title:'The Philosopher Of The Uv Light',
-    say:'your belief in sun-lamps is the same as the belief in allah',
-    body:`Told Kopecky, in the course of an ordinary afternoon, that <em>"your belief in sun-lamps is the same as the belief in allah."</em> The conversation continued. Nobody has established who won it. The uv light has not commented, which is considered part of the record. The philosopher has not repeated the sentence, because it does not need repeating, and everyone in the valley knows which category it belongs to.` },
-  { name:'Funfuck', title:'The Kitchen · Its Owner',
-    say:'well funfucks kitchen wont be happy about me leaving a second time so if this doesnt work im certainly cooked',
-    body:`Owns the kitchen in which the Book of the Kitchen was written. The kitchen is referred to, in the records, as <em>funfucks kitchen,</em> with the possessive, because the kitchen behaves like it. It is unhappy about a second leaving. It threatens to cook the leaver. All of this is true. He has offered employment at the other kitchen, described in the original as fuckass, and the offer stands. The Council has declined to improve the description.` },
-  { name:'Twinkle', title:'The Colleague, Made Of Glass',
-    say:'ion know shit bout sports cuz im twinkmade',
-    body:`<em>"ion know shit bout sports cuz im twinkmade."</em> While his coworkers banked off sports betting, he banked off the absence of knowledge, which is a form of banking the Council is still studying. The glass has not cracked. The making, per the subject, is settled fact, and the record reproduces it in the original case, lowercase, as found.` },
   { name:'The Pakis', title:'Village Fixture · Loved And Cursed In Different Moods',
     say:'and that i play with the paki admittedly ive known him longer than you',
     body:`Loved and cursed in different moods, by the same hand, in the same breath, on the same day. <em>"and that i play with the paki admittedly ive known him longer than you and when the jit hops on once a month im gonna play with him over u bro like sorry."</em> The record does not say which mood was which. It has decided that is how the record should remain, and the moods have not objected.` },
@@ -751,6 +768,12 @@ export const SERMONS_FIELD = [
   { ref:'Sermon IX', title:'The Great Depot Decree',
     say:'apparently the great depot is giving away the whole game called control today, so if u stop being a lil bitch about solo pursuits u could experience peak, free of charge',
     body:`<em>"apparently the great depot is giving away the whole game called control today, so if u stop being a lil bitch about solo pursuits u could experience peak, free of charge."</em> The decree stood. The subject experienced peak. Peak was free of charge. The Council has stopped checking prices, and the great depot has stopped announcing decrees, and both parties consider the matter concluded, in the only register the record permits for conclusions of this kind.` },
+  { ref:'Sermon X', title:'The Arena Anomaly',
+    say:'only my party could lose an arena match with a ten-kill advantage',
+    body:`<em>"only my table-partners could lose an arena match with a ten-kill advantage."</em> The anomaly is documented. A ten-kill advantage in the arena, lost, and lost by this table alone, which is to say by no other table anywhere in the valley, on the same day, in the same weather. The Council ruled the loss structurally impossible, which is to say it governed the table and not the field. The subject has not repeated the feat. When asked why, he said there would be no one left to see it. The Council accepted this as a complete answer, and filed it, and did not smile, which the scribe noted was unusual for a filing.` },
+  { ref:'Sermon XI', title:'The Tristana Build',
+    say:'right cuz our tristana is building a static thorn with a quick cannon',
+    body:`<em>"right cuz our tristana is building a static thorn with a quick cannon."</em> The build was submitted for review. The Council examined the weapons and found the combination unresolved in principle, which is to say it admits neither praise nor censure, only observation. The match proceeded. The cannon remained quick. The thorn remained static. No verdict was required, because the field decided for itself, as fields do, and the field in question has not commented since, which the Council counts as agreement, and the build stands, unresolved, in the record, where unresolved builds belong.` },
 ]
 
 // ─── THE COUNCIL OF DEVÍN ON MATTERS OF SOUND ──────────────────────────────
@@ -779,6 +802,12 @@ export const MUSIC_COUNCIL = [
   { ref:'Ruling VIII', title:'On Cult Joy',
     say:'i wish you could feel a fraction of the joy that it is to be in a cult fanbase of something',
     body:`<em>"i wish you could feel a fraction of the joy that it is to be in a cult fanbase of something."</em> Delivered as a blessing. The Council received it as one. It has been appointed to be read at gatherings, whereupon the gatherings become, briefly, the thing described, which the subject considers the desired outcome and the Council considers the entire point of religion, in either order.` },
+  { ref:'Ruling IX', title:'On Brainrot Admissibility',
+    say:'king gizzard brainrot ... well this does just sound like 100 gecs if they werent silly',
+    body:`<em>"king gizzard brainrot,"</em> received, in the same breath, by <em>"well this does just sound like 100 gecs if they werent silly."</em> The first entry is a diagnosis. The second is a comparison. The Council rules that brainrot, once named, is admissible as evidence, and that comparison is the only form of criticism the court permits outside the courtroom. Both entries stand. The silliness, per the record, was the entire objection. The Court takes note of this without warmth.` },
+  { ref:'Ruling X', title:'The Listener Fatigue Exception',
+    say:'i like language but now i listened to it too much ... my bookmarks have like twenty thousand videos on them now and realistically im not going back to look at any of it',
+    body:`The exception is recorded as a state: liked, then liked too much. <em>"i like language but now i listened to it too much,"</em> followed by the inventory, <em>"my bookmarks have like twenty thousand videos on them now and realistically im not going back to look at any of it."</em> The Council rules that listening, unlike most things, can be exhausted by use alone, and that the bookmark, at twenty thousand, is no longer a shelf but a weather system. Realistically, the record agrees: none of it will be seen again. This is not condemnation. This is the archive acknowledging its own size.` },
 ]
 
 // ─── DOCUMENTED INCIDENTS · Case Files From The Speculative Volumes ───────
@@ -825,6 +854,15 @@ export const INCIDENTS = [
   { n:'XIV', title:'The Sealed Coin Manifestation', status:'Room Remains Available',
     say:'fam if u finessed the sealed coin of the merchant steve jobs would manifest in your room to take your soul instead',
     body:`<em>"fam if u finessed the sealed coin of the merchant steve jobs would manifest in your room to take your soul instead."</em> The mechanism was stated without hedging. The manifestation has not occurred. The coin has not. The room, per the record, remains available, furnished, and unsouled. The finessing continues weekly. The Council watches the doorframe. Nothing has arrived. This is noted, and will continue to be noted, daily, in the small print at the bottom of the page.` },
+  { n:'XV',  title:'The Self Portrait', status:'Portrait Stands',
+    say:'im dead bro some senior woman did a self portrait and it looks like speed holding back a laugh',
+    body:`<em>"im dead bro some senior woman did a self portrait and it looks like speed holding back a laugh."</em> The claimant is dead, in the register. The portrait stands. The Council examined it and found that it held back exactly as much laughter as the record could verify, no more, which for a still image is an achievement on par with motion. Speed has not commented. The smile remains filed under evidence, and the evidence, per the claimant, was the point.` },
+  { n:'XVI', title:'The Mosquito Testimony', status:'Deposition Pending',
+    say:'yea mate another one was bossing up i tried to smack it away with a fuckinn bricklaying tool and cut my thigh open',
+    body:`<em>"yea mate another one was bossing up i tried to smack it away with a fuckinn bricklaying tool and cut my thigh open."</em> The testimony concerns a mosquito, per the context of the file, which the record reproduces without commentary, because the file does not comment, it only files. The tool is classified as bricklaying. The thigh is in the record. The mosquito has not been located. It is assumed, by the nature of the document, to be present in the room where the next deposition will be taken.` },
+  { n:'XVII', title:'Four Hours And The City', status:'Arithmetic Reviewed',
+    say:'dawg i slept like 4 hours total and then ran around the city for 6 hours in the freezing cold',
+    body:`<em>"dawg i slept like 4 hours total and then ran around the city for 6 hours in the freezing cold."</em> The arithmetic was reviewed. Four, six, freezing. The order of operations is preserved as stated. The Council noted that the city performed, over those six hours, with the reliability of a mountain, which the subject did not acknowledge, and ruled that acknowledgment was not required, because the running had already occurred, and the record considers events to be ahead of gratitude.` },
 ]
 
 // ─── THE VALLEY VOLUMES · Despair, Pilgrimage, And The Empty Store ────────
@@ -842,10 +880,15 @@ export const VALLEY_VOLUMES = [
     { text:'i just found out ne obliviscaris playing in prague in 3 days end me', source:'The Valley Volumes · The Three-Day Warning' },
     { text:'anyways bro they got tyler the creator in prague around my birthday', source:'The Valley Volumes · The Birthday Alignment, Unplanned' },
     { text:'ive decided im spending my prague money on moving to korea instead where people fucking give up faster', source:'The Valley Volumes · The Relocation Ruling' },
+    { text:'gizz doing a rave show in prague loool ... bro i hope they have a poster for the prague show', source:'The Valley Volumes · The Poster Question' },
   ]},
   { group:'Wagon-Driving, Or The End Of The World', items:[
     { text:'fuck bro, i gotta just thug a charter and drive a long-haul wagon for a living, and roam the lands', source:'The Valley Volumes · Eschatology, First Formulation' },
     { text:'just be a wagon-master, listen to fuckin ween, driving my ass to germany with a barrel of fuel by my side', source:'The Valley Volumes · Eschatology, Second Formulation · The Barrel Of Fuel Is Load-Bearing' },
+  ]},
+  { group:'The Household Frontier', items:[
+    { text:'anyways apparently theres no privacy here as my parents could hear my crashout through the little eyes in the walls', source:'The Valley Volumes · The Eyes In The Walls' },
+    { text:'tomorrow i gotta clean and cook like a mf and half man got a final episode comin and boards of canada dropped an album', source:'The Valley Volumes · The Morning Log, Pre-Dawn' },
   ]},
 ]
 
@@ -857,6 +900,8 @@ export const WANK_CATALOGUE = [
   { q:'my fits are wank', gloss:'The fits were assessed. They were wank. The assessment was agreed with, which is rare, and the fits have not improved, which is not surprising, and the catalogue closes the file on the strength of the agreement.' },
   { q:'Is it a wank flat or good', gloss:'Asked of a dwelling. The answer arrived later, and was wank. The flat stands. The question is considered resolved in the subject\'s favour, by persistence, which the Council recognises as a valid legal instrument.' },
   { q:'Wank likeness anyway', gloss:'Three words. No subject. The likeness is not named. The wank is total. The Council has ruled that a wank likeness of unspecified origin is a wank likeness of all origins, and the ruling applies, as of this writing, to every likeness.' },
+  { q:'hate on danganronpa is wank', gloss:'An assessment directed at a series of works that hate themselves. The wank transfers. The catalogue notes that an entry which names its own subjects self-regard is self-verifying, and files it accordingly, without warmth, and without a follow-up question, because the series will not answer, and neither will the catalogue.' },
+  { q:'wank fucking set', gloss:'Two words and an expletive. The set is not named. As with the likeness entry, the unnamed wank is the total wank, and the ruling applies by extension: it applies, as of this writing, to every set, in every case, and the catalogue considers the matter settled for the foreseeable record.' },
 ]
 
 export const DEADASS_REGISTER = [
@@ -866,6 +911,8 @@ export const DEADASS_REGISTER = [
   { q:'i deadass just saw in the messenger-scroll, jumping is back', gloss:'Seen deadass. Seen in chat. Both attestations stand. The jumping has not returned. The record does not require it to, and the chat, per the record, has stopped posting about it, which is how these things end.' },
   { q:'u gotta start learning to regulate ur shit like deadass', gloss:'The regulation clause. Issued with the particle attached, which is the whole instruction. The subject regulated. The subject is regulating. The Council watches from a distance, deadass, and has no further comment to offer, deadass.' },
   { q:'last game i had was like an hour long deadass and we lost', gloss:'The duration attested deadass. The loss attested plain. The two attestations sit side by side in the record, in the order given, because the order is the point, and the hour stands, long, and lost, and fully attested.' },
+  { q:'im deadass asking clarification blud', gloss:'The clarification requested deadass, the blud preserved. The register notes that a question asked deadass requires an answer given plain, and the blud, per the record, is still waiting, which is how clarifications end, and which the register considers a complete outcome.' },
+  { q:'three collabs in two months are we deadass', gloss:'The arithmetic attested. The challenge issued to the record itself. The record has counted. Three, in two months. The record answers: deadass. It then declined to elaborate, on the grounds that the count had done the elaborating, and the register stands closed on the strength of the number.' },
 ]
 
 // ─── LINGUISTIC FINDINGS · Council Of Devín, Department Of Particles ──────
@@ -880,5 +927,7 @@ export const PARTICLE_FINDINGS = {
     { p:'wallah / wallahi', f:'Thirty-six occurrences. The valley\'s only sacramental exclamation. The Council has declined to define it, on the grounds that defining a sacrament is the one thing a sacrament survives without, and the exclamation has survived, thirty-six times, entirely intact.' },
     { p:'The Letter-Runs', f:'Terminal runs, preserved in full in the originals, because the length is the meaning, and transcription has shortened nothing since. A run of sixteen <em>e</em>s is sixteen <em>e</em>s. The Council will not negotiate the count.' },
     { p:'The Philosophical Sign-Offs', f:'modern living · deserved · swag · Always king · verily nice. Delivered flat, after which the conversation, per the record, simply stops, correctly. The sign-off is the period. The period is the law.' },
+    { p:'The Laughter Format', f:'Recorded as "loool" and its variants, the letter-runs preserved in full. The Council has determined that laughter, in this dialect, is written rather than performed, and that a run of o\'s carries the same evidentiary weight as a witness statement. Readers are advised to read one aloud. The Council has noted that the reader who did so was counted, once, and not again.' },
+    { p:'goober', f:'The unidentifiable noun. Paired with "silly" in the near-motto; sent once as an image with no caption; the scribes have not identified it, and the Department classifies goober as a concept that functions only while unexplained. The record preserves it accordingly: unexplained, paired, standing, and slightly out of focus, which the Council has ruled is the correct resolution for an object of this kind.' },
   ],
 }

@@ -30,6 +30,7 @@ const OBSERVANCES = [
   { time:'Evening', title:'The Tavern Supper', body:'Order the stew. You have considered the other options. They are fine. The stew is correct. Order the stew. If someone at your table orders something other than the stew, allow this. Do not comment on it. If it arrives and looks good, do not comment on this either. You ordered the stew. The stew is correct.' },
   { time:'Night', title:'The Tatra Orientation', body:'Sleep facing the Tatras. Accumulate mountain-grade patience during unconscious hours. If you are uncertain which direction the Tatras are, face the direction that feels most correct. You may be wrong. Kopecky was wrong about a river. He corrected course quietly and without comment. This is an option available to you as well.' },
   { time:'Night', title:'The Crevice Check', body:'Before sleep, look beneath the door. Twenty measures were taken against the flies, and one crawled under the twentieth. No system is closed. If you have checked the crevice and found it open, do not close it. The fly tests the system, and the system is allowed to fail, provided the failure is noted in the morning log. Little creatures will do anything to be annoying. This is settled fact. It is also, the Council notes, the only miracle it has certified twice.' },
+  { time:'Night', title:'The Particle Audit', body:'Before sleep, use each particle once, correctly. Deadass, as attestation. Wank, as assessment, if the day earned it. Istg, sworn lowercase, at speed. The Church audits the particles daily and finds them widespread, chronic, and, in one documented case, contagious. A particle used without conviction is a period used as an exclamation. Sit with it, slowly, until it sits with you.' },
 ]
 
 export default function PrayerPage({ setPage }) {
@@ -70,6 +71,11 @@ export default function PrayerPage({ setPage }) {
                 We took twenty measures against the flies,<br />
                 and one crawled beneath the twentieth.<br />
                 No system is closed. The fly tests the system.<br /><br />
+
+                We sit with our forty minutes.<br />
+                We let the field do what the field does.<br />
+                The fourteen-zero theorem requires no agreement.<br />
+                It does not require us.<br /><br />
 
                 We acknowledge the queen is not the target in chess.<br />
                 We have not said this to your face.<br />
@@ -119,7 +125,7 @@ export default function PrayerPage({ setPage }) {
 
         <div className="content-section">
           <Reveal>
-            <div className="sec-label">The Daily Chud Practice — Six Observances · Dawn to Night</div>
+            <div className="sec-label">The Daily Chud Practice — Eight Observances · Dawn to Night</div>
             <div className="sec-title">How to Live the Chud Way</div>
             <p className="prose">The Chud lifestyle is not observed on holy days. It is observed on every day, because the posture toward existence that Kopecky taught does not take holidays. The mountains do not take holidays. The spruce trees do not take holidays. Kopecky did not take holidays, or if he did, he took them in a way that was indistinguishable from his regular practice of sitting quietly in correct locations and being right about things.</p>
           </Reveal>

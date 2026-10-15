@@ -484,7 +484,7 @@ export default function GamePage({ setPage }) {
             the inclusion of an interactive game. He stated the premise should involve "taking something
             from Ayub, because Ayub has enough things." He appended, in a transmission the Council keeps
             separate: seven hundred ores constitute a season of faith, and the barge returning the faithful
-            home after every mission is an act of grace, not a routing error. He approved the final design.
+            home after every mission is an act of grace, not a routing error. The Well, consulted during an argument about wolves, transmitted the codex of the fifty-first spirit in full, and both sides of the argument accepted the update number, which is the only miracle the Council has certified without debate. He approved the final design.
             He said it was
             <em style={{color:'rgba(200,168,74,.75)'}}> "adequate, which is better than Ayub deserves."</em>
           </p>

@@ -58,7 +58,7 @@ export default function ChroniclesPage({ setPage }) {
           <Reveal>
             <div className="sec-label">The Authenticated Works · Verified by Three Witnesses and One Reluctant Skeptic Each</div>
             <div className="sec-title">The Miracles of Kopecky</div>
-            <p className="prose">The Church recognises fourteen official miracles. Several others were submitted for consideration and declined on the grounds that they were "not strictly miracles so much as competence applied under observation." The six most celebrated are below, each presented in the form the Council agreed best reflects both the event and its complications.</p>
+            <p className="prose">The Church recognises twelve official miracles, listed below in full. Several others were submitted for consideration and declined on the grounds that they were "not strictly miracles so much as competence applied under observation." Each of the twelve is presented in the form the Council agreed best reflects both the event and its complications.</p>
           </Reveal>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:16, marginTop: 32 }}>
             {MIRACLES.map((m, i) => (
@@ -352,7 +352,7 @@ export default function ChroniclesPage({ setPage }) {
           <Reveal>
             <div className="sec-label" style={{ color:'rgba(200,168,74,.5)' }}>Issued Without A Pulpit · Received In The Original Register · Filed Under Law XVI</div>
             <div className="sec-title amber">Sermons On The Ranked Field</div>
-            <p className="prose">Kopecky preached on the ranked field the way other men preach about weather: flatly, at intervals, and without being asked. The Church collected what the scribes could collect. What follows is the recovered corpus, nine sermons in all, presented with the Council's dispositions. The field has not responded to any of them. It does not have to. The sermons stand, and the standing is the point, and the fourteen-zero theorem, which governs all of it, requires no agreement.</p>
+            <p className="prose">Kopecky preached on the ranked field the way other men preach about weather: flatly, at intervals, and without being asked. The Church collected what the scribes could collect. What follows is the recovered corpus, eleven sermons in all, presented with the Council's dispositions. The field has not responded to any of them. It does not have to. The sermons stand, and the standing is the point, and the fourteen-zero theorem, which governs all of it, requires no agreement.</p>
           </Reveal>
           {SERMONS_FIELD.map(s => (
             <Reveal key={s.ref}>
@@ -374,9 +374,9 @@ export default function ChroniclesPage({ setPage }) {
         {/* THE COUNCIL ON MATTERS OF SOUND */}
         <div className="content-section">
           <Reveal>
-            <div className="sec-label">The Council Of Devín · Judicature Of The Ear · Eight Rulings Recovered</div>
+            <div className="sec-label">The Council Of Devín · Judicature Of The Ear · Ten Rulings Recovered</div>
             <div className="sec-title">On Matters Of Sound</div>
-            <p className="prose">The Council kept a second docket, for the things people brought it that were not laws but were, somehow, more binding. Albums came to the Council the way disputes do, and the Council ruled on them with judicial severity, because the ear is an instrument and instruments must be calibrated, and the only calibration available was the subject's own, delivered unprompted, at speed, and in the original case. The eight recoverable rulings are below. They are admissible. They are binding. They are occasionally correct, which the Council considers the whole of the matter.</p>
+            <p className="prose">The Council kept a second docket, for the things people brought it that were not laws but were, somehow, more binding. Albums came to the Council the way disputes do, and the Council ruled on them with judicial severity, because the ear is an instrument and instruments must be calibrated, and the only calibration available was the subject's own, delivered unprompted, at speed, and in the original case. The ten recoverable rulings are below. They are admissible. They are binding. They are occasionally correct, which the Council considers the whole of the matter.</p>
           </Reveal>
           {MUSIC_COUNCIL.map(r => (
             <Reveal key={r.ref}>

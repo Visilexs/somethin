@@ -38,6 +38,10 @@ export default function ChudPage({ setPage }) {
               {PILLARS.map(p => <PillarCard key={p.n} {...p} />)}
             </div>
           </Reveal>
+          <Reveal delay={2}>
+            <div className="sec-label" style={{ marginTop:36 }}>Filed Under · The Later Revelations</div>
+            <p className="prose">The pillars were written down first. The laws came after, in the same hand and in the same dialect, with the -ington endings intact, and the two bodies of text agree, which the Council finds structurally inevitable and has stopped testing. What the pillars call patience, Law XVIII calls the cart. What the laws call the field, the spruce has been gathering light toward for four centuries. Read the pillars, then the catalogue, then the register, in whatever order serves you. The order is not important. The reading is.</p>
+          </Reveal>
         </div>
 
         {/* LINGUISTIC FINDINGS */}

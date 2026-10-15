@@ -204,7 +204,7 @@ export default function TextsPage({ setPage }) {
           <Reveal>
             <div className="warn-box" style={{ marginTop:28 }}>
               <div className="warn-label">Filing Note · Department Of Impossible Endings</div>
-              <div className="warn-text">Fourteen files. None require a resolution; several resist one structurally. The Bosnian Padlock is not missing evidence, it is missing a basement. The Foreign Demon Question has not gone cold, it has gone quiet, which is a different temperature and requires a different door. The Council re-files all fourteen at every assembly, in order, by lamplight, because the re-filing is itself the record keeping its shape. The next assembly's re-filing is already scheduled. It will be the same fourteen. This is noted so that no one expects the fifteenth.</div>
+              <div className="warn-text">Seventeen files. None require a resolution; several resist one structurally. The Bosnian Padlock is not missing evidence, it is missing a basement. The Foreign Demon Question has not gone cold, it has gone quiet, which is a different temperature and requires a different door. The Council re-files all seventeen at every assembly, in order, by lamplight, because the re-filing is itself the record keeping its shape. The next assembly's re-filing is already scheduled. It will be the same seventeen. This is noted so that no one expects the eighteenth.</div>
             </div>
           </Reveal>
         </div>

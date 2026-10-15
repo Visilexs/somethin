@@ -22,14 +22,14 @@ const ALL_QUOTES = [
   { text: 'Well.', source: 'Kopecky, surveying the assembled disciples in Year Four. This is the complete quote. Vladimír wrote it down. The word has been studied.' },
   { text: 'The stew. I will have the stew. I have considered the other options and they are fine. The stew is correct. Bring me the stew. Why is this taking time.', source: 'At the tavern of Zvolen · Witnessed by eleven people · Year Six' },
   { text: 'little fucks will do anything to annoy me', source: 'Tatranská Kniha · The Parable Of The Crevice · Closing Line' },
-  { text: 'when harvey thomas plays by himself he wins, but when he plays with uni he loses, this is because hes bad, and the matchmaking favors his multiple month absence', source: 'The Scientific Truth · Cross-Referenced With Law XVII And Grudge VII' },
-  { text: 'not ragebait just the scientific truth', source: 'Kopecky, upon being accused of immaturity · Year Unknown · The Council declined to take a side' },
+  { text: 'when harvey thomas plays by himself he wins, but when he plays with kopecky he loses, because hes bad, and the matchmaking favors his months-long absence', source: 'The Scientific Truth · Cross-Referenced With Law XVII And Grudge VII' },
+  { text: 'not provocation, just the scientific truth', source: 'Kopecky, upon being accused of immaturity · Year Unknown · The Council declined to take a side' },
   { text: 'yea i passed the fuck out on the pocket scrying-slates and my noodles went cold then i knocked out for 13 hours', source: 'Documented Incident 12 · The Thirteen Hours · Unresolved' },
   { text: 'well my goal in life is to invent a machine that lets me swap bodies with people and ill just take over josh kesselmans life', source: 'Documented Incident 9 · The Machine Goal · The Council Filed It Under Ambition' },
   { text: 'When I was younger, my brother used to piss in my face and he wouldnt stop until I ejaculated.', source: 'Delivered As A Fact-Check Rebuttal · Year Nine · Witnesses Looked At Each Other' },
   { text: 'gotta make my own mind-link so i can just be like yooo idea for a song that goes beep boop and i got that shit made', source: 'On Devices · The Speculative Volumes' },
-  { text: 'my bookmark got like 20k videos now and i cant go back and see shit realistically', source: 'The Music Council · On The Bookmark' },
-  { text: 'bro verbalose dropping 50k on an animation of him getting fucked by the bitch from hazbin hotel has to be one of the most goofy ass things ever', source: 'The Music Council · Ruling On Expenditure' },
+  { text: 'my shelf of marked songs got like twenty-thousand on it now, and i cant go back and see any of it realistically', source: 'The Music Council · On The Bookmark' },
+  { text: 'bro, verbalose dropping fifty-thousand on an animated scroll of him getting fucked by the bitch from hazbin hotel has to be one of the most goofy-ass things ever', source: 'The Music Council · Ruling On Expenditure' },
   ...CHUD_QUOTES,
   ...SEARCH_EXTRA,
 ]
@@ -248,7 +248,7 @@ export default function TextsPage({ setPage }) {
           <Reveal>
             <div className="sec-label" style={{ color:'rgba(168,200,74,.5)' }}>The Valley Volumes · Despair, Pilgrimage, And The Empty Store</div>
             <div className="sec-title">On The State Of The Valley Itself</div>
-            <p className="prose">The last volume in the Kopeckiad is not about Kopecky. It is about the ground he walked on: the country that runs on old convictions, the store shelves that arrive empty, the autumn that opens with sickness, the pilgrimage money earmarked for a city three days out, and the end of the world as a trucking licence. The volumes were compiled from the spoken record without arrangement, because arranging despair changes its shape, and the shape was verified. Read them in order. The order is the point. The gas tank is load-bearing.</p>
+            <p className="prose">The last volume in the Kopeckiad is not about Kopecky. It is about the ground he walked on: the country that runs on old convictions, the store shelves that arrive empty, the autumn that opens with sickness, the pilgrimage money earmarked for a city three days out, and the end of the world as a wagon charter. The volumes were compiled from the spoken record without arrangement, because arranging despair changes its shape, and the shape was verified. Read them in order. The order is the point. The barrel of fuel is load-bearing.</p>
           </Reveal>
           {VALLEY_VOLUMES.map(g => (
             <Reveal key={g.group}>

@@ -5,7 +5,7 @@ import {
 import Background from './Background'
 import Lenis from 'lenis'
 import { motion } from 'motion/react'
-import { PAGES } from './data'
+import { PAGES } from './pages'
 import { KopeckySymbol } from './components/Icons'
 import MusicPlayer from './MusicPlayer'
 import Achievements from './components/Achievements'
@@ -66,20 +66,23 @@ function CustomCursor() {
 
   useEffect(() => {
     const TARGETS = 'button,a,[role="button"],.pillar,.book-card,.disciple-card,.sdot,.miracle-card,.correct-card,.law-hdr,.nb'
-    const onMove = ({ clientX: x, clientY: y }) => {
-      pos.current = { x, y }
-      if (dotRef.current) { dotRef.current.style.left = `${x}px`; dotRef.current.style.top = `${y}px` }
-    }
-    const onOver = e => ringRef.current?.classList.toggle('hovering', !!e.target.closest(TARGETS))
+    let running = false
     const tick = () => {
       const t = pos.current, c = rPos.current
-      rPos.current = { x: c.x + (t.x - c.x) * 0.13, y: c.y + (t.y - c.y) * 0.13 }
-      if (ringRef.current) { ringRef.current.style.left = `${rPos.current.x}px`; ringRef.current.style.top = `${rPos.current.y}px` }
+      const dx = t.x - c.x, dy = t.y - c.y
+      rPos.current = { x: c.x + dx * 0.2, y: c.y + dy * 0.2 }
+      if (ringRef.current) ringRef.current.style.transform = `translate3d(${rPos.current.x}px,${rPos.current.y}px,0)`
+      if (Math.abs(dx) + Math.abs(dy) < 0.3) { running = false; return }
       raf.current = requestAnimationFrame(tick)
     }
+    const onMove = ({ clientX: x, clientY: y }) => {
+      pos.current = { x, y }
+      if (dotRef.current) dotRef.current.style.transform = `translate3d(${x}px,${y}px,0)`
+      if (!running) { running = true; raf.current = requestAnimationFrame(tick) }
+    }
+    const onOver = e => ringRef.current?.classList.toggle('hovering', !!e.target.closest(TARGETS))
     window.addEventListener('mousemove', onMove, { passive: true })
     document.addEventListener('mouseover', onOver, { passive: true })
-    raf.current = requestAnimationFrame(tick)
     return () => {
       window.removeEventListener('mousemove', onMove)
       document.removeEventListener('mouseover', onOver)
@@ -89,15 +92,13 @@ function CustomCursor() {
 
   return (
     <>
-      <div className="cursor-ring" ref={ringRef} />
+      <div className="cursor-ring" ref={ringRef}><span /></div>
       <div className="cursor-dot"  ref={dotRef}  />
     </>
   )
 }
 
-function ScrollProgress({ pct }) {
-  return <div className="scroll-bar" style={{ width: `${pct}%` }} />
-}
+const ScrollProgress = ({ barRef }) => <div className="scroll-bar" ref={barRef} />
 
 // ── Transition overlay — backdrop + sweeping line + centre symbol flash ──────
 function TransitionOverlay({ phase }) {
@@ -128,8 +129,7 @@ export default function App() {
   const { state, actions } = useApp()
   const [page,    setPage]    = useState('home')
   const [tovPhase, setTovPhase] = useState('')   // '' | 'in' | 'hold' | 'out' — transition overlay
-  const [scrollY, setScrollY] = useState(0)
-  const [scrollPct, setScrollPct] = useState(0)
+  const barRef = useRef(null)
   const [showTop, setShowTop] = useState(false)
   const [isPending, startTransition] = useTransition()
   const ticking = useRef(false)
@@ -164,7 +164,8 @@ export default function App() {
       const y  = window.scrollY
       const el = document.documentElement
       const pct = el.scrollTop / (el.scrollHeight - el.clientHeight) * 100 || 0
-      setScrollY(y); setScrollPct(pct); setShowTop(y > 500)
+      if (barRef.current) barRef.current.style.transform = `scaleX(${pct / 100})`
+      setShowTop(y > 500)
       if (pct > 5) actions.setProgress(page, Math.round(pct))
     }
     const onScroll = () => {
@@ -200,15 +201,14 @@ export default function App() {
       })
       window.scrollTo(0, 0)
       lenisRef.current?.scrollTo(0, { immediate: true })
-      setScrollY(0)
       setTovPhase('hold')
-    }, 300))
+    }, 230))
 
     // Phase 3 — overlay fades back out, revealing the new page
-    navTimers.current.push(setTimeout(() => setTovPhase('out'), 480))
+    navTimers.current.push(setTimeout(() => setTovPhase('out'), 360))
 
     // Reset to idle once the fade-out finishes
-    navTimers.current.push(setTimeout(() => setTovPhase(''), 920))
+    navTimers.current.push(setTimeout(() => setTovPhase(''), 760))
   }, [page, actions])
 
   useEffect(() => () => navTimers.current.forEach(clearTimeout), [])
@@ -237,9 +237,9 @@ export default function App() {
 
   return (
     <div className="app">
-      <Background scrollY={scrollY} />
+      <Background />
       <CustomCursor />
-      <ScrollProgress pct={scrollPct} />
+      <ScrollProgress barRef={barRef} />
       <Notifications />
 
       <div className="page-wrap">
@@ -270,7 +270,7 @@ export default function App() {
               onMouseEnter={() => prefetch(p.id)}
               aria-current={page === p.id ? 'page' : undefined}
             >
-              {p.id === 'laws' ? '⚖ ' : p.id === 'game' ? '♟ ' : ''}{p.label}
+              {p.id === 'laws' ? '⚖ ' : p.id === 'game' ? '✦ ' : ''}{p.label}
               {state.visitedPages.includes(p.id) && p.id !== 'home' && (
                 <span style={{ marginLeft: 5, fontSize: 7, color: 'rgba(168,200,74,.4)', verticalAlign: 'super' }}>✓</span>
               )}
@@ -287,9 +287,9 @@ export default function App() {
         <main>
           <motion.div
             key={page}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.35, ease: 'easeOut', delay: 0.15 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
             style={{ opacity: isPending ? 0.7 : undefined }}
           >
             <Suspense fallback={<PageLoader />}>

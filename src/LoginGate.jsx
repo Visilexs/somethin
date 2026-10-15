@@ -232,8 +232,7 @@ function BanishmentScreen({ until, onExpire }) {
       </div>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
-      `}</style>
+              `}</style>
     </div>
   )
 }
@@ -475,8 +474,7 @@ export default function LoginGate({ children }) {
         </div>
 
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
-          @keyframes sym-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+                    @keyframes sym-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
           @keyframes lg-shake {
             0%,100%{transform:translateX(0)}
             15%{transform:translateX(-7px)} 30%{transform:translateX(7px)}

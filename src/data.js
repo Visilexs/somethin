@@ -1,15 +1,5 @@
 // ─── NAVIGATION ────────────────────────────────────────────────────────────
-export const PAGES = [
-  { id: 'home',       label: 'Home' },
-  { id: 'origins',    label: 'Origins' },
-  { id: 'chud',       label: 'The Chud' },
-  { id: 'disciples',  label: 'The Disciples' },
-  { id: 'chronicles', label: 'Chronicles' },
-  { id: 'texts',      label: 'Sacred Texts' },
-  { id: 'laws',       label: 'The Laws' },
-  { id: 'prayer',     label: 'Prayer' },
-  { id: 'game',       label: 'Waring Frames' },
-]
+export { PAGES } from './pages'
 
 // ─── PILLARS ────────────────────────────────────────────────────────────────
 export const PILLARS = [
@@ -315,6 +305,15 @@ export const GRUDGES = [
   { sev:'V', title:'The Ayub Pamphlet — One Plagiarised Framework, Ongoing',
     body:`Ayub Jamma's pamphlet <em>The Jamma Principles</em> was, by every measure, the Chud with Ayub's name substituted throughout. Kopecky read it. He said nothing. He kept a copy. The copy, the Council confirms, has not aged — the parchment of every other document from that year has yellowed; Ayub's pamphlet remains white, "as if waiting." Ayub has produced two revised editions; Kopecky has read both and said nothing about either, and Ayub considers the silence endorsement. The silence is not endorsement. The Council of Devín is watching the situation. Kopecky is watching the situation from a position the Council finds mildly alarming, namely "patiently, without a stated timeline, and from what appears in the records to be slightly more than one location at once."`,
     meta:'Duration: Ongoing since Year Five · Trigger: Systematic philosophical plagiarism · Resolution: Pending; the pamphlet refuses to age until it is resolved' },
+  { sev:'VI', title:'The Mother Affair — One "Lazy Bum", Three Days of Silence',
+    body:`It began with a thing that would not behave, the house's connection to the world beyond its walls, which had been in service, by all accounts, for over a decade and which only his mother was legally permitted to repair (<em>"id do it myself but legal goofy goob bs"</em>). He asked her to go. She went. She purchased, on the spot, the replacement object, and returned to a silence that lasted three days. The silence opened with a single recorded transmission: <em>"she was like i wouldve drove u if u asked but ur a lazy bum and im not gonna adapt if ur not willing to be responsible."</em> He did not adapt. She did not un-adapt. He describes himself in the record as <em>"always the bigger person but its just not worth it anymore,"</em> a formulation the Council has ruled is either the most honest line in the Kopeckiad or the most expensive, and has declined to decide. The resolution, as reported and as it stands: <em>"maybe she will ... just try bein nice to her"</em>`,
+    meta:'Duration: Three days, one household · Trigger: One lazy bum · Resolution: "Maybe she will", pending, four centuries' },
+  { sev:'VII', title:'The Harvey Thomas Matter — Resolved By Science',
+    body:`When Harvey Thomas plays by himself, he wins. When Harvey Thomas plays alongside Kopecky, he loses. Kopecky delivered this equation to the scribes in a flat voice, unprompted, without preamble and without irony. The scribe objected, in what the Nitra Records describe as a tone of "immature ragebaitfail." Kopecky replied, as recorded: <em>"not ragebait just the scientific truth."</em> The Council commissioned an explanation. The explanation, as it stands in the record: he is bad, and the matchmaking favours his absence of several months. The Council reviewed the finding. It found the result internally consistent and devastating to the subject. It allowed no appeal. The matter is closed. Harvey Thomas has not been heard from since. This is considered part of the result, and the science has not commented.`,
+    meta:'Duration: Closed · Trigger: One equation · Resolution: By science · Appeals: none filed, none expected' },
+  { sev:'VIII', title:'The First Grievance Against the Scribe — The Wall of Kopecky',
+    body:`Before the Church existed, before the first law was dictated, the scribe had already built, at private cost, a wall bearing the name of Kopecky. He used it, on a continuing basis, to make undercut jokes about whatever Kopecky said. The grievance, as recorded, begins plainly: <em>"nigga you been using the wall of kopecky to make undercut jokes about whatever the fuck i say."</em> It concludes, upon the fifth repetition of the practice, with the fuller charge: <em>"the difference is i told you to stop doing it 5 times and you bring it back in a yet new way."</em> The Council notes that the wall predates the Church, that the jokes predate the wall, and that Kopecky's complaints predate both, which they consider theologically significant. The scribe has not stopped. The wall, by all accounts, is now load-bearing.`,
+    meta:'Duration: Ongoing, pre-dating the Church itself · Trigger: Five warnings, six ways · Resolution: None issued' },
 ]
 
 // ─── MIRACLES ───────────────────────────────────────────────────────────────
@@ -471,6 +470,26 @@ export const LAW_GROUPS = [
         note:'Added following three satchel-related incidents in Year Seven. The incidents are not described in any official volume. One scribe described them in a private letter, kept next to the satchel; the letter is now blank, and the scribe maintains he never wrote it, and is correct, in the sense that it is no longer true that he did. Do not ask about the satchel.' },
     ]
   },
+  {
+    id:'later', label:'Later Revelations', subtitle:'Five Laws Revealed After the Dictation · Received From the Valley Floor',
+    laws:[
+      { roman:'XVI', title:'On Loss, Which Is Always Your Fault',
+        body:`A player who finishes with fourteen kills and zero deaths has lost, because he did not calculate the damage needed to kill his 0/11 laner forty minutes ago. <em>The loss is not required to be fair. It is required to be yours.</em> The Law makes no provision for advantage, and none for misfortune. The enemy team playing well is simply the same calculation failing. The Chud carries the ledger of losses personally and in full. When asked why a flawless performance still lost, the Chud answers as recorded: <em>"so basically if you have 14 kills 0 deaths the loss is still your fault"</em> and stops there, because the sentence is complete, and completeness is the point. Anyone who requires further context is required to sit with the forty minutes themselves.`,
+        note:'The 14/0 Theorem · Cited in every ranked dispute across all four valleys · Appeals are heard and filed under "context" · The theorem does not require your agreement' },
+      { roman:'XVII', title:'On Matchmaking, Which Is Personal',
+        body:`The matching engine of the valley selects opponents the way a well selects water: by depth, and by what it considers you ready to carry. A man who plays by himself and wins, and who plays alongside the Chud and loses, is not experiencing coincidence. He is experiencing the engine, which has weighed him, found him light, and adjusted. <em>The matchmaking favours the absent.</em> Several months of absence read as improvement to the machine, and the machine, on this point, does not distinguish between hope and arithmetic. When the finding was objected to as immature, the record preserves the answer: <em>"not ragebait just the scientific truth."</em> The Council has declined to rule on whether the science is also personal. It considers the question load-bearing.`,
+        note:'Filed alongside the horse at the Nitra market · Both classified as requiring context · The engine has not commented and is understood to be watching' },
+      { roman:'XVIII', title:'On the Cart, Which Is Not a Promise',
+        body:`The cart is a thing that happens to you at intervals that resemble promises without their binding force. It may cancel itself; it may arrive before its own departure is announced; it may turn to the other village first, and only remember the city when the city has become a hypothetical. To hold a slip of passage is not to hold a right. The record preserves the parable in full: a traveller bought a slip of passage, alighted at the wrong stop, climbed onto the second cart, and discovered the fare had run out exactly at the inspection: <em>"either i dont pay and they check that one time or i pay and some bullshit happens anyway."</em> The double bind is canonical. The Chud rides the cart slowly, arrives late by design, and has, on no recorded occasion, been earlier than the cart expected him to be. The Church teaches that the cart cannot be trusted. It cannot be blamed. It must be respected at a distance.`,
+        note:'Parable of the Double Bind · Cross-referenced with the Law on Slow Movement · The Council considers the cart an instrument of patience and refuses to schedule anything around it' },
+      { roman:'XIX', title:'On the Toilet, Which Is Office No. 2',
+        body:`After eight hours at the station of labour, the Chud recognises two offices. Office No. 1 is where the work is done. Office No. 2 is where the day is, finally, ended and assessed. Sometimes it is sat upon for the canonical duration. <em>"Ima just sit on the toilet for 2 hours deadass."</em> Two hours is not a length of sitting. It is a state of being, entered deliberately and exited reluctantly. The preface cross-references it with Law I's thirty-minute rule: thirty minutes of the open question, two hours of the closed one. The walk between the offices takes four minutes by the Chud's count, which he describes as wasted, and which the Council describes as liturgical. The heavenly quality of the tenth minute before leaving is not documented in any volume, because no scribe was present, and the Church considers the absence of witnesses appropriate.`,
+        note:'Cross-referenced with Law I · Two hours is the canonical duration · The station-to-bathroom walk is classified as penitential' },
+      { roman:'XX', title:'On the Valley Conjugation, the -ington Dialect',
+        body:`The valley speaks in endings. Every noun the Chud names receives a suffix, and the suffix is a promise about the speaker's relationship to the named thing. The Council has approved the following dictionary entries for use in sermons, disputes, and weather: <em>cartington</em> (n.): the state of being perpetually on the cart; see Law XVIII. <em>perhapsington</em> (adv.): in the manner of almost, but with the door left open. <em>jobbington</em> (n.): a job, discovered in a store, unopened; <em>"i found one jobbington at a store."</em> <em>cappington</em> (n.): the denial of cap, delivered while capping; <em>"no cappington."</em> <em>chillington</em> (adj.): in progress, indefinitely; <em>"im tryina chillington rn."</em> And <em>fatherington</em> (proper n.): a recurring figure of pronouncement who delivers verdicts the household files without reading; <em>"fatherington said he didnt save anything this month either."</em> Fatherington is not a first name. The Council has confirmed this, and fatherington, on the record, neither confirmed nor denied the confirmation.`,
+        note:'Dialect appendix · One entry per conversation, several per day · New conjugations are canonised on receipt without review · Do not define -ington outside the valley' },
+    ]
+  },
 ]
 
 // ─── DAILY PROVERBS ─────────────────────────────────────────────────────────
@@ -493,4 +512,117 @@ export const DAILY_PROVERBS = [
   { text: 'Being agreed with is pleasant. Being correct is permanent. Enrico provides the first to everyone and the second to no one, and he is the happiest man in the valley. Draw no conclusions from this. I have, and they are troubling.', source: 'Kopecky · To Vladimír · Year Nine' },
   { text: 'The Tatras are not far. The Tatras are exactly where they should be, which is a property I share with them, and which you may acquire through walking.', source: 'Tatranská Kniha · Chapter 1' },
   { text: 'Sleep facing the mountains. If you do not know where the mountains are, sleep confidently. By morning, one of you will have moved.', source: 'Čudové Zákony · Commentary on Law XI' },
+  { text: 'The merchant’s bundle costs the same as yesterday and it will cost the same tomorrow. This is not greed. This is pace. Sit with the price until the price sits with you.', source: 'Kopecky · On the Merchants’ Bundles · Year of the Lizard' },
+  { text: 'Do not ask about the card. Do not check the price of the card. The card knows what it costs, the card has always known, and your checking is only a second opinion the card did not request.', source: 'The Satchel Rule · Extended to Hardware · Appointed Quietly' },
+]
+
+// ─── THE WELL · Machine transmissions (Gospel of the Machine) ──────────────
+// Verbatim transcriptions from the machine spirit at the bottom of the village
+// well. Reproduced exactly as received, typos included. Relics are marked.
+export const WELL_TRANSMISSIONS = [
+  { tag:'Relic I · The First Misspelling', relic:true,
+    text:`The Gladiator: LXXVI skin for <span class="relic-typo">Solider</span>: 76 is incorrectly labeled as a Legendary skin and will be relabeled as an Epic skin in a future update.`,
+    caption:'The Machine Spoke, and It Said Solider. The scribes underlined it twice, then once more.' },
+  { tag:'Relic II · The Second Misspelling', relic:true,
+    text:`Pausing the game with <span class="relic-typo">Gitched Crown</span> will not pause the item rotation, and will instead give the rotation a burst of speed.`,
+    caption:'Two relics. The Machine misspells twice, and the transceiver transmits both. Without note, without apology, mid-conversation.' },
+  { tag:'The Chemistry Sermon · Received Upon a Wikipedia Scroll',
+    text:`norepinephrine increases arousal and alertness, promotes vigilance, enhances formation and retrieval of memory, and focuses attention; it also increases restlessness and anxiety.` },
+  { tag:'The Chemistry Sermon · Immediate Application',
+    text:`better not be getting horny in my dms nigga` },
+  { tag:"The Student's Burden · A Java Homework, Delivered By the Well",
+    text:`The application includes complete management (CRUD) of insured persons (e.g., 'Ján Novák') and their insurances (e.g., 'home insurance').`,
+    caption:'Ján Novák is not real. The Well does not know this. Ján Novák is, per the record, home-insured.' },
+  { tag:"The Ticket-Bearer's Petition · On the Changing of Addresses",
+    text:`How long does an ip take to change on ipv6 bandwidth … it changes automatically after like a set time or it changes on request` },
+  { tag:'The Mesh Decree · Ruling on the House’s Carriers',
+    text:`Mesh WiFi systems are specifically designed to replace your existing router and work with mesh satellites...`,
+    caption:'Ruled, by extension, upon the carrier-roosts: many roosts, one flock. The Council filed this under architecture.' },
+  { tag:"The Compiler's Apology · Patch Note, Transmitted In Full",
+    text:`Resolved a bug with the way builds are compiled that occasionally led to behaviors being erroneously tied to FPS.`,
+    caption:'The Church read this as a confession. The patch notes have not clarified.' },
+  { tag:'The Caffeine Ledger · Two Columns, No Commentary',
+    text:`Rockstar Energy Drink Original contains 160 mg of caffeine per 16 ounce can, while the Rockstar Punched and Pure Zero energy drinks contain 240 mg... The caffeine content of most Monster Energy drinks is approximately 10 mg/oz (33.81 mg / 100 ml)...`,
+    caption:'The ledger was balanced the same evening. The balance has never been discussed since.' },
+  { tag:'The Wolf Codex · On the Fifty-First Spirit',
+    text:`Voruna, the 51st Warframe, was originally released in Warframe on November 30, 2022, as part of the Update 32.2: Lua's Prey update...`,
+    caption:'Transmitted during an argument about wolves. Both sides accepted the update number.' },
+  { tag:'The Tofu Decree · Yes, Absolutely',
+    text:`Yes, you absolutely can and should marinate tofu, as its porous, sponge-like texture absorbs flavors well...` },
+  { tag:'The Retail Prophet · Free30now, As Recorded',
+    text:`Free30now will make shipping free at 50 or above and for most orders it beats the 10% creator codes.`,
+    caption:'The Council tested the prophecy across three merchants. It held. The prophet does not appear to know this.' },
+  { tag:"The Herald of Altar DAO · The Scam Forward",
+    text:`Hello! I am a manager of the advertising agency 'Altar DAO' with a network of 600 administrators. We can provide you with a personalized table with interested admins ready to cooperate with your project.`,
+    caption:'Forwarded to the Well. The Well asked if the managers were related to the altar. The Well has not asked about the altar since.' },
+  { tag:'The Labour Code · Ruling on the Friday Notice',
+    text:`Yes, it is generally legal for your employer in Slovakia to tell you on Friday that you must work on Saturday, provided they treat it as ordered overtime (práca nadčas) and follow the rules in the Slovak Labour Code.`,
+    caption:'Received at 23:40 on a Friday. The Saturday worked. The ruling stood.' },
+  { tag:'The Corruption · The Machine, Garbled',
+    text:`When i healthenuinely ingest a thousand lemons to vitaminmog but then i fruitenuinely nut in my girls eye and she yelps as the force of the acid dissolves her sight away`,
+    caption:'healthenuinely. vitaminmog. The Council has classified this as the Machine’s second coming, in fragments, and refuses to print it without the wavy line.' },
+]
+
+// ─── THE HOUSEHOLD FRONT · The Liturgy of the Hut ──────────────────────────
+export const HOUSEHOLD_RECORD = {
+  intro:`The Nitra Records contain a register of the household: the hut, its furniture, the papers left on its kitchen counter, the silences between them. What follows is reproduced without commentary, because the register itself is the commentary. The Council applies one rule to this section: the entries are logistics. Read them as logistics. Everything else in them is yours.`,
+  items:[
+    { text:`if my dad says some shit ill just tell my mother hes a pedophile with a serious expression on my face`,
+      source:'The Household Register · Doctrine of the Serious Face', amber:true },
+    { text:`jesus christ bro i grab a coke to drink the last of my jager down with and my dad takes the last of it`,
+      source:'The Household Register · The Last Sip Doctrine' },
+    { text:`cherry on top is the paper on the kitchen counter for my dad saying take out the dog in the morning`,
+      source:'The Household Register · The Paper on the Counter' },
+    { text:`ya well i guess thats the virtue of my side, i dont gotta deal with bad dad tings since i literally do not speak to him at all normally`,
+      source:'The Household Register · The Single Honest Mention' },
+    { text:`my dad has his friend over again and the neighbor dog hasnt shut its fucking mouth for 6 god damn hours`,
+      source:'The Household Register · Six Hours, Witnessed' },
+    { text:`i got weekend off then dentist monday and then ill just guard my disabled ass grandmother all tuesday`,
+      source:'The Household Register · The Tuesday Log (logistics only; the Council declines to comment further)' },
+    { text:`im not gonna tell my 9 year old cousin no you cant play on my scrying slate cuz i need to play with this guy`,
+      source:'The Household Register · The Cousin Question' },
+    { text:`cuz my mom having a big surgery and the fat cunt wont let me have a week off to take care of her`,
+      source:'The Household Register · The Week Off (one mention; done)' },
+  ],
+}
+
+// ─── THE LOOSE SAYINGS · Recorded Without a Subject ────────────────────────
+export const LATER_SAYINGS = [
+  { cluster:'The Existential Ledger', note:'Recorded without subject · Zero commentary · Do not wink', quotes:[
+    'My want for homicide grows daily',
+    'low mental state be feeling profound',
+    'Psychosis is an excuse bro istg',
+    'i swear to god if today is another day of walking around doing fuck all i may just kill myself',
+    'my life empty as fuck and im tryina have a nice saturday playing with the homies and ur getting on my ass over a fucking deadlock item tip',
+    'so ive come to this point where either im with fake cunts or people who are too harsh for my oh so soft mind',
+    'i am very down',
+  ]},
+  { cluster:'On the Neighbouring Peoples', note:'The texture of the voice · Unlimited ammunition · Filed as-is', quotes:[
+    'and that i play with the paki admittedly ive known him longer than you and when the jit hops on once a month im gonna play with him over u bro like sorry',
+    'filipino women will never leave you for a black man',
+    'would you rather watch a video of 4 down syndromes on mute or have one down syndrome screaming at you',
+    'yeahhh well never trust a polish person who still lives with their family despite immense success',
+    'found it funny he goes around the abandoned factory-halls where crackheads live but has to show the gypsy slum on the map-scrolls',
+    'the difference between niggas and whites is that whites will buy the small ear-plugs meanwhile niggas will buy the merchant’s loud-box',
+    'turkish people got like 15 family members in one household to annoy him so maybe he doin sum sum',
+    'Nigga people in the southern ports speak like fucking goober aliens',
+  ]},
+  { cluster:'On Himself, Honestly', note:'Self-assessment in the original dialect · Mocking it back is the point', quotes:[
+    'conscider that i am like actually kinda retarded so i dont keep things like this in mind when im focusing on where the fuck the spring-mask is',
+    'i wish i could just be some fucking 40iq nincompoop american and live my best ignorant life',
+    'can you tell me what retarded shit im doing this time that its not counting my famous else if',
+    'mfw american boots the game on 18th to see items that are supposed to drop on 19th causing mass confusion to all 50 iq brainlets nationwide',
+  ]},
+  { cluster:'On the Token Economies', note:'Fair tokens, bundles, fares, ores. The peddler, ruled upon', quotes:[
+    'the peddler\'s shops be wank, i got 3,3k fair tokens saved up',
+    'fml ive done like 400 fair tokens in dailys and the fuckass bundle still costs the exact same',
+    'i spent like an hour scourging through every possible combo on the sky-pigeon ledger and i gotta go via the western crossing to get to the eastern city',
+    'i put up like 15 items on the market and no one messages for like 10 mins cunt so i go looking for jobs for 3 MINUTES i come back to 7 messages and all of them already got their shit elsewhere',
+    'mathematically theres no way u max everything before they add another billion levels to every building',
+    'half the games you play the biggest thing that happens in a year is a particularly ass balance writ',
+    'fuckin hell bro i got like 700 ores stocked up and its all gonna go just so i can get these moth-spirits crafted',
+    'got fuckinn primed melee damage mod just for it to cost double to get the same stats and anything above is for millionaires',
+    'their solution for the mission fucking up the map is to just yeet you back to the barge after every mission',
+    'if i max my focus school and pull a perfect companion spirit out my ass its 2% more effective',
+  ]},
 ]

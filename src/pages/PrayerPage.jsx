@@ -65,6 +65,11 @@ export default function PrayerPage({ setPage }) {
                 May we sit with the hard question<br />
                 until the answer arrives, or the stew does, whichever comes first.<br /><br />
 
+                Watch the crevice beneath the door.<br />
+                We took twenty measures against the flies,<br />
+                and one crawled beneath the twentieth.<br />
+                No system is closed. The fly tests the system.<br /><br />
+
                 We acknowledge the queen is not the target in chess.<br />
                 We have not said this to your face.<br />
                 We are saying it here, in the prayer,<br />

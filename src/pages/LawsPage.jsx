@@ -10,7 +10,7 @@ export default function LawsPage({ setPage }) {
       <div className="page-hero" style={{ borderBottomColor:'rgba(200,168,74,0.2)', background:'radial-gradient(ellipse at center top,rgba(160,120,40,0.1) 0%,transparent 60%)' }}>
         <div className="page-hero-label" style={{ color:'rgba(200,168,74,0.5)' }}>Dictated Year Six · Following a Woman Calling Him "A Lot" · Transcribed at Devín</div>
         <div className="page-hero-title" style={{ color:'var(--am)' }}>Čudové Zákony</div>
-        <div className="page-hero-sub" style={{ color:'rgba(200,168,74,0.45)' }}>The Laws of Chudhood · Fifteen Laws · One Addendum · All Sacred · Several Inadvisable</div>
+        <div className="page-hero-sub" style={{ color:'rgba(200,168,74,0.45)' }}>The Laws of Chudhood · Twenty Laws · Five Revealed After the Dictation · All Sacred · Several Inadvisable</div>
       </div>
       <div className="main-wrap">
 

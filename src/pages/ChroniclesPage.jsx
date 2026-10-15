@@ -324,6 +324,27 @@ export default function ChroniclesPage({ setPage }) {
               <p className="prose">The innkeeper Rastislav gave Kopecky a cold north-facing room when a warmer south-facing room was available. Kopecky said nothing. He ate his stew. He was magnificent at supper, told a story about the Tatras that reduced two men to tears, and went to bed in the cold room. On every subsequent visit — four in total — he asked, with great warmth, how the south-facing room was these days. Rastislav always said it was fine. Kopecky always said <em>"I imagine so."</em> After the third visit, Rastislav replaced the window in the north-facing room. Kopecky noticed on his fourth visit and said: <em>"Much better."</em> This was the end of the matter. Rastislav has described the entire experience as "like being corrected very slowly by someone who is never going to say what they are correcting." The Church considers this an excellent description of several of the Pillars.</p>
             </div>
           </Reveal>
+
+          <Reveal>
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ fontFamily:"'Cinzel',serif", fontSize:14, color:'var(--g)', letterSpacing:'.08em', marginBottom: 10 }}>The Traveller's Arithmetic · The Hour Spent, Via the Western Crossing</div>
+              <p className="prose">Kopecky, bound for the eastern city, opened the great ledger of the sky-pigeons and spent a full hour scouring it through every possible combination of routes, checking each one the way a man checks a lock for a keyhole that is not there. The ledger produced one answer. The answer was: via the western crossing. As recorded: <em>"i spent like an hour scourging through every possible combo on the sky-pigeon ledger and i gotta go via the western crossing to get to the eastern city."</em> The Council ruled that the ledger was not wrong, only slow. The traveller reached the eastern city by way of the western crossing and does not consider this a detour. The pigeon post, by all accounts, agrees.</p>
+            </div>
+          </Reveal>
+
+          <Reveal>
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ fontFamily:"'Cinzel',serif", fontSize:14, color:'var(--g)', letterSpacing:'.08em', marginBottom: 10 }}>The Faithless Bundle · On Fair Tokens and the Immutable Merchant</div>
+              <p className="prose">The travelling peddler keeps a bundle in his window. Kopecky performed the daily labours for nine days and returned to find the bundle unchanged, at precisely the price it had held throughout. The merchant's bundle does not discount. It does not move. It sits in the window the way weather sits, with the implication that you will eventually adapt to it. Having saved three thousand three hundred fair tokens over a season, Kopecky surveyed the same window and observed, as recorded: <em>"the peddler's shops be wank, i got 3,3k fair tokens saved up"</em> and, upon the bundle's ninth day of immobility, <em>"the fuckass bundle still costs the exact same."</em> The Council declared the bundle a test of character. The bundle has passed. The test continues.</p>
+            </div>
+          </Reveal>
+
+          <Reveal>
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ fontFamily:"'Cinzel',serif", fontSize:14, color:'var(--g)', letterSpacing:'.08em', marginBottom: 10 }}>The Ore Ledger · Seven Hundred Ores and the Millionaire Threshold</div>
+              <p className="prose">Over two seasons Kopecky accumulated seven hundred units of ore, stockpiled with the discipline of a mountain man preparing for a winter that was not coming. The record reads in sequence. The stockpile was consumed in full for a single crafted object (<em>"its all gonna go just so i can get these moth-spirits crafted"</em>). A modification whose upgrade cost double for the same effect, the tier above reserved, as the Well put it, "for millionaires." A fifth round of encampments entered voluntarily for a single daily reward. Relics rolled repeatedly for a silver that would not come. And a final routing instruction from the gods of the field, which solved every broken map by returning the traveller to the barge after each mission: <em>"their solution for the mission fucking up the map is to just yeet you back to the barge after every mission."</em> The Council classified the entire ledger as one continuous miracle of endurance, and declined it on the grounds that it had, by then, become the man's religion. The ore has not been seen since. Neither has the millionaire threshold.</p>
+            </div>
+          </Reveal>
         </div>
 
         <div style={{ textAlign:'center', padding:'40px 0 72px' }}>

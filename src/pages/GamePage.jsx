@@ -465,7 +465,7 @@ export default function GamePage({ setPage }) {
     <>
       <div className="page-hero" style={{ borderBottomColor:'rgba(200,168,74,.2)' }}>
         <div className="page-hero-label">By Holy Request of Kopecky · Year Eleven of the Walking</div>
-        <div className="page-hero-title">Waring Frames</div>
+        <div className="page-hero-title">The Wolf-Spirits</div>
         <div className="page-hero-sub">
           A Game of Acquisition · Sanctioned by the Church · Requested by Kopecky Personally ·
           He Finds the Entire Premise Amusing
@@ -549,7 +549,7 @@ export default function GamePage({ setPage }) {
         </div>
       </div>
 
-      <footer>© Cirkev Kopeckého · Waring Frames · Sanctioned by Kopecky · Ayub Is Unaware This Game Exists · The Church Prefers It That Way</footer>
+      <footer>© Cirkev Kopeckého · The Wolf-Spirits · Sanctioned by Kopecky · Ayub Is Unaware This Game Exists · The Church Prefers It That Way</footer>
     </>
   )
 }

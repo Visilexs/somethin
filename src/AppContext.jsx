@@ -96,6 +96,7 @@ function reducer(state, action) {
     case 'DISMISS_NOTIFICATION':
       return { ...state, notifications: state.notifications.filter(n => n.id !== action.id) }
     case 'SET_PROGRESS':
+      if ((state.readingProgress[action.page] || 0) >= action.pct) return state
       return { ...state, readingProgress: { ...state.readingProgress, [action.page]: Math.max(state.readingProgress[action.page] || 0, action.pct) } }
     case 'SET_PHASE':       return { ...state, transitionPhase: action.phase }
     case 'CLICK_SATCHEL':   return { ...state, satchelClicks: state.satchelClicks + 1 }

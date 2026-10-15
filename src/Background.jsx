@@ -17,14 +17,11 @@ import { useEffect, useRef } from 'react'
 const G = '168,200,74'   // olive-green
 const A = '200,168,74'   // amber
 
-export default function Background({ scrollY }) {
+export default function Background() {
   const canvasRef = useRef(null)
   const mouse     = useRef({ x: -1e4, y: -1e4 })
-  const scroll    = useRef(0)
   const raf       = useRef()
   const hidden    = useRef(false)
-
-  useEffect(() => { scroll.current = scrollY ?? 0 }, [scrollY])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -63,7 +60,7 @@ export default function Background({ scrollY }) {
     const draw = (ts) => {
       if (hidden.current) { raf.current = requestAnimationFrame(draw); return }
       const t  = ts * 0.001
-      const sc = scroll.current
+      const sc = window.scrollY
       const mx = mouse.current.x, my = mouse.current.y
 
       // Emblem centre — upper third, parallax up slightly as you scroll down
@@ -192,15 +189,9 @@ export default function Background({ scrollY }) {
         halo.addColorStop(0, `rgba(${G},0.04)`)
         halo.addColorStop(1, 'rgba(0,0,0,0)')
         ctx.fillStyle = halo
-        ctx.fillRect(0, 0, W, H)
+        ctx.fillRect(mx - 200, my - 200, 400, 400)
       }
-
-      // 9 ── vignette
-      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.28, W / 2, H / 2, H * 0.95)
-      vg.addColorStop(0, 'rgba(0,0,0,0)')
-      vg.addColorStop(1, 'rgba(0,0,0,0.66)')
-      ctx.fillStyle = vg
-      ctx.fillRect(0, 0, W, H)
+      // (vignette lives in CSS — .bg-layer::after)
 
       raf.current = requestAnimationFrame(draw)
     }

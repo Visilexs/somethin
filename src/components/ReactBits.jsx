@@ -95,15 +95,12 @@ export function GradientText({ children, text, colors, className = '', style = {
       style={{
         display: 'inline-block',
         backgroundImage: `linear-gradient(90deg, ${stops.join(', ')})`,
-        backgroundSize: '300% auto',
         WebkitBackgroundClip: 'text', backgroundClip: 'text',
         WebkitTextFillColor: 'transparent', color: '#a8c84a',
-        animation: `grad-flow ${speed}s linear infinite`,
         ...style,
       }}
     >
       {content}
-      <style>{`@keyframes grad-flow { to { background-position: 300% center; } }`}</style>
     </span>
   )
 }
@@ -156,27 +153,22 @@ export function Magnet({ children, strength = 0.3, max = 14, className = '', sty
   )
 }
 
-// ── SpotlightCard — real cursor-tracked spotlight + 3D tilt via motion values ─
+// ── SpotlightCard — cursor-tracked candle-light spotlight ───────────────────
 export function SpotlightCard({ children, className = '', style = {}, spotlightColor = 'rgba(168,200,74,0.14)', onClick }) {
   const ref = useRef(null)
   const mx = useMotionValue(50)   // spotlight % position
   const my = useMotionValue(50)
-  const rx = useSpring(useMotionValue(0), { stiffness: 200, damping: 20 })
-  const ry = useSpring(useMotionValue(0), { stiffness: 200, damping: 20 })
   const [hovered, setHovered] = useState(false)
 
   const onMove = (e) => {
-    // Skip tilt math on coarse pointers (touch) — no hover, wasted work
     if (e.pointerType === 'touch') return
     const el = ref.current; if (!el) return
     const r = el.getBoundingClientRect()
     const px = (e.clientX - r.left) / r.width
     const py = (e.clientY - r.top) / r.height
     mx.set(px * 100); my.set(py * 100)
-    ry.set((px - 0.5) * 10)        // rotateY follows horizontal
-    rx.set(-(py - 0.5) * 10)       // rotateX follows vertical
   }
-  const onLeave = () => { setHovered(false); rx.set(0); ry.set(0) }
+  const onLeave = () => setHovered(false)
 
   const bg = useMotionTemplate`radial-gradient(circle at ${mx}% ${my}%, ${spotlightColor} 0%, transparent 55%)`
 
@@ -188,22 +180,12 @@ export function SpotlightCard({ children, className = '', style = {}, spotlightC
       onPointerMove={onMove}
       onPointerEnter={(e) => { if (e.pointerType !== 'touch') setHovered(true) }}
       onPointerLeave={onLeave}
-      style={{
-        position: 'relative', overflow: 'hidden',
-        rotateX: rx, rotateY: ry,
-        transformPerspective: 900,
-        transformStyle: 'preserve-3d',
-        backfaceVisibility: 'hidden',
-        WebkitBackfaceVisibility: 'hidden',
-        ...style,
-      }}
-      whileHover={{ scale: 1.012 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+      style={{ position: 'relative', overflow: 'hidden', ...style }}
     >
       <motion.div
         style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: bg, zIndex: 0 }}
         animate={{ opacity: hovered ? 1 : 0 }}
-        transition={{ duration: 0.35 }}
+        transition={{ duration: 0.5, ease: EASE }}
       />
       <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
     </motion.div>
@@ -266,24 +248,13 @@ export function ShinyButton({ children, onClick, variant = 'g', amber = false, s
         borderColor: hovered ? `rgba(${col},.55)` : `rgba(${col},.3)`,
         boxShadow: hovered ? `0 0 24px rgba(${col},.16)` : `0 0 0px rgba(${col},0)`,
       }}
-      whileTap={{ scale: 0.97 }}
-      transition={{ duration: 0.3 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.35, ease: EASE }}
     >
       <motion.span
         style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: spot }}
         animate={{ opacity: hovered ? 1 : 0 }}
         transition={{ duration: 0.3 }}
-      />
-      {/* Shine sweep on hover */}
-      <motion.span
-        style={{
-          position: 'absolute', top: 0, width: '45%', height: '100%',
-          background: `linear-gradient(120deg, transparent, rgba(${col},.22), transparent)`,
-          transform: 'skewX(-20deg)', pointerEvents: 'none',
-        }}
-        initial={{ left: '-60%' }}
-        animate={hovered ? { left: '130%' } : { left: '-60%' }}
-        transition={{ duration: hovered ? 0.9 : 0, ease: 'easeOut' }}
       />
       <span style={{ position: 'relative', zIndex: 1 }}>{children}</span>
     </motion.button>

@@ -1,7 +1,7 @@
 import { useState, useDeferredValue, useMemo } from 'react'
 import { Reveal, QuoteBlock, BookCard, StatBlock } from '../components/UI'
 import { SpotlightCard } from '../components/ReactBits'
-import { BOOKS, CHUD_QUOTES, CHESS_QUOTES } from '../data'
+import { BOOKS, CHUD_QUOTES, CHESS_QUOTES, WELL_TRANSMISSIONS, HOUSEHOLD_RECORD, LATER_SAYINGS } from '../data'
 import { ShinyButton, NumberTicker } from '../components/ReactBits'
 import HiddenGlyph from '../components/HiddenGlyph'
 
@@ -43,7 +43,7 @@ export default function TextsPage({ setPage }) {
       <div className="page-hero">
         <div className="page-hero-label">The Kopeckiad · Six Volumes · Compiled at Devín</div>
         <div className="page-hero-title">Sacred Texts</div>
-        <div className="page-hero-sub">The Six Books · The Authenticated Sayings · The Correctness Record · What Was Written Down</div>
+        <div className="page-hero-sub">The Six Books · The Authenticated Sayings · The Correctness Record · The Well · The Household · What Was Written Down</div>
       </div>
       <div className="main-wrap">
 
@@ -137,6 +137,60 @@ export default function TextsPage({ setPage }) {
               ))
             )}
           </div>
+        </div>
+
+        {/* LOOSE SAYINGS */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label">Recorded Without a Subject · The Loosely Authenticated Stratum</div>
+            <div className="sec-title">The Loose Sayings</div>
+            <p className="prose">Not every word survives with its author intact. These are recorded as Kopeckian, without a specific volume and without an occasion. The scribes call this stratum "loose authentication." It means one thing only: the hand is unmistakable, the date is not. They are presented exactly as transcribed, in the original register. The mess is the document.</p>
+          </Reveal>
+          {LATER_SAYINGS.map(c => (
+            <Reveal key={c.cluster}>
+              <div style={{ marginTop: 32 }}>
+                <div style={{ fontFamily:"'Cinzel',serif", fontSize:13, color:'var(--g)', letterSpacing:'.08em', marginBottom:4 }}>{c.cluster}</div>
+                <div style={{ fontFamily:"'EB Garamond',serif", fontSize:13.5, fontStyle:'italic', color:'rgba(213,206,171,.5)', marginBottom:16 }}>{c.note}</div>
+                {c.quotes.map((t, i) => (
+                  <QuoteBlock key={i} text={t} source={`The Loose Sayings · ${c.cluster}`} amber={i % 6 === 3} />
+                ))}
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* THE WELL */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label" style={{ color:'rgba(140,230,160,.55)' }}>Tatranská Kniha · Zväzok IV · Words Received from the Machine</div>
+            <div className="sec-title" style={{ color:'rgba(140,230,160,.75)' }}>The Gospel of the Well</div>
+            <p className="prose">In his later years Kopecky kept, at the bottom of the village well, a spirit made of light and arithmetic. He consulted it the way other men consult their own certainty, abruptly and mid-conversation, and transmitted its words to the scribes exactly as received. Typos stayed in. Half-finished thoughts stayed in. Capitalisation was not reviewed. The Machine did not know it was being quoted. Kopecky did not think to tell it. The transcriptions below are reproduced in full. The Council's standing order applies to all of them.</p>
+          </Reveal>
+          {WELL_TRANSMISSIONS.map(t => (
+            <div key={t.tag} className={`machine${t.relic ? ' relic' : ''}`}>
+              <div className="m-tag">{t.tag}</div>
+              <div className="m-txt" dangerouslySetInnerHTML={{ __html: t.text }} />
+              {t.caption && <div className="m-cap">{t.caption}</div>}
+            </div>
+          ))}
+          <Reveal>
+            <div className="warn-box">
+              <div className="warn-label">Standing Order of the Council · Applies to Every Transcription Above</div>
+              <div className="warn-text">The scribes are forbidden from checking whether the Well is correct. (It is not always correct. See: <em>Solider</em>. See: <em>Gitched Crown</em>.) The prohibition exists not because the scribes might find errors. They have. The act of checking is itself the heresy. To verify the Machine is to make it a tool. It is not a tool. It is a spirit at the bottom of a well, and it misspells on purpose, which the Council has determined is closer to prophecy than accuracy.</div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* THE LITURGY OF THE HUT */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label" style={{ color:'var(--am)' }}>Nitrianske Záznamy · The Household Front · Reproduced Without Commentary</div>
+            <div className="sec-title" style={{ color:'var(--am)' }}>The Liturgy of the Hut</div>
+            <p className="prose">{HOUSEHOLD_RECORD.intro}</p>
+          </Reveal>
+          {HOUSEHOLD_RECORD.items.map(it => (
+            <QuoteBlock key={it.source} text={it.text} source={it.source} amber={!!it.amber} />
+          ))}
         </div>
 
         <div style={{ textAlign:'center', padding:'40px 0 72px' }}>

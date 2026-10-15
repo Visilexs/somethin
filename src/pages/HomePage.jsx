@@ -90,7 +90,7 @@ const PAGE_TILES = [
   { id:'disciples',  Icon:IconDisciples,  title:'The Disciples', sub:'Those Who Followed' },
   { id:'chronicles', Icon:IconChronicles, title:'Chronicles',    sub:'Events of the Walking' },
   { id:'texts',      Icon:IconTexts,      title:'Sacred Texts',  sub:'Books, Sayings & Records' },
-  { id:'laws',       Icon:IconLaws,       title:'The Laws',      sub:'Čudové Zákony · Fifteen Laws' },
+  { id:'laws',       Icon:IconLaws,       title:'The Laws',      sub:'Čudové Zákony · Twenty Laws' },
 ]
 
 export default function HomePage({ setPage }) {
@@ -156,7 +156,7 @@ export default function HomePage({ setPage }) {
           {[
             { val:<CountUp end={97.3} decimals={1} suffix="%"/>, label:'Correctness Rate' },
             { val:'XIV',  label:'Years of the Walking' },
-            { val:'XV',   label:'Laws of Chudhood' },
+            { val:'XX',   label:'Laws of Chudhood' },
             { val:'VI',   label:'Sacred Books' },
           ].map(({ val, label }, i) => (
             <div key={i} style={{ padding:'20px 32px', textAlign:'center', borderRight: i<3 ? '1px solid rgba(168,200,74,.1)' : 'none' }}>

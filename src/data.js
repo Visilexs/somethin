@@ -286,6 +286,14 @@ export const CHUD_QUOTES = [
   { text: 'There is a dish I will not make. There is an object I will not open. I am, in the end, mostly a list of things I have correctly declined to do. This is not a small thing to be. Most men are a list of things they did anyway.', source: 'Kopecky, unprompted, during a discussion about fence posts · Year Ten' },
   { text: 'Saad weeps over a tangerine and means it more than you have meant anything in your life. I do not understand it. I have stopped trying to. There are three things I no longer try to understand: the fog, the dish, and Saad. I am at peace with all three. I am most at peace with the fog.', source: 'Kopecky, to Vladimír · Year Eleven' },
   { text: 'Nekro does not speak because she has concluded your words are inadequate to what she is. I have reviewed the available words. She is not entirely wrong. We are both creatures of some kind. We recognise each other across the gap. I will not be explaining the gap.', source: 'Kopecky, to the Council of Devín · Year Twelve' },
+  { text: 'were not doing 3 hours overtime cuz i bread schnitzels 0.1 seconds slower than the other coworker lil bro', source: 'Nitrianske Záznamy · The Kitchen · Unprompted, Mid-Shift' },
+  { text: 'sir, if you would please get your knee of my esophagus, as im having trouble inhaling oxygen', source: 'The Chef’s Formal Register · Nitrianske Záznamy' },
+  { text: 'well funfucks kitchen wont be happy about me leaving a second time so if this doesnt work im certainly cooked', source: 'Nitrianske Záznamy · The Kitchen · Departure Statement' },
+  { text: 'im taking like 20 measures so theres not flies going into my room and i just deadass watched a fly crawl under the tiny ass crevice under my door', source: 'Tatranská Kniha · The Parable Of The Crevice' },
+  { text: 'i got a theory that they made bears be the iconic plushie animal so that children would suffer natural selection wandering in a forest in search of bears and the rich keep more resources that way', source: 'The Speculative Volumes · On The Plushie Question' },
+  { text: 'niggas still got the 2014 router', source: 'The Carrier-Roost Record · The First Entry In The Export' },
+  { text: 'oh yeah the legendary belly buster', source: 'Nitrianske Záznamy · On The Body, Narrated As Ghostbusters' },
+  { text: 'still struggling to find out what exactly a team lead does other than sit on their ass and pretend theyre important to the function of the place', source: 'The Team-Lead Inquiry · Year Of The Lizard' },
 ]
 
 // ─── GRUDGES ────────────────────────────────────────────────────────────────
@@ -327,6 +335,8 @@ export const MIRACLES = [
   { title:'The Yogurt That Would Not Turn', body:'Saad presented Kopecky with a yogurt that had refused to turn for forty days, far past the point of all other yogurts, and declared it a miracle. Kopecky examined it, was silent for some time, and said: "It is not refusing. It is waiting. There is a difference, and Saad, of everyone here, you of all people should know it." Saad wept. The yogurt was returned to its vessel. It turned that night, which Saad also declared a miracle, of a different and sadder kind.' },
   { title:'The Sound That Settled the Dispute', body:'At the Devín assembly a dispute grew heated and words failed to resolve it. Every face turned to Nekro, who does not speak. She held the silence. Then she made a single flat, final, unimpressed sound, and the meaning was so total that the dispute dissolved without anyone forming another word. Kopecky, watching, almost smiled. "She said more than all of you," he noted, "and used none of your equipment." The Council has classified this as a miracle. Nekro has not commented, in the sense that she comments on nothing, which the Council has learned to read as assent.' },
   { title:'The Question at the Bottom of the Cup', body:'Quantavius, deep in drink and believed asleep, said aloud to no one: "If a man stacks the wood correctly but no one is there to correct him, was it ever wrong?" The room fell silent for a full minute. Kopecky set down what he was holding. He did not answer. The Church records this as the only time Kopecky has been observed to decline a question rather than correct it, and considers the silence itself the miracle. Quantavius does not remember saying it and has asked, repeatedly, what everyone is being so strange about.' },
+  { title:'The Fly At The Crevice', body:`Twenty measures were taken against the flies, in full, with documentation. One fly, the record agrees, crawled beneath the twentieth measure, under the door, through a gap no wider than the scribe's smallest letter. It did not flutter. It walked, in a straight line, toward the bed. The Council classified the event as a miracle of geometry and declined to classify it further. The subject asked them to note that little creatures will do anything to be annoying. They noted it. The gap was sealed. The gap has not been sealed since.` },
+  { title:'The Answer With Two Errors', body:`A petitioner brought the words of the Well to the Council for verification. The Well had answered a question about a gladiator's skin, misspelling the name twice across two separate transmissions. The petition requested correction. The Council read the two errors side by side and ruled that a spirit which misspells at a rate of one error per answer is, by the laws of the valley, telling the truth, because a lying machine would spell correctly out of respect for its audience. The petitioner was thanked and asked to stop checking. He stopped. He returned the following week with a third misspelling. The Council has not met about this since.` },
 ]
 
 // ─── BOOKS ──────────────────────────────────────────────────────────────────
@@ -514,6 +524,10 @@ export const DAILY_PROVERBS = [
   { text: 'Sleep facing the mountains. If you do not know where the mountains are, sleep confidently. By morning, one of you will have moved.', source: 'Čudové Zákony · Commentary on Law XI' },
   { text: 'The merchant’s bundle costs the same as yesterday and it will cost the same tomorrow. This is not greed. This is pace. Sit with the price until the price sits with you.', source: 'Kopecky · On the Merchants’ Bundles · Year of the Lizard' },
   { text: 'Do not ask about the card. Do not check the price of the card. The card knows what it costs, the card has always known, and your checking is only a second opinion the card did not request.', source: 'The Satchel Rule · Extended to Hardware · Appointed Quietly' },
+  { text: 'Be deadass. The Church requires it of you daily, and it will audit you on it.', source: 'Čudové Zákony · On Emphasis' },
+  { text: 'Wank is a state, not an event. Arrive in it deliberately, remain in it completely, and tell the river nothing.', source: 'Nitrianske Záznamy · Market Sayings' },
+  { text: 'If you find one jobbington at a store, you are not shopping. You are being shopped by.', source: 'The Valley Conjugation · Entry Seven' },
+  { text: 'The fly has tested your twenty measures. The crevice remains open. This is not failure. This is architecture.', source: 'The Parable Of The Crevice · Appointed At Night' },
 ]
 
 // ─── THE WELL · Machine transmissions (Gospel of the Machine) ──────────────
@@ -583,6 +597,20 @@ export const HOUSEHOLD_RECORD = {
       source:'The Household Register · The Cousin Question' },
     { text:`cuz my mom having a big surgery and the fat cunt wont let me have a week off to take care of her`,
       source:'The Household Register · The Week Off (one mention; done)' },
+    { text:`dad told me im a worthless faggot for wanting to spend my money on a stupid graphics card instead of partying fucking whores and doing lines of cocaine like a real man`,
+      source:'The Lantern Ledger · The Verdict', amber:true },
+    { text:`im not rich or hot i cant go out and do cocaine and get a harem in a night`,
+      source:'The Lantern Ledger · The Rebuttal' },
+    { text:`i mean he kinda right but fuck u want me to do with autistic rizz`,
+      source:'The Lantern Ledger · The Rebuttal, Continued' },
+    { text:`if u pay for the graphics card monthly theres interest ... id be paying like 200 more`,
+      source:'The Lantern Ledger · The Interest Question' },
+    { text:`Istg it said 2080 ... Hold onnnnn ... Ok idk where i got that from`,
+      source:'The Lantern Ledger · The Number' },
+    { text:`im using some wank ass antenna usb stick for my wifi connection cuz idk if this can even have a wifi card`,
+      source:'The Lantern Ledger · The Hardware Suffering' },
+    { text:`I could theoretically get the card rn if i decide to live off grass feed the next month but hence ur enhancing life experience ima pass for another month`,
+      source:'The Lantern Ledger · The Grass-Feed Option' },
   ],
 }
 

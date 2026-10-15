@@ -11,6 +11,9 @@ const HERO_QUOTES = [
   'He Held Grudges.',
   'He Will Return.',
   'He Knew About Marjoram.',
+  'He Fed The Machine Typos.',
+  'Solider. Gitched. Both Canon.',
+  'He Was Wank Living.',
 ]
 
 // Custom SVG tile icons

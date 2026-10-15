@@ -1,7 +1,7 @@
 import { useState, useDeferredValue, useMemo } from 'react'
 import { Reveal, QuoteBlock, BookCard, StatBlock } from '../components/UI'
 import { SpotlightCard } from '../components/ReactBits'
-import { BOOKS, CHUD_QUOTES, CHESS_QUOTES, WELL_TRANSMISSIONS, HOUSEHOLD_RECORD, LATER_SAYINGS } from '../data'
+import { BOOKS, CHUD_QUOTES, CHESS_QUOTES, WELL_TRANSMISSIONS, HOUSEHOLD_RECORD, LATER_SAYINGS, VILLAGERS, SERMONS_FIELD, MUSIC_COUNCIL, INCIDENTS, VALLEY_VOLUMES } from '../data'
 import { ShinyButton, NumberTicker } from '../components/ReactBits'
 import HiddenGlyph from '../components/HiddenGlyph'
 
@@ -24,8 +24,6 @@ const ALL_QUOTES = [
   { text: 'little fucks will do anything to annoy me', source: 'Tatranská Kniha · The Parable Of The Crevice · Closing Line' },
   { text: 'when harvey thomas plays by himself he wins, but when he plays with uni he loses, this is because hes bad, and the matchmaking favors his multiple month absence', source: 'The Scientific Truth · Cross-Referenced With Law XVII And Grudge VII' },
   { text: 'not ragebait just the scientific truth', source: 'Kopecky, upon being accused of immaturity · Year Unknown · The Council declined to take a side' },
-  { text: 'yeahhh mental health is not a thing in slovakia bro u gotta know this country is still ran by niggas who loved communism', source: 'The Valley Volumes · On The State' },
-  { text: 'except like u havent seen the slovakian despair of going to the store and theres nothing at all', source: 'The Valley Volumes · On The Empty Store' },
   { text: 'yea i passed the fuck out on the pocket scrying-slates and my noodles went cold then i knocked out for 13 hours', source: 'Documented Incident 12 · The Thirteen Hours · Unresolved' },
   { text: 'well my goal in life is to invent a machine that lets me swap bodies with people and ill just take over josh kesselmans life', source: 'Documented Incident 9 · The Machine Goal · The Council Filed It Under Ambition' },
   { text: 'When I was younger, my brother used to piss in my face and he wouldnt stop until I ejaculated.', source: 'Delivered As A Fact-Check Rebuttal · Year Nine · Witnesses Looked At Each Other' },
@@ -33,6 +31,16 @@ const ALL_QUOTES = [
   { text: 'my bookmark got like 20k videos now and i cant go back and see shit realistically', source: 'The Music Council · On The Bookmark' },
   { text: 'bro verbalose dropping 50k on an animation of him getting fucked by the bitch from hazbin hotel has to be one of the most goofy ass things ever', source: 'The Music Council · Ruling On Expenditure' },
   ...CHUD_QUOTES,
+  ...SEARCH_EXTRA,
+]
+
+// Every raw line in the new sections stays searchable through the sayings box
+const SEARCH_EXTRA = [
+  ...VILLAGERS.map(v => ({ text: v.say, source: `The Villagers · ${v.name}` })),
+  ...SERMONS_FIELD.map(s => ({ text: s.say, source: `Sermons On The Ranked Field · ${s.ref}` })),
+  ...MUSIC_COUNCIL.map(r => ({ text: r.say, source: `The Council Of Devín On Matters Of Sound · ${r.ref}` })),
+  ...INCIDENTS.map(i => ({ text: i.say, source: `Documented Incident ${i.n} · ${i.title}` })),
+  ...VALLEY_VOLUMES.flatMap(g => g.items),
 ]
 
 export default function TextsPage({ setPage }) {
@@ -54,7 +62,7 @@ export default function TextsPage({ setPage }) {
       <div className="page-hero">
         <div className="page-hero-label">The Kopeckiad · Six Volumes · Compiled at Devín</div>
         <div className="page-hero-title">Sacred Texts</div>
-        <div className="page-hero-sub">The Six Books · The Authenticated Sayings · The Correctness Record · The Well · The Household · What Was Written Down</div>
+        <div className="page-hero-sub">The Six Books · The Sayings · The Documented Incidents · The Well · The Household · The Valley Volumes · What Was Written Down</div>
       </div>
       <div className="main-wrap">
 
@@ -165,9 +173,40 @@ export default function TextsPage({ setPage }) {
                 {c.quotes.map((t, i) => (
                   <QuoteBlock key={i} text={t} source={`The Loose Sayings · ${c.cluster}`} amber={i % 6 === 3} />
                 ))}
+                {c.footnote && (
+                  <div style={{ fontFamily:"'EB Garamond',serif", fontSize:13, fontStyle:'italic', color:'rgba(213,206,171,.4)', marginTop:10, padding:'10px 14px', borderLeft:'2px solid rgba(200,168,74,.25)' }}>{c.footnote}</div>
+                )}
               </div>
             </Reveal>
           ))}
+        </div>
+
+        {/* DOCUMENTED INCIDENTS */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label">The Speculative Volumes · Rendered As Case Files · No Wink Permitted</div>
+            <div className="sec-title">Documented Incidents</div>
+            <p className="prose">The speculative volumes contain a stratum of short accounts delivered in a flat voice, ending somewhere impossible. The Council renders each as a case file: the claim, reproduced in the original register; the disposition, stated without emphasis; and the status, which is where the file lives now. The files are not jokes. That is why they work. The scribes are reminded that laughter in this room is a form of filing, and to file quietly.</p>
+          </Reveal>
+          {INCIDENTS.map(inc => (
+            <Reveal key={inc.n}>
+              <div style={{ border:'1px solid rgba(168,200,74,.14)', background:'rgba(168,200,74,.025)', padding:'22px 26px', margin:'18px 0', position:'relative' }}>
+                <div style={{ position:'absolute', top:0, left:0, width:3, height:'100%', background:'linear-gradient(180deg,rgba(200,168,74,.4),transparent)' }}/>
+                <div style={{ display:'flex', alignItems:'baseline', gap:14, flexWrap:'wrap', marginBottom:10 }}>
+                  <span style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:16, color:'rgba(168,200,74,.25)' }}>Incident {inc.n}</span>
+                  <span style={{ fontFamily:"'Cinzel',serif", fontSize:14, color:'var(--g)', letterSpacing:'.06em' }}>{inc.title}</span>
+                  <span style={{ fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(200,168,74,.5)', border:'1px solid rgba(200,168,74,.25)', padding:'3px 8px' }}>{inc.status}</span>
+                </div>
+                <p style={{ fontFamily:"'EB Garamond',serif", fontSize:15.5, lineHeight:1.9, color:'rgba(213,206,171,.78)', margin:0 }} dangerouslySetInnerHTML={{ __html: inc.body }} />
+              </div>
+            </Reveal>
+          ))}
+          <Reveal>
+            <div className="warn-box" style={{ marginTop:28 }}>
+              <div className="warn-label">Filing Note · Department Of Impossible Endings</div>
+              <div className="warn-text">Fourteen files. None require a resolution; several resist one structurally. The Bosnian Padlock is not missing evidence, it is missing a basement. The Foreign Demon Question has not gone cold, it has gone quiet, which is a different temperature and requires a different door. The Council re-files all fourteen at every assembly, in order, by lamplight, because the re-filing is itself the record keeping its shape. The next assembly's re-filing is already scheduled. It will be the same fourteen. This is noted so that no one expects the fifteenth.</div>
+            </div>
+          </Reveal>
         </div>
 
         {/* THE WELL */}
@@ -201,6 +240,25 @@ export default function TextsPage({ setPage }) {
           </Reveal>
           {HOUSEHOLD_RECORD.items.map(it => (
             <QuoteBlock key={it.source} text={it.text} source={it.source} amber={!!it.amber} />
+          ))}
+        </div>
+
+        {/* THE VALLEY VOLUMES */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label" style={{ color:'rgba(168,200,74,.5)' }}>The Valley Volumes · Despair, Pilgrimage, And The Empty Store</div>
+            <div className="sec-title">On The State Of The Valley Itself</div>
+            <p className="prose">The last volume in the Kopeckiad is not about Kopecky. It is about the ground he walked on: the country that runs on old convictions, the store shelves that arrive empty, the autumn that opens with sickness, the pilgrimage money earmarked for a city three days out, and the end of the world as a trucking licence. The volumes were compiled from the spoken record without arrangement, because arranging despair changes its shape, and the shape was verified. Read them in order. The order is the point. The gas tank is load-bearing.</p>
+          </Reveal>
+          {VALLEY_VOLUMES.map(g => (
+            <Reveal key={g.group}>
+              <div style={{ marginTop:32 }}>
+                <div style={{ fontFamily:"'Cinzel',serif", fontSize:13, color:'var(--g)', letterSpacing:'.08em', marginBottom:14 }}>{g.group}</div>
+                {g.items.map((it, i) => (
+                  <QuoteBlock key={i} text={it.text} source={it.source} amber={i % 5 === 2} />
+                ))}
+              </div>
+            </Reveal>
           ))}
         </div>
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Reveal, QuoteBlock } from '../components/UI'
-import { DISCIPLES } from '../data'
+import { DISCIPLES, VILLAGERS } from '../data'
 import { AyubIcon, AbdullahIcon, EnricoIcon, KorrinIcon, YashIcon, SaadIcon, NekroIcon, QuantaviusIcon } from '../components/Icons'
 import { ShinyButton, SpotlightCard } from '../components/ReactBits'
 
@@ -134,13 +134,32 @@ export default function DisciplesPage({ setPage }) {
               />
             </Reveal>
 
-            <div style={{textAlign:'center',padding:'40px 0 72px'}}>
-              <ShinyButton onClick={() => setPage("chronicles")}>Continue to Chronicles →</ShinyButton>
+            <Reveal>
+              <div className="sec-label" style={{ marginTop:56 }}>The Nitrianske Záznamy · A Separate Register · Not Disciples, Which Is Why It Matters</div>
+              <div className="sec-title">The Villagers · Named In The Records</div>
+              <p className="prose">The disciples followed the Walking. The villagers did something more unsettling: they were in it, uninvited, and stayed. They appear in the record the way furniture appears in a house, which is to say constantly, load-bearing, and slightly out of focus until you look directly at them. The register below reproduces each entry as filed, with the scribe's notes intact. None of the fifteen are disciples. All fifteen outlasted the disciples. The Council has never explained this and has declined to, on the grounds that explanation would require a theory of villages, and the Church does not have one, and is not applying for one.</p>
+            </Reveal>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:16, margin:'28px 0 44px' }}>
+              {VILLAGERS.map((v, i) => (
+                <Reveal key={v.name} delay={i % 3 + 1}>
+                  <SpotlightCard className="villager-card" style={{ height:'100%', cursor:'none' }}>
+                    <div style={{ fontFamily:"'Cinzel',serif", fontSize:13, letterSpacing:'.1em', color:'var(--g)', textTransform:'uppercase', marginBottom:4 }}>{v.name}</div>
+                    <div style={{ fontFamily:"'Cinzel Decorative',serif", fontSize:11.5, color:'var(--am)', marginBottom:12 }}>"{v.title}"</div>
+                    <div style={{ fontSize:13.5, lineHeight:1.8, color:'var(--txd)' }} dangerouslySetInnerHTML={{ __html: v.body }} />
+                  </SpotlightCard>
+                </Reveal>
+              ))}
             </div>
+
+            <Reveal>
+              <div style={{ textAlign:'center', padding:'40px 0 72px' }}>
+                <ShinyButton onClick={() => setPage("chronicles")}>Continue to Chronicles →</ShinyButton>
+              </div>
+            </Reveal>
           </>
         )}
       </div>
-      <footer>© Cirkev Kopeckého · The Disciples · Eight Followers · One Goat · The Goat Is Not Officially a Disciple · The Vote Was Close · Enrico Agreed With Both Sides · Nekro Abstained, Audibly</footer>
+      <footer>© Cirkev Kopeckého · The Disciples · Eight Followers · One Goat · The Goat Is Not Officially a Disciple · The Vote Was Close · Enrico Agreed With Both Sides · Nekro Abstained, Audibly · Fifteen Villagers, Uninvited, Outlasting Everything</footer>
     </>
   )
 }

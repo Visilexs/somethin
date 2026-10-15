@@ -482,7 +482,10 @@ export default function GamePage({ setPage }) {
           <p style={{ fontFamily:"'EB Garamond',serif", fontSize:14, fontStyle:'italic', color:'rgba(213,206,171,.65)', lineHeight:1.8 }}>
             Kopecky, upon reviewing the Church's digital scripture, expressed specific interest in
             the inclusion of an interactive game. He stated the premise should involve "taking something
-            from Ayub, because Ayub has enough things." He approved the final design. He said it was
+            from Ayub, because Ayub has enough things." He appended, in a transmission the Council keeps
+            separate: seven hundred ores constitute a season of faith, and the barge returning the faithful
+            home after every mission is an act of grace, not a routing error. He approved the final design.
+            He said it was
             <em style={{color:'rgba(200,168,74,.75)'}}> "adequate, which is better than Ayub deserves."</em>
           </p>
         </div>

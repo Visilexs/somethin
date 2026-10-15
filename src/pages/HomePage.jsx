@@ -89,11 +89,11 @@ function IconLaws({ size = 36 }) {
 
 const PAGE_TILES = [
   { id:'origins',    Icon:IconOrigins,    title:'Origins',       sub:'The Descent from the Tatras' },
-  { id:'chud',       Icon:IconChud,       title:'The Chud',      sub:'The Strange Way of Living' },
-  { id:'disciples',  Icon:IconDisciples,  title:'The Disciples', sub:'Those Who Followed' },
-  { id:'chronicles', Icon:IconChronicles, title:'Chronicles',    sub:'Events of the Walking' },
-  { id:'texts',      Icon:IconTexts,      title:'Sacred Texts',  sub:'Books, Sayings & Records' },
-  { id:'laws',       Icon:IconLaws,       title:'The Laws',      sub:'Čudové Zákony · Twenty Laws' },
+  { id:'chud',       Icon:IconChud,       title:'The Chud',      sub:'The Strange Way · The Particles' },
+  { id:'disciples',  Icon:IconDisciples,  title:'The Disciples', sub:'Eight Followers · Fifteen Villagers · One Goat' },
+  { id:'chronicles', Icon:IconChronicles, title:'Chronicles',    sub:'Grudges · Miracles · Sermons On The Ranked Field' },
+  { id:'texts',      Icon:IconTexts,      title:'Sacred Texts',  sub:'The Well · Documented Incidents · Valley Volumes' },
+  { id:'laws',       Icon:IconLaws,       title:'The Laws',      sub:'Twenty Laws · The Wank Catalogue' },
 ]
 
 export default function HomePage({ setPage }) {

@@ -1,5 +1,5 @@
 import { Reveal, QuoteBlock, PillarCard } from '../components/UI'
-import { PILLARS, CHUD_QUOTES } from '../data'
+import { PILLARS, CHUD_QUOTES, PARTICLE_FINDINGS } from '../data'
 import { ShinyButton } from '../components/ReactBits'
 
 export default function ChudPage({ setPage }) {
@@ -36,6 +36,31 @@ export default function ChudPage({ setPage }) {
           <Reveal delay={1}>
             <div className="pillar-grid" style={{ marginTop: 32 }}>
               {PILLARS.map(p => <PillarCard key={p.n} {...p} />)}
+            </div>
+          </Reveal>
+        </div>
+
+        {/* LINGUISTIC FINDINGS */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label" style={{ color:'rgba(140,230,160,.5)' }}>Council Of Devín · Department Of Particles · Findings, Final</div>
+            <div className="sec-title" style={{ color:'rgba(140,230,160,.75)' }}>Linguistic Findings</div>
+            <p className="prose">{PARTICLE_FINDINGS.intro}</p>
+          </Reveal>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))', gap:16, margin:'28px 0' }}>
+            {PARTICLE_FINDINGS.entries.map((e, i) => (
+              <Reveal key={i} delay={i % 3 + 1}>
+                <div style={{ height:'100%', border:'1px solid rgba(140,230,160,.16)', background:'rgba(140,230,160,.03)', padding:'20px 22px' }}>
+                  <div style={{ fontFamily:"'Cinzel',serif", fontSize:13, color:'rgba(140,230,160,.8)', letterSpacing:'.08em', marginBottom:10 }}>{e.p}</div>
+                  <div style={{ fontFamily:"'EB Garamond',serif", fontSize:14.5, lineHeight:1.85, color:'rgba(213,206,171,.75)' }} dangerouslySetInnerHTML={{ __html: e.f }} />
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal>
+            <div className="warn-box">
+              <div className="warn-label">Departmental Note · Filed After The Four-Week Demonstration</div>
+              <div className="warn-text">The faithful are reminded that the particles are not slang. Slang ages; these have not aged in four centuries of use, which is not a property of slang. They are instruments. The Church requires their daily use in prayer, correspondence, and argument, and audits on all three, separately, at year's end. A particle used without conviction is a period used as an exclamation, and the Council has measured this condition in the congregation and found it widespread, chronic, and, in one documented case, contagious. The treatment is the same as for everything else in the valley: sit with it, slowly, until it sits with you.</div>
             </div>
           </Reveal>
         </div>

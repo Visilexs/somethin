@@ -1,5 +1,5 @@
 import { Reveal, QuoteBlock, GrudgeItem } from '../components/UI'
-import { CHESS_QUOTES, GRUDGES, MIRACLES } from '../data'
+import { CHESS_QUOTES, GRUDGES, MIRACLES, SERMONS_FIELD, MUSIC_COUNCIL } from '../data'
 import { KopeckySymbol } from '../components/Icons'
 import { ShinyButton, SpotlightCard } from '../components/ReactBits'
 import { useApp } from '../AppContext'
@@ -12,7 +12,7 @@ export default function ChroniclesPage({ setPage }) {
       <div className="page-hero">
         <div className="page-hero-label">Sťažnostná Kniha · Nitrianske Záznamy · Cross-Referenced</div>
         <div className="page-hero-title">Chronicles</div>
-        <div className="page-hero-sub">The Chess Argument · The Grudges · The Miracles · The Events That Did Not Go As Planned</div>
+        <div className="page-hero-sub">The Chess Argument · The Grudges · The Miracles · Sermons On The Ranked Field · The Council On Matters Of Sound · The Events That Did Not Go As Planned</div>
       </div>
       <div className="main-wrap">
 
@@ -344,6 +344,54 @@ export default function ChroniclesPage({ setPage }) {
               <div style={{ fontFamily:"'Cinzel',serif", fontSize:14, color:'var(--g)', letterSpacing:'.08em', marginBottom: 10 }}>The Ore Ledger · Seven Hundred Ores and the Millionaire Threshold</div>
               <p className="prose">Over two seasons Kopecky accumulated seven hundred units of ore, stockpiled with the discipline of a mountain man preparing for a winter that was not coming. The record reads in sequence. The stockpile was consumed in full for a single crafted object (<em>"its all gonna go just so i can get these moth-spirits crafted"</em>). A modification whose upgrade cost double for the same effect, the tier above reserved, as the Well put it, "for millionaires." A fifth round of encampments entered voluntarily for a single daily reward. Relics rolled repeatedly for a silver that would not come. And a final routing instruction from the gods of the field, which solved every broken map by returning the traveller to the barge after each mission: <em>"their solution for the mission fucking up the map is to just yeet you back to the barge after every mission."</em> The Council classified the entire ledger as one continuous miracle of endurance, and declined it on the grounds that it had, by then, become the man's religion. The ore has not been seen since. Neither has the millionaire threshold.</p>
             </div>
+          </Reveal>
+        </div>
+
+        {/* SERMONS ON THE RANKED FIELD */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label" style={{ color:'rgba(200,168,74,.5)' }}>Issued Without A Pulpit · Received In The Original Register · Filed Under Law XVI</div>
+            <div className="sec-title amber">Sermons On The Ranked Field</div>
+            <p className="prose">Kopecky preached on the ranked field the way other men preach about weather: flatly, at intervals, and without being asked. The Church collected what the scribes could collect. What follows is the recovered corpus, nine sermons in all, presented with the Council's dispositions. The field has not responded to any of them. It does not have to. The sermons stand, and the standing is the point, and the fourteen-zero theorem, which governs all of it, requires no agreement.</p>
+          </Reveal>
+          {SERMONS_FIELD.map(s => (
+            <Reveal key={s.ref}>
+              <div style={{ marginBottom: 32, padding:'24px 28px', border:'1px solid rgba(200,168,74,.14)', background:'rgba(200,168,74,.02)' }}>
+                <div style={{ fontFamily:"'Cinzel',serif", fontSize:10, letterSpacing:'.16em', color:'rgba(200,168,74,.45)', textTransform:'uppercase', marginBottom:6 }}>{s.ref}</div>
+                <div style={{ fontFamily:"'Cinzel',serif", fontSize:15, color:'var(--am)', letterSpacing:'.05em', marginBottom:12 }}>{s.title}</div>
+                <p className="prose" style={{ margin:0 }} dangerouslySetInnerHTML={{ __html: s.body }} />
+              </div>
+            </Reveal>
+          ))}
+          <Reveal>
+            <div className="warn-box">
+              <div className="warn-label">Standing Disposition Of The Council · Applies To Every Sermon Above</div>
+              <div className="warn-text">The field is not addressed by these sermons. The field is older than the sermons, younger than the losses, and entirely uninterested in both. It receives nothing. It answers nothing. It matches, in the manner described in Law XVII, and it goes on matching, and the faithful are advised to sit with their forty minutes and let the field do what the field does, which is everything, quietly, at an angle, in a direction the scribes have stopped trying to name.</div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* THE COUNCIL ON MATTERS OF SOUND */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label">The Council Of Devín · Judicature Of The Ear · Eight Rulings Recovered</div>
+            <div className="sec-title">On Matters Of Sound</div>
+            <p className="prose">The Council kept a second docket, for the things people brought it that were not laws but were, somehow, more binding. Albums came to the Council the way disputes do, and the Council ruled on them with judicial severity, because the ear is an instrument and instruments must be calibrated, and the only calibration available was the subject's own, delivered unprompted, at speed, and in the original case. The eight recoverable rulings are below. They are admissible. They are binding. They are occasionally correct, which the Council considers the whole of the matter.</p>
+          </Reveal>
+          {MUSIC_COUNCIL.map(r => (
+            <Reveal key={r.ref}>
+              <div style={{ marginBottom: 28, padding:'24px 28px', borderLeft:'3px solid rgba(200,168,74,.35)', background:'rgba(200,168,74,.03)' }}>
+                <div style={{ fontFamily:"'Cinzel',serif", fontSize:10, letterSpacing:'.16em', color:'rgba(200,168,74,.45)', textTransform:'uppercase', marginBottom:6 }}>{r.ref} · Court Of Devín, Judicature Of The Ear</div>
+                <div style={{ fontFamily:"'Cinzel',serif", fontSize:15, color:'var(--am)', letterSpacing:'.05em', marginBottom:12 }}>{r.title}</div>
+                <p className="prose" style={{ margin:0 }} dangerouslySetInnerHTML={{ __html: r.body }} />
+              </div>
+            </Reveal>
+          ))}
+          <Reveal>
+            <QuoteBlock
+              text="Bring me your albums. Bring them the way you bring bread, which is to say correctly, and salted, and with whatever you have been holding onto about them. I will listen. I am good at listening. The ear, like the council, mostly agrees with things, and saves its objections for the ones that deserve them. You will know which category yours falls into within ten seconds. That is the doctrine. The doctrine works."
+              source="Kopecky · Opening The Second Docket · Year Nine · The Doorman Has Kept The Line Ever Since"
+            />
           </Reveal>
         </div>
 

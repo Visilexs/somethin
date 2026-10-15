@@ -1,6 +1,6 @@
 import { Reveal } from '../components/UI'
 import LawGroup from '../components/LawGroup'
-import { LAW_GROUPS } from '../data'
+import { LAW_GROUPS, WANK_CATALOGUE, DEADASS_REGISTER } from '../data'
 import { ShinyButton } from '../components/ReactBits'
 import HiddenGlyph from '../components/HiddenGlyph'
 
@@ -38,6 +38,47 @@ export default function LawsPage({ setPage }) {
             {i < LAW_GROUPS.length - 1 && <div className="law-divider" />}
           </div>
         ))}
+
+        {/* DIALECT APPENDIX */}
+        <div className="content-section">
+          <Reveal>
+            <div className="sec-label" style={{ color:'var(--am)' }}>Appended To The Twenty Laws · By Order Of The Council, Quietly</div>
+            <div className="sec-title amber">Dialect Appendix · The Wank Catalogue And The Deadass Register</div>
+            <p className="prose">Law XX canonised the conjugation. What follows is the lexicon it operates on: the wank catalogue, in which every entry is a standing ruling, and the deadass register, in which every entry is an attestation. The two lists are not slang collections. They are the valley's technical vocabulary, maintained with the same severity as the laws themselves, because the laws are written in this dialect, and a law cited in standard Slovak loses nothing in meaning but everything in force. Read both lists in full at least once a season. The Council requires it. The lists do not change. That is the point of keeping them.</p>
+          </Reveal>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))', gap:24, margin:'28px 0' }}>
+            <Reveal>
+              <div style={{ height:'100%', border:'1px solid rgba(200,168,74,.2)', background:'rgba(200,168,74,.03)', padding:'24px 26px' }}>
+                <div style={{ fontFamily:"'Cinzel',serif", fontSize:12, letterSpacing:'.12em', color:'var(--am)', textTransform:'uppercase', marginBottom:6 }}>The Wank Catalogue</div>
+                <div style={{ fontFamily:"'EB Garamond',serif", fontSize:12.5, fontStyle:'italic', color:'rgba(213,206,171,.5)', marginBottom:18 }}>Adjective of Record · Six Entries · All Standing</div>
+                {WANK_CATALOGUE.map((w, i) => (
+                  <div key={i} style={{ padding:'14px 0', borderBottom:'1px solid rgba(200,168,74,.1)' }}>
+                    <div style={{ fontFamily:"'EB Garamond',serif", fontSize:15.5, fontStyle:'italic', color:'rgba(213,206,171,.9)', marginBottom:6 }}>"{w.q}"</div>
+                    <div style={{ fontSize:13.5, lineHeight:1.75, color:'rgba(213,206,171,.6)' }}>{w.gloss}</div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal delay={1}>
+              <div style={{ height:'100%', border:'1px solid rgba(168,200,74,.2)', background:'rgba(168,200,74,.03)', padding:'24px 26px' }}>
+                <div style={{ fontFamily:"'Cinzel',serif", fontSize:12, letterSpacing:'.12em', color:'var(--g)', textTransform:'uppercase', marginBottom:6 }}>The Deadass Register</div>
+                <div style={{ fontFamily:"'EB Garamond',serif", fontSize:12.5, fontStyle:'italic', color:'rgba(213,206,171,.5)', marginBottom:18 }}>Particle Of Emphasis · Six Attestations · The Asking Is The Register</div>
+                {DEADASS_REGISTER.map((d, i) => (
+                  <div key={i} style={{ padding:'14px 0', borderBottom:'1px solid rgba(168,200,74,.1)' }}>
+                    <div style={{ fontFamily:"'EB Garamond',serif", fontSize:15.5, fontStyle:'italic', color:'rgba(213,206,171,.9)', marginBottom:6 }}>"{d.q}"</div>
+                    <div style={{ fontSize:13.5, lineHeight:1.75, color:'rgba(213,206,171,.6)' }}>{d.gloss}</div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+          <Reveal>
+            <div className="warn-box">
+              <div className="warn-label">Appendix Note · The Belly Buster Cross-Reference</div>
+              <div className="warn-text">Readers will note that neither list contains the phrase the Loose Sayings record under <em>The Belly Buster</em>, and they are correct to notice it. The phrase does not belong to either instrument. It belongs to the body, which the Council regulates separately, through the Liturgy of the Hut, and which answers to no appendix. This is stated here so that readers do not file it twice, because it has been filed twice already, by two separate scribes, in two separate centuries, and the second filing was rejected on procedural grounds, which were the body, and which remain unappealable.</div>
+            </div>
+          </Reveal>
+        </div>
 
         <Reveal>
           <div className="content-section" style={{ textAlign:'center', borderBottom:'none' }}>
